@@ -2,10 +2,12 @@ begin
 
   main {
     int a, b;
-    string nombre;
+    string nombre, pancho;
     a = 10;
     b = 5;
     nombre = "Ponce";
+    pancho = judas;
+
 
     if(a >= b) {
       nombre = "Oscar";
