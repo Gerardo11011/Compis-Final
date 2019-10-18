@@ -37,7 +37,6 @@ def p_vars(p):
     '''
     vars : tipo vars1 SEMICOLON
          | tipo vars1 SEMICOLON vars
-
     '''
 
 def p_vars1(p):
@@ -45,6 +44,7 @@ def p_vars1(p):
     vars1 : ID
           | ID COMMA vars1
     '''
+    varsTable.insert(p[1], varsTable.miTipo)
 
 def p_tipo(p):
     '''
@@ -53,6 +53,7 @@ def p_tipo(p):
          | STRING
          | BOOL
     '''
+    varsTable.miTipo = p[1]
 
 def p_bloque(p):
     '''
@@ -62,7 +63,6 @@ def p_bloque(p):
            | escritura
            | loop
            | funcion
-
     '''
 
 def p_asignacion(p):
@@ -72,6 +72,7 @@ def p_asignacion(p):
                | ID EQUAL funcion SEMICOLON
                | ID LCORCH exp RCORCH EQUAL expresion SEMICOLON
     '''
+    varsTable.update(p[1], varsTable.miValor)
 
 def p_expresion(p):
     '''expresion : exp
@@ -81,7 +82,6 @@ def p_expresion(p):
 def p_expresion1(p):
     '''expresion1 : relop exp
                   | empty
-
     '''
 
 def p_relop(p):
@@ -136,6 +136,7 @@ def p_var_cte(p):
             | TRUE
             | FALSE
     '''
+    varsTable.miValor = p[1]
 
 def p_condicion(p):
     '''
@@ -162,12 +163,10 @@ def p_array1(p):
     '''
     array1 : exp
            | exp COMMA array1
-
     '''
 
 def p_loop(p):
     '''
-
     loop : LOOP LPAREN expresion RPAREN LKEY bloque RKEY
     '''
 
@@ -220,5 +219,4 @@ parser = yacc.yacc()
 result = parser.parse(entrada)
 print(result)
 
-
-# varsTable.show()
+varsTable.show()

@@ -49,7 +49,7 @@ def validate(dato, id):
         return True
     if temp == "<class 'int'>" and aux == 'int':
         return True
-    if temp == "<class 'str'>" and aux == 'char':
+    if temp == "<class 'str'>" and aux == 'string':
         return True
     else:
         print("ERROR: Dato no válido.")
