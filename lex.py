@@ -22,7 +22,9 @@ reserved = {
     'output' : 'OUTPUT',
     'return' : 'RETURN',
     'true' : 'TRUE',
-    'false' : 'FALSE'
+    'false' : 'FALSE',
+    'and' : 'AND',
+    'or' : 'OR'
 }
 
 # Lista de Tokens.
@@ -54,9 +56,7 @@ tokens = [
     'CTE_I',
     'CTE_F',
 
-    'ID',
-    'AND',
-    'OR'
+    'ID'
 
 ]
 
