@@ -36,22 +36,19 @@ def p_programa3(p):
 def p_vars(p):
     '''
     vars : tipo vars1 SEMICOLON
-
          | tipo vars1 SEMICOLON vars
- 
+
     '''
 
 def p_vars1(p):
     '''
     vars1 : ID
-
           | ID COMMA vars1
     '''
 
 def p_tipo(p):
     '''
     tipo : INT
-
          | FLOAT
          | STRING
          | BOOL
@@ -59,7 +56,7 @@ def p_tipo(p):
 
 def p_bloque(p):
     '''
-
+    bloque : asignacion
            | condicion
            | lectura
            | escritura
@@ -71,7 +68,6 @@ def p_bloque(p):
 def p_asignacion(p):
     '''
     asignacion : ID EQUAL expresion SEMICOLON
-
                | ID EQUAL array SEMICOLON
                | ID EQUAL funcion SEMICOLON
                | ID LCORCH exp RCORCH EQUAL expresion SEMICOLON
@@ -90,7 +86,6 @@ def p_expresion1(p):
 
 def p_relop(p):
     '''relop : GT
-
              | LT
              | GTE
              | LTE
@@ -127,7 +122,6 @@ def p_termino1(p):
 def p_factor(p):
     '''
     factor : LPAREN expresion RPAREN
-
            | PLUS var_cte
            | MINUS var_cte
            | var_cte
@@ -138,7 +132,6 @@ def p_var_cte(p):
     var_cte : ID
             | CTE_I
             | CTE_F
-
             | CTE_S
             | TRUE
             | FALSE
@@ -168,7 +161,6 @@ def p_array(p):
 def p_array1(p):
     '''
     array1 : exp
-
            | exp COMMA array1
 
     '''

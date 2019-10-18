@@ -1,7 +1,7 @@
-/__pycache__/
-parsetab.py
-parser.out
+\parsetab.py
+\parser.out
 
 
 *.pdf
 *.DS_Store
+\__pycache__
