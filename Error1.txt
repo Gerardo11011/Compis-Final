@@ -1,0 +1,7 @@
+begin
+  int a;
+  char yo;
+
+  a : 10;
+  yo : "Oscar";
+end
