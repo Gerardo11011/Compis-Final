@@ -1,15 +1,22 @@
 begin
-  int a;
-  int b;
-  char nombre;
 
-  a = 10;
-  b = "Oscar";
-  nombre = "Ponce";
+  func puta(int c) {
+    int b;
+    c = 2;
+  }
 
-  if(a >= b) then
-    nombre = "Oscar";
-  else
-    nombre = "Chido";
-  ;
+  main {
+    int a, b;
+    string nombre;
+    a = 10;
+    b = 5;
+    nombre = "Ponce";
+
+    if(a >= b) {
+      nombre = "Oscar";
+    }
+    else {
+      nombre = "Chido";
+    }
+  }
 end

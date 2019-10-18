@@ -15,23 +15,19 @@ entrada = prueba.read()
 # Declaración de funciones.
 def p_programa(p):
     '''
-    programa : BEGIN programa1 programa2 MAIN LKEY vars programa3 RKEY END
+    programa : BEGIN vars programa2 MAIN LKEY vars programa3 RKEY END
+             | BEGIN vars MAIN LKEY vars programa3 RKEY END
+             | BEGIN programa2 MAIN LKEY vars programa3 RKEY END
+             | BEGIN MAIN LKEY vars programa3 RKEY END
     '''
 
-def p_programa1(p):
-    '''
-    programa1 : vars
-              |
-    '''
-
-def programa2(p):
+def p_programa2(p):
     '''
     programa2 : modulo
               | modulo programa2
-              |
     '''
 
-def programa3(p):
+def p_programa3(p):
     '''
     programa3 : bloque
               | bloque programa3
@@ -48,7 +44,6 @@ def p_vars1(p):
     vars1 : ID
           | ID COMMA vars1
     '''
-    varsTable.insert(p[1], varsTable.miTipo)
 
 def p_tipo(p):
     '''
@@ -57,7 +52,6 @@ def p_tipo(p):
          | STRING
          | BOOL
     '''
-    varsTable.miTipo = p[1]
 
 def p_bloque(p):
     '''
@@ -76,16 +70,15 @@ def p_asignacion(p):
                | ID EQUAL funcion SEMICOLON
                | ID LCORCH exp RCORCH EQUAL expresion SEMICOLON
     '''
-    varsTable.update(p[1], varsTable.miValor)
 
 def p_expresion(p):
     '''expresion : exp
-                 | expresion1
+                 | exp relop exp expresion1
     '''
 
 def p_expresion1(p):
-    '''expresion1 : exp relop
-                  | exp relop expresion1
+    '''expresion1 : relop exp
+                  | empty
     '''
 
 def p_relop(p):
@@ -140,12 +133,11 @@ def p_var_cte(p):
             | TRUE
             | FALSE
     '''
-    varsTable.miValor = p[1]
 
 def p_condicion(p):
     '''
     condicion : IF LPAREN expresion RPAREN LKEY bloque RKEY
-              | IF LPAREN expresion RPAREN LKEY bloque RKEY ELSE LKEY bloque RKEY SEMICOLON
+              | IF LPAREN expresion RPAREN LKEY bloque RKEY ELSE LKEY bloque RKEY
     '''
 
 def p_lectura(p):
@@ -201,16 +193,19 @@ def p_modulo2(p):
     modulo2 : bloque
             | bloque modulo2
     '''
- def p_modulo3(p):
-     '''
-     modulo3 : RETURN exp SEMICOLON RKEY
-             | RKEY
-     '''
+def p_modulo3(p):
+    '''
+    modulo3 : RETURN exp SEMICOLON RKEY
+            | RKEY
+    '''
+
+def p_empty(p):
+    'empty :'
+    pass
 
 # Regla de error para errores de sintaxis.
 def p_error(p):
-    print(p.value)
-    print("Error de sintaxis en '%s'" % p.value)
+    print("Error de sintaxis en linea '%s'" % p.lexpos)
     sys.exit()
 
 
@@ -220,4 +215,4 @@ parser = yacc.yacc()
 result = parser.parse(entrada)
 print(result)
 
-varsTable.show()
+# varsTable.show()

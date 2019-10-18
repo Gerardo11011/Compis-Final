@@ -10,7 +10,7 @@ reserved = {
     'begin' : 'BEGIN',
     'end' : 'END',
     'main' : 'MAIN',
-    'if' : 'IF' ,
+    'if' : 'IF',
     'else' : 'ELSE',
     'loop' : 'LOOP',
     'func' : 'FUNC',
@@ -125,8 +125,8 @@ entrada = prueba.read()
 lexer.input(entrada)
 
 # Mostrar tokens.
-# while True:
-#     tok = lexer.token()
-#     if not tok:
-#         break
-#     print(tok)
+while True:
+    tok = lexer.token()
+    if not tok:
+        break
+    print(tok)
