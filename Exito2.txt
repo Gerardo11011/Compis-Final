@@ -1,0 +1,15 @@
+begin
+  int a;
+  float b;
+  char nombre;
+
+  a = 10;
+  b = 5.35;
+  nombre = "Ponce";
+
+  loop(a > b) then
+    b = b + 1;
+  ;
+
+  output(nombre);
+end

@@ -1,0 +1,1729 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    DP
+    LKEY
+    RKEY
+
+Grammar
+
+Rule 0     S' -> programa
+Rule 1     programa -> BEGIN vars programa1 END
+Rule 2     programa1 -> bloque
+Rule 3     programa1 -> bloque programa1
+Rule 4     vars -> tipo vars1 SEMICOLON
+Rule 5     vars -> tipo vars1 SEMICOLON vars
+Rule 6     vars1 -> ID
+Rule 7     vars1 -> ID COMMA vars1
+Rule 8     tipo -> INT
+Rule 9     tipo -> FLOAT
+Rule 10    tipo -> CHAR
+Rule 11    bloque -> asignacion
+Rule 12    bloque -> condicion
+Rule 13    bloque -> lectura
+Rule 14    bloque -> escritura
+Rule 15    bloque -> loop
+Rule 16    asignacion -> ID EQUAL expresion SEMICOLON
+Rule 17    asignacion -> ID EQUAL array SEMICOLON
+Rule 18    expresion -> exp
+Rule 19    expresion -> exp relop exp
+Rule 20    expresion -> exp relop exp AND expresion
+Rule 21    expresion -> exp relop exp OR expresion
+Rule 22    relop -> GT
+Rule 23    relop -> LT
+Rule 24    relop -> GTE
+Rule 25    relop -> LTE
+Rule 26    relop -> DOUBLEEQUAL
+Rule 27    relop -> NE
+Rule 28    exp -> termino
+Rule 29    exp -> termino exp1
+Rule 30    exp1 -> PLUS exp
+Rule 31    exp1 -> MINUS exp
+Rule 32    termino -> factor
+Rule 33    termino -> factor termino1
+Rule 34    termino1 -> MULT termino
+Rule 35    termino1 -> DIV termino
+Rule 36    factor -> LPAREN expresion RPAREN
+Rule 37    factor -> PLUS var_cte
+Rule 38    factor -> MINUS var_cte
+Rule 39    factor -> var_cte
+Rule 40    var_cte -> ID
+Rule 41    var_cte -> CTE_I
+Rule 42    var_cte -> CTE_F
+Rule 43    var_cte -> CTE_CH
+Rule 44    condicion -> IF LPAREN expresion RPAREN THEN bloque condicion1
+Rule 45    condicion1 -> SEMICOLON
+Rule 46    condicion1 -> ELSE bloque SEMICOLON
+Rule 47    lectura -> INPUT LPAREN ID RPAREN SEMICOLON
+Rule 48    escritura -> OUTPUT LPAREN exp RPAREN SEMICOLON
+Rule 49    array -> LCORCH array1 RCORCH
+Rule 50    array1 -> exp
+Rule 51    array1 -> exp COMMA array1
+Rule 52    loop -> LOOP LPAREN expresion RPAREN THEN bloque SEMICOLON
+
+Terminals, with rules where they appear
+
+AND                  : 20
+BEGIN                : 1
+CHAR                 : 10
+COMMA                : 7 51
+CTE_CH               : 43
+CTE_F                : 42
+CTE_I                : 41
+DIV                  : 35
+DOUBLEEQUAL          : 26
+DP                   : 
+ELSE                 : 46
+END                  : 1
+EQUAL                : 16 17
+FLOAT                : 9
+GT                   : 22
+GTE                  : 24
+ID                   : 6 7 16 17 40 47
+IF                   : 44
+INPUT                : 47
+INT                  : 8
+LCORCH               : 49
+LKEY                 : 
+LOOP                 : 52
+LPAREN               : 36 44 47 48 52
+LT                   : 23
+LTE                  : 25
+MINUS                : 31 38
+MULT                 : 34
+NE                   : 27
+OR                   : 21
+OUTPUT               : 48
+PLUS                 : 30 37
+RCORCH               : 49
+RKEY                 : 
+RPAREN               : 36 44 47 48 52
+SEMICOLON            : 4 5 16 17 45 46 47 48 52
+THEN                 : 44 52
+error                : 
+
+Nonterminals, with rules where they appear
+
+array                : 17
+array1               : 49 51
+asignacion           : 11
+bloque               : 2 3 44 46 52
+condicion            : 12
+condicion1           : 44
+escritura            : 14
+exp                  : 18 19 19 20 20 21 21 30 31 48 50 51
+exp1                 : 29
+expresion            : 16 20 21 36 44 52
+factor               : 32 33
+lectura              : 13
+loop                 : 15
+programa             : 0
+programa1            : 1 3
+relop                : 19 20 21
+termino              : 28 29 34 35
+termino1             : 33
+tipo                 : 4 5
+var_cte              : 37 38 39
+vars                 : 1 5
+vars1                : 4 5 7
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . programa
+    (1) programa -> . BEGIN vars programa1 END
+
+    BEGIN           shift and go to state 2
+
+    programa                       shift and go to state 1
+
+state 1
+
+    (0) S' -> programa .
+
+
+
+state 2
+
+    (1) programa -> BEGIN . vars programa1 END
+    (4) vars -> . tipo vars1 SEMICOLON
+    (5) vars -> . tipo vars1 SEMICOLON vars
+    (8) tipo -> . INT
+    (9) tipo -> . FLOAT
+    (10) tipo -> . CHAR
+
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    CHAR            shift and go to state 7
+
+    vars                           shift and go to state 3
+    tipo                           shift and go to state 4
+
+state 3
+
+    (1) programa -> BEGIN vars . programa1 END
+    (2) programa1 -> . bloque
+    (3) programa1 -> . bloque programa1
+    (11) bloque -> . asignacion
+    (12) bloque -> . condicion
+    (13) bloque -> . lectura
+    (14) bloque -> . escritura
+    (15) bloque -> . loop
+    (16) asignacion -> . ID EQUAL expresion SEMICOLON
+    (17) asignacion -> . ID EQUAL array SEMICOLON
+    (44) condicion -> . IF LPAREN expresion RPAREN THEN bloque condicion1
+    (47) lectura -> . INPUT LPAREN ID RPAREN SEMICOLON
+    (48) escritura -> . OUTPUT LPAREN exp RPAREN SEMICOLON
+    (52) loop -> . LOOP LPAREN expresion RPAREN THEN bloque SEMICOLON
+
+    ID              shift and go to state 15
+    IF              shift and go to state 16
+    INPUT           shift and go to state 17
+    OUTPUT          shift and go to state 18
+    LOOP            shift and go to state 19
+
+    programa1                      shift and go to state 8
+    bloque                         shift and go to state 9
+    asignacion                     shift and go to state 10
+    condicion                      shift and go to state 11
+    lectura                        shift and go to state 12
+    escritura                      shift and go to state 13
+    loop                           shift and go to state 14
+
+state 4
+
+    (4) vars -> tipo . vars1 SEMICOLON
+    (5) vars -> tipo . vars1 SEMICOLON vars
+    (6) vars1 -> . ID
+    (7) vars1 -> . ID COMMA vars1
+
+    ID              shift and go to state 21
+
+    vars1                          shift and go to state 20
+
+state 5
+
+    (8) tipo -> INT .
+
+    ID              reduce using rule 8 (tipo -> INT .)
+
+
+state 6
+
+    (9) tipo -> FLOAT .
+
+    ID              reduce using rule 9 (tipo -> FLOAT .)
+
+
+state 7
+
+    (10) tipo -> CHAR .
+
+    ID              reduce using rule 10 (tipo -> CHAR .)
+
+
+state 8
+
+    (1) programa -> BEGIN vars programa1 . END
+
+    END             shift and go to state 22
+
+
+state 9
+
+    (2) programa1 -> bloque .
+    (3) programa1 -> bloque . programa1
+    (2) programa1 -> . bloque
+    (3) programa1 -> . bloque programa1
+    (11) bloque -> . asignacion
+    (12) bloque -> . condicion
+    (13) bloque -> . lectura
+    (14) bloque -> . escritura
+    (15) bloque -> . loop
+    (16) asignacion -> . ID EQUAL expresion SEMICOLON
+    (17) asignacion -> . ID EQUAL array SEMICOLON
+    (44) condicion -> . IF LPAREN expresion RPAREN THEN bloque condicion1
+    (47) lectura -> . INPUT LPAREN ID RPAREN SEMICOLON
+    (48) escritura -> . OUTPUT LPAREN exp RPAREN SEMICOLON
+    (52) loop -> . LOOP LPAREN expresion RPAREN THEN bloque SEMICOLON
+
+    END             reduce using rule 2 (programa1 -> bloque .)
+    ID              shift and go to state 15
+    IF              shift and go to state 16
+    INPUT           shift and go to state 17
+    OUTPUT          shift and go to state 18
+    LOOP            shift and go to state 19
+
+    bloque                         shift and go to state 9
+    programa1                      shift and go to state 23
+    asignacion                     shift and go to state 10
+    condicion                      shift and go to state 11
+    lectura                        shift and go to state 12
+    escritura                      shift and go to state 13
+    loop                           shift and go to state 14
+
+state 10
+
+    (11) bloque -> asignacion .
+
+    ID              reduce using rule 11 (bloque -> asignacion .)
+    IF              reduce using rule 11 (bloque -> asignacion .)
+    INPUT           reduce using rule 11 (bloque -> asignacion .)
+    OUTPUT          reduce using rule 11 (bloque -> asignacion .)
+    LOOP            reduce using rule 11 (bloque -> asignacion .)
+    END             reduce using rule 11 (bloque -> asignacion .)
+    SEMICOLON       reduce using rule 11 (bloque -> asignacion .)
+    ELSE            reduce using rule 11 (bloque -> asignacion .)
+
+
+state 11
+
+    (12) bloque -> condicion .
+
+    ID              reduce using rule 12 (bloque -> condicion .)
+    IF              reduce using rule 12 (bloque -> condicion .)
+    INPUT           reduce using rule 12 (bloque -> condicion .)
+    OUTPUT          reduce using rule 12 (bloque -> condicion .)
+    LOOP            reduce using rule 12 (bloque -> condicion .)
+    END             reduce using rule 12 (bloque -> condicion .)
+    SEMICOLON       reduce using rule 12 (bloque -> condicion .)
+    ELSE            reduce using rule 12 (bloque -> condicion .)
+
+
+state 12
+
+    (13) bloque -> lectura .
+
+    ID              reduce using rule 13 (bloque -> lectura .)
+    IF              reduce using rule 13 (bloque -> lectura .)
+    INPUT           reduce using rule 13 (bloque -> lectura .)
+    OUTPUT          reduce using rule 13 (bloque -> lectura .)
+    LOOP            reduce using rule 13 (bloque -> lectura .)
+    END             reduce using rule 13 (bloque -> lectura .)
+    SEMICOLON       reduce using rule 13 (bloque -> lectura .)
+    ELSE            reduce using rule 13 (bloque -> lectura .)
+
+
+state 13
+
+    (14) bloque -> escritura .
+
+    ID              reduce using rule 14 (bloque -> escritura .)
+    IF              reduce using rule 14 (bloque -> escritura .)
+    INPUT           reduce using rule 14 (bloque -> escritura .)
+    OUTPUT          reduce using rule 14 (bloque -> escritura .)
+    LOOP            reduce using rule 14 (bloque -> escritura .)
+    END             reduce using rule 14 (bloque -> escritura .)
+    SEMICOLON       reduce using rule 14 (bloque -> escritura .)
+    ELSE            reduce using rule 14 (bloque -> escritura .)
+
+
+state 14
+
+    (15) bloque -> loop .
+
+    ID              reduce using rule 15 (bloque -> loop .)
+    IF              reduce using rule 15 (bloque -> loop .)
+    INPUT           reduce using rule 15 (bloque -> loop .)
+    OUTPUT          reduce using rule 15 (bloque -> loop .)
+    LOOP            reduce using rule 15 (bloque -> loop .)
+    END             reduce using rule 15 (bloque -> loop .)
+    SEMICOLON       reduce using rule 15 (bloque -> loop .)
+    ELSE            reduce using rule 15 (bloque -> loop .)
+
+
+state 15
+
+    (16) asignacion -> ID . EQUAL expresion SEMICOLON
+    (17) asignacion -> ID . EQUAL array SEMICOLON
+
+    EQUAL           shift and go to state 24
+
+
+state 16
+
+    (44) condicion -> IF . LPAREN expresion RPAREN THEN bloque condicion1
+
+    LPAREN          shift and go to state 25
+
+
+state 17
+
+    (47) lectura -> INPUT . LPAREN ID RPAREN SEMICOLON
+
+    LPAREN          shift and go to state 26
+
+
+state 18
+
+    (48) escritura -> OUTPUT . LPAREN exp RPAREN SEMICOLON
+
+    LPAREN          shift and go to state 27
+
+
+state 19
+
+    (52) loop -> LOOP . LPAREN expresion RPAREN THEN bloque SEMICOLON
+
+    LPAREN          shift and go to state 28
+
+
+state 20
+
+    (4) vars -> tipo vars1 . SEMICOLON
+    (5) vars -> tipo vars1 . SEMICOLON vars
+
+    SEMICOLON       shift and go to state 29
+
+
+state 21
+
+    (6) vars1 -> ID .
+    (7) vars1 -> ID . COMMA vars1
+
+    SEMICOLON       reduce using rule 6 (vars1 -> ID .)
+    COMMA           shift and go to state 30
+
+
+state 22
+
+    (1) programa -> BEGIN vars programa1 END .
+
+    $end            reduce using rule 1 (programa -> BEGIN vars programa1 END .)
+
+
+state 23
+
+    (3) programa1 -> bloque programa1 .
+
+    END             reduce using rule 3 (programa1 -> bloque programa1 .)
+
+
+state 24
+
+    (16) asignacion -> ID EQUAL . expresion SEMICOLON
+    (17) asignacion -> ID EQUAL . array SEMICOLON
+    (18) expresion -> . exp
+    (19) expresion -> . exp relop exp
+    (20) expresion -> . exp relop exp AND expresion
+    (21) expresion -> . exp relop exp OR expresion
+    (49) array -> . LCORCH array1 RCORCH
+    (28) exp -> . termino
+    (29) exp -> . termino exp1
+    (32) termino -> . factor
+    (33) termino -> . factor termino1
+    (36) factor -> . LPAREN expresion RPAREN
+    (37) factor -> . PLUS var_cte
+    (38) factor -> . MINUS var_cte
+    (39) factor -> . var_cte
+    (40) var_cte -> . ID
+    (41) var_cte -> . CTE_I
+    (42) var_cte -> . CTE_F
+    (43) var_cte -> . CTE_CH
+
+    LCORCH          shift and go to state 35
+    LPAREN          shift and go to state 38
+    PLUS            shift and go to state 39
+    MINUS           shift and go to state 41
+    ID              shift and go to state 31
+    CTE_I           shift and go to state 42
+    CTE_F           shift and go to state 43
+    CTE_CH          shift and go to state 44
+
+    expresion                      shift and go to state 32
+    array                          shift and go to state 33
+    exp                            shift and go to state 34
+    termino                        shift and go to state 36
+    factor                         shift and go to state 37
+    var_cte                        shift and go to state 40
+
+state 25
+
+    (44) condicion -> IF LPAREN . expresion RPAREN THEN bloque condicion1
+    (18) expresion -> . exp
+    (19) expresion -> . exp relop exp
+    (20) expresion -> . exp relop exp AND expresion
+    (21) expresion -> . exp relop exp OR expresion
+    (28) exp -> . termino
+    (29) exp -> . termino exp1
+    (32) termino -> . factor
+    (33) termino -> . factor termino1
+    (36) factor -> . LPAREN expresion RPAREN
+    (37) factor -> . PLUS var_cte
+    (38) factor -> . MINUS var_cte
+    (39) factor -> . var_cte
+    (40) var_cte -> . ID
+    (41) var_cte -> . CTE_I
+    (42) var_cte -> . CTE_F
+    (43) var_cte -> . CTE_CH
+
+    LPAREN          shift and go to state 38
+    PLUS            shift and go to state 39
+    MINUS           shift and go to state 41
+    ID              shift and go to state 31
+    CTE_I           shift and go to state 42
+    CTE_F           shift and go to state 43
+    CTE_CH          shift and go to state 44
+
+    expresion                      shift and go to state 45
+    exp                            shift and go to state 34
+    termino                        shift and go to state 36
+    factor                         shift and go to state 37
+    var_cte                        shift and go to state 40
+
+state 26
+
+    (47) lectura -> INPUT LPAREN . ID RPAREN SEMICOLON
+
+    ID              shift and go to state 46
+
+
+state 27
+
+    (48) escritura -> OUTPUT LPAREN . exp RPAREN SEMICOLON
+    (28) exp -> . termino
+    (29) exp -> . termino exp1
+    (32) termino -> . factor
+    (33) termino -> . factor termino1
+    (36) factor -> . LPAREN expresion RPAREN
+    (37) factor -> . PLUS var_cte
+    (38) factor -> . MINUS var_cte
+    (39) factor -> . var_cte
+    (40) var_cte -> . ID
+    (41) var_cte -> . CTE_I
+    (42) var_cte -> . CTE_F
+    (43) var_cte -> . CTE_CH
+
+    LPAREN          shift and go to state 38
+    PLUS            shift and go to state 39
+    MINUS           shift and go to state 41
+    ID              shift and go to state 31
+    CTE_I           shift and go to state 42
+    CTE_F           shift and go to state 43
+    CTE_CH          shift and go to state 44
+
+    exp                            shift and go to state 47
+    termino                        shift and go to state 36
+    factor                         shift and go to state 37
+    var_cte                        shift and go to state 40
+
+state 28
+
+    (52) loop -> LOOP LPAREN . expresion RPAREN THEN bloque SEMICOLON
+    (18) expresion -> . exp
+    (19) expresion -> . exp relop exp
+    (20) expresion -> . exp relop exp AND expresion
+    (21) expresion -> . exp relop exp OR expresion
+    (28) exp -> . termino
+    (29) exp -> . termino exp1
+    (32) termino -> . factor
+    (33) termino -> . factor termino1
+    (36) factor -> . LPAREN expresion RPAREN
+    (37) factor -> . PLUS var_cte
+    (38) factor -> . MINUS var_cte
+    (39) factor -> . var_cte
+    (40) var_cte -> . ID
+    (41) var_cte -> . CTE_I
+    (42) var_cte -> . CTE_F
+    (43) var_cte -> . CTE_CH
+
+    LPAREN          shift and go to state 38
+    PLUS            shift and go to state 39
+    MINUS           shift and go to state 41
+    ID              shift and go to state 31
+    CTE_I           shift and go to state 42
+    CTE_F           shift and go to state 43
+    CTE_CH          shift and go to state 44
+
+    expresion                      shift and go to state 48
+    exp                            shift and go to state 34
+    termino                        shift and go to state 36
+    factor                         shift and go to state 37
+    var_cte                        shift and go to state 40
+
+state 29
+
+    (4) vars -> tipo vars1 SEMICOLON .
+    (5) vars -> tipo vars1 SEMICOLON . vars
+    (4) vars -> . tipo vars1 SEMICOLON
+    (5) vars -> . tipo vars1 SEMICOLON vars
+    (8) tipo -> . INT
+    (9) tipo -> . FLOAT
+    (10) tipo -> . CHAR
+
+    ID              reduce using rule 4 (vars -> tipo vars1 SEMICOLON .)
+    IF              reduce using rule 4 (vars -> tipo vars1 SEMICOLON .)
+    INPUT           reduce using rule 4 (vars -> tipo vars1 SEMICOLON .)
+    OUTPUT          reduce using rule 4 (vars -> tipo vars1 SEMICOLON .)
+    LOOP            reduce using rule 4 (vars -> tipo vars1 SEMICOLON .)
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    CHAR            shift and go to state 7
+
+    tipo                           shift and go to state 4
+    vars                           shift and go to state 49
+
+state 30
+
+    (7) vars1 -> ID COMMA . vars1
+    (6) vars1 -> . ID
+    (7) vars1 -> . ID COMMA vars1
+
+    ID              shift and go to state 21
+
+    vars1                          shift and go to state 50
+
+state 31
+
+    (40) var_cte -> ID .
+
+    MULT            reduce using rule 40 (var_cte -> ID .)
+    DIV             reduce using rule 40 (var_cte -> ID .)
+    PLUS            reduce using rule 40 (var_cte -> ID .)
+    MINUS           reduce using rule 40 (var_cte -> ID .)
+    GT              reduce using rule 40 (var_cte -> ID .)
+    LT              reduce using rule 40 (var_cte -> ID .)
+    GTE             reduce using rule 40 (var_cte -> ID .)
+    LTE             reduce using rule 40 (var_cte -> ID .)
+    DOUBLEEQUAL     reduce using rule 40 (var_cte -> ID .)
+    NE              reduce using rule 40 (var_cte -> ID .)
+    SEMICOLON       reduce using rule 40 (var_cte -> ID .)
+    RPAREN          reduce using rule 40 (var_cte -> ID .)
+    COMMA           reduce using rule 40 (var_cte -> ID .)
+    RCORCH          reduce using rule 40 (var_cte -> ID .)
+    AND             reduce using rule 40 (var_cte -> ID .)
+    OR              reduce using rule 40 (var_cte -> ID .)
+
+
+state 32
+
+    (16) asignacion -> ID EQUAL expresion . SEMICOLON
+
+    SEMICOLON       shift and go to state 51
+
+
+state 33
+
+    (17) asignacion -> ID EQUAL array . SEMICOLON
+
+    SEMICOLON       shift and go to state 52
+
+
+state 34
+
+    (18) expresion -> exp .
+    (19) expresion -> exp . relop exp
+    (20) expresion -> exp . relop exp AND expresion
+    (21) expresion -> exp . relop exp OR expresion
+    (22) relop -> . GT
+    (23) relop -> . LT
+    (24) relop -> . GTE
+    (25) relop -> . LTE
+    (26) relop -> . DOUBLEEQUAL
+    (27) relop -> . NE
+
+    SEMICOLON       reduce using rule 18 (expresion -> exp .)
+    RPAREN          reduce using rule 18 (expresion -> exp .)
+    GT              shift and go to state 54
+    LT              shift and go to state 55
+    GTE             shift and go to state 56
+    LTE             shift and go to state 57
+    DOUBLEEQUAL     shift and go to state 58
+    NE              shift and go to state 59
+
+    relop                          shift and go to state 53
+
+state 35
+
+    (49) array -> LCORCH . array1 RCORCH
+    (50) array1 -> . exp
+    (51) array1 -> . exp COMMA array1
+    (28) exp -> . termino
+    (29) exp -> . termino exp1
+    (32) termino -> . factor
+    (33) termino -> . factor termino1
+    (36) factor -> . LPAREN expresion RPAREN
+    (37) factor -> . PLUS var_cte
+    (38) factor -> . MINUS var_cte
+    (39) factor -> . var_cte
+    (40) var_cte -> . ID
+    (41) var_cte -> . CTE_I
+    (42) var_cte -> . CTE_F
+    (43) var_cte -> . CTE_CH
+
+    LPAREN          shift and go to state 38
+    PLUS            shift and go to state 39
+    MINUS           shift and go to state 41
+    ID              shift and go to state 31
+    CTE_I           shift and go to state 42
+    CTE_F           shift and go to state 43
+    CTE_CH          shift and go to state 44
+
+    array1                         shift and go to state 60
+    exp                            shift and go to state 61
+    termino                        shift and go to state 36
+    factor                         shift and go to state 37
+    var_cte                        shift and go to state 40
+
+state 36
+
+    (28) exp -> termino .
+    (29) exp -> termino . exp1
+    (30) exp1 -> . PLUS exp
+    (31) exp1 -> . MINUS exp
+
+    GT              reduce using rule 28 (exp -> termino .)
+    LT              reduce using rule 28 (exp -> termino .)
+    GTE             reduce using rule 28 (exp -> termino .)
+    LTE             reduce using rule 28 (exp -> termino .)
+    DOUBLEEQUAL     reduce using rule 28 (exp -> termino .)
+    NE              reduce using rule 28 (exp -> termino .)
+    SEMICOLON       reduce using rule 28 (exp -> termino .)
+    RPAREN          reduce using rule 28 (exp -> termino .)
+    COMMA           reduce using rule 28 (exp -> termino .)
+    RCORCH          reduce using rule 28 (exp -> termino .)
+    AND             reduce using rule 28 (exp -> termino .)
+    OR              reduce using rule 28 (exp -> termino .)
+    PLUS            shift and go to state 63
+    MINUS           shift and go to state 64
+
+    exp1                           shift and go to state 62
+
+state 37
+
+    (32) termino -> factor .
+    (33) termino -> factor . termino1
+    (34) termino1 -> . MULT termino
+    (35) termino1 -> . DIV termino
+
+    PLUS            reduce using rule 32 (termino -> factor .)
+    MINUS           reduce using rule 32 (termino -> factor .)
+    GT              reduce using rule 32 (termino -> factor .)
+    LT              reduce using rule 32 (termino -> factor .)
+    GTE             reduce using rule 32 (termino -> factor .)
+    LTE             reduce using rule 32 (termino -> factor .)
+    DOUBLEEQUAL     reduce using rule 32 (termino -> factor .)
+    NE              reduce using rule 32 (termino -> factor .)
+    SEMICOLON       reduce using rule 32 (termino -> factor .)
+    RPAREN          reduce using rule 32 (termino -> factor .)
+    COMMA           reduce using rule 32 (termino -> factor .)
+    RCORCH          reduce using rule 32 (termino -> factor .)
+    AND             reduce using rule 32 (termino -> factor .)
+    OR              reduce using rule 32 (termino -> factor .)
+    MULT            shift and go to state 66
+    DIV             shift and go to state 67
+
+    termino1                       shift and go to state 65
+
+state 38
+
+    (36) factor -> LPAREN . expresion RPAREN
+    (18) expresion -> . exp
+    (19) expresion -> . exp relop exp
+    (20) expresion -> . exp relop exp AND expresion
+    (21) expresion -> . exp relop exp OR expresion
+    (28) exp -> . termino
+    (29) exp -> . termino exp1
+    (32) termino -> . factor
+    (33) termino -> . factor termino1
+    (36) factor -> . LPAREN expresion RPAREN
+    (37) factor -> . PLUS var_cte
+    (38) factor -> . MINUS var_cte
+    (39) factor -> . var_cte
+    (40) var_cte -> . ID
+    (41) var_cte -> . CTE_I
+    (42) var_cte -> . CTE_F
+    (43) var_cte -> . CTE_CH
+
+    LPAREN          shift and go to state 38
+    PLUS            shift and go to state 39
+    MINUS           shift and go to state 41
+    ID              shift and go to state 31
+    CTE_I           shift and go to state 42
+    CTE_F           shift and go to state 43
+    CTE_CH          shift and go to state 44
+
+    expresion                      shift and go to state 68
+    exp                            shift and go to state 34
+    termino                        shift and go to state 36
+    factor                         shift and go to state 37
+    var_cte                        shift and go to state 40
+
+state 39
+
+    (37) factor -> PLUS . var_cte
+    (40) var_cte -> . ID
+    (41) var_cte -> . CTE_I
+    (42) var_cte -> . CTE_F
+    (43) var_cte -> . CTE_CH
+
+    ID              shift and go to state 31
+    CTE_I           shift and go to state 42
+    CTE_F           shift and go to state 43
+    CTE_CH          shift and go to state 44
+
+    var_cte                        shift and go to state 69
+
+state 40
+
+    (39) factor -> var_cte .
+
+    MULT            reduce using rule 39 (factor -> var_cte .)
+    DIV             reduce using rule 39 (factor -> var_cte .)
+    PLUS            reduce using rule 39 (factor -> var_cte .)
+    MINUS           reduce using rule 39 (factor -> var_cte .)
+    GT              reduce using rule 39 (factor -> var_cte .)
+    LT              reduce using rule 39 (factor -> var_cte .)
+    GTE             reduce using rule 39 (factor -> var_cte .)
+    LTE             reduce using rule 39 (factor -> var_cte .)
+    DOUBLEEQUAL     reduce using rule 39 (factor -> var_cte .)
+    NE              reduce using rule 39 (factor -> var_cte .)
+    SEMICOLON       reduce using rule 39 (factor -> var_cte .)
+    RPAREN          reduce using rule 39 (factor -> var_cte .)
+    COMMA           reduce using rule 39 (factor -> var_cte .)
+    RCORCH          reduce using rule 39 (factor -> var_cte .)
+    AND             reduce using rule 39 (factor -> var_cte .)
+    OR              reduce using rule 39 (factor -> var_cte .)
+
+
+state 41
+
+    (38) factor -> MINUS . var_cte
+    (40) var_cte -> . ID
+    (41) var_cte -> . CTE_I
+    (42) var_cte -> . CTE_F
+    (43) var_cte -> . CTE_CH
+
+    ID              shift and go to state 31
+    CTE_I           shift and go to state 42
+    CTE_F           shift and go to state 43
+    CTE_CH          shift and go to state 44
+
+    var_cte                        shift and go to state 70
+
+state 42
+
+    (41) var_cte -> CTE_I .
+
+    MULT            reduce using rule 41 (var_cte -> CTE_I .)
+    DIV             reduce using rule 41 (var_cte -> CTE_I .)
+    PLUS            reduce using rule 41 (var_cte -> CTE_I .)
+    MINUS           reduce using rule 41 (var_cte -> CTE_I .)
+    GT              reduce using rule 41 (var_cte -> CTE_I .)
+    LT              reduce using rule 41 (var_cte -> CTE_I .)
+    GTE             reduce using rule 41 (var_cte -> CTE_I .)
+    LTE             reduce using rule 41 (var_cte -> CTE_I .)
+    DOUBLEEQUAL     reduce using rule 41 (var_cte -> CTE_I .)
+    NE              reduce using rule 41 (var_cte -> CTE_I .)
+    SEMICOLON       reduce using rule 41 (var_cte -> CTE_I .)
+    RPAREN          reduce using rule 41 (var_cte -> CTE_I .)
+    COMMA           reduce using rule 41 (var_cte -> CTE_I .)
+    RCORCH          reduce using rule 41 (var_cte -> CTE_I .)
+    AND             reduce using rule 41 (var_cte -> CTE_I .)
+    OR              reduce using rule 41 (var_cte -> CTE_I .)
+
+
+state 43
+
+    (42) var_cte -> CTE_F .
+
+    MULT            reduce using rule 42 (var_cte -> CTE_F .)
+    DIV             reduce using rule 42 (var_cte -> CTE_F .)
+    PLUS            reduce using rule 42 (var_cte -> CTE_F .)
+    MINUS           reduce using rule 42 (var_cte -> CTE_F .)
+    GT              reduce using rule 42 (var_cte -> CTE_F .)
+    LT              reduce using rule 42 (var_cte -> CTE_F .)
+    GTE             reduce using rule 42 (var_cte -> CTE_F .)
+    LTE             reduce using rule 42 (var_cte -> CTE_F .)
+    DOUBLEEQUAL     reduce using rule 42 (var_cte -> CTE_F .)
+    NE              reduce using rule 42 (var_cte -> CTE_F .)
+    SEMICOLON       reduce using rule 42 (var_cte -> CTE_F .)
+    RPAREN          reduce using rule 42 (var_cte -> CTE_F .)
+    COMMA           reduce using rule 42 (var_cte -> CTE_F .)
+    RCORCH          reduce using rule 42 (var_cte -> CTE_F .)
+    AND             reduce using rule 42 (var_cte -> CTE_F .)
+    OR              reduce using rule 42 (var_cte -> CTE_F .)
+
+
+state 44
+
+    (43) var_cte -> CTE_CH .
+
+    MULT            reduce using rule 43 (var_cte -> CTE_CH .)
+    DIV             reduce using rule 43 (var_cte -> CTE_CH .)
+    PLUS            reduce using rule 43 (var_cte -> CTE_CH .)
+    MINUS           reduce using rule 43 (var_cte -> CTE_CH .)
+    GT              reduce using rule 43 (var_cte -> CTE_CH .)
+    LT              reduce using rule 43 (var_cte -> CTE_CH .)
+    GTE             reduce using rule 43 (var_cte -> CTE_CH .)
+    LTE             reduce using rule 43 (var_cte -> CTE_CH .)
+    DOUBLEEQUAL     reduce using rule 43 (var_cte -> CTE_CH .)
+    NE              reduce using rule 43 (var_cte -> CTE_CH .)
+    SEMICOLON       reduce using rule 43 (var_cte -> CTE_CH .)
+    RPAREN          reduce using rule 43 (var_cte -> CTE_CH .)
+    COMMA           reduce using rule 43 (var_cte -> CTE_CH .)
+    RCORCH          reduce using rule 43 (var_cte -> CTE_CH .)
+    AND             reduce using rule 43 (var_cte -> CTE_CH .)
+    OR              reduce using rule 43 (var_cte -> CTE_CH .)
+
+
+state 45
+
+    (44) condicion -> IF LPAREN expresion . RPAREN THEN bloque condicion1
+
+    RPAREN          shift and go to state 71
+
+
+state 46
+
+    (47) lectura -> INPUT LPAREN ID . RPAREN SEMICOLON
+
+    RPAREN          shift and go to state 72
+
+
+state 47
+
+    (48) escritura -> OUTPUT LPAREN exp . RPAREN SEMICOLON
+
+    RPAREN          shift and go to state 73
+
+
+state 48
+
+    (52) loop -> LOOP LPAREN expresion . RPAREN THEN bloque SEMICOLON
+
+    RPAREN          shift and go to state 74
+
+
+state 49
+
+    (5) vars -> tipo vars1 SEMICOLON vars .
+
+    ID              reduce using rule 5 (vars -> tipo vars1 SEMICOLON vars .)
+    IF              reduce using rule 5 (vars -> tipo vars1 SEMICOLON vars .)
+    INPUT           reduce using rule 5 (vars -> tipo vars1 SEMICOLON vars .)
+    OUTPUT          reduce using rule 5 (vars -> tipo vars1 SEMICOLON vars .)
+    LOOP            reduce using rule 5 (vars -> tipo vars1 SEMICOLON vars .)
+
+
+state 50
+
+    (7) vars1 -> ID COMMA vars1 .
+
+    SEMICOLON       reduce using rule 7 (vars1 -> ID COMMA vars1 .)
+
+
+state 51
+
+    (16) asignacion -> ID EQUAL expresion SEMICOLON .
+
+    ID              reduce using rule 16 (asignacion -> ID EQUAL expresion SEMICOLON .)
+    IF              reduce using rule 16 (asignacion -> ID EQUAL expresion SEMICOLON .)
+    INPUT           reduce using rule 16 (asignacion -> ID EQUAL expresion SEMICOLON .)
+    OUTPUT          reduce using rule 16 (asignacion -> ID EQUAL expresion SEMICOLON .)
+    LOOP            reduce using rule 16 (asignacion -> ID EQUAL expresion SEMICOLON .)
+    END             reduce using rule 16 (asignacion -> ID EQUAL expresion SEMICOLON .)
+    SEMICOLON       reduce using rule 16 (asignacion -> ID EQUAL expresion SEMICOLON .)
+    ELSE            reduce using rule 16 (asignacion -> ID EQUAL expresion SEMICOLON .)
+
+
+state 52
+
+    (17) asignacion -> ID EQUAL array SEMICOLON .
+
+    ID              reduce using rule 17 (asignacion -> ID EQUAL array SEMICOLON .)
+    IF              reduce using rule 17 (asignacion -> ID EQUAL array SEMICOLON .)
+    INPUT           reduce using rule 17 (asignacion -> ID EQUAL array SEMICOLON .)
+    OUTPUT          reduce using rule 17 (asignacion -> ID EQUAL array SEMICOLON .)
+    LOOP            reduce using rule 17 (asignacion -> ID EQUAL array SEMICOLON .)
+    END             reduce using rule 17 (asignacion -> ID EQUAL array SEMICOLON .)
+    SEMICOLON       reduce using rule 17 (asignacion -> ID EQUAL array SEMICOLON .)
+    ELSE            reduce using rule 17 (asignacion -> ID EQUAL array SEMICOLON .)
+
+
+state 53
+
+    (19) expresion -> exp relop . exp
+    (20) expresion -> exp relop . exp AND expresion
+    (21) expresion -> exp relop . exp OR expresion
+    (28) exp -> . termino
+    (29) exp -> . termino exp1
+    (32) termino -> . factor
+    (33) termino -> . factor termino1
+    (36) factor -> . LPAREN expresion RPAREN
+    (37) factor -> . PLUS var_cte
+    (38) factor -> . MINUS var_cte
+    (39) factor -> . var_cte
+    (40) var_cte -> . ID
+    (41) var_cte -> . CTE_I
+    (42) var_cte -> . CTE_F
+    (43) var_cte -> . CTE_CH
+
+    LPAREN          shift and go to state 38
+    PLUS            shift and go to state 39
+    MINUS           shift and go to state 41
+    ID              shift and go to state 31
+    CTE_I           shift and go to state 42
+    CTE_F           shift and go to state 43
+    CTE_CH          shift and go to state 44
+
+    exp                            shift and go to state 75
+    termino                        shift and go to state 36
+    factor                         shift and go to state 37
+    var_cte                        shift and go to state 40
+
+state 54
+
+    (22) relop -> GT .
+
+    LPAREN          reduce using rule 22 (relop -> GT .)
+    PLUS            reduce using rule 22 (relop -> GT .)
+    MINUS           reduce using rule 22 (relop -> GT .)
+    ID              reduce using rule 22 (relop -> GT .)
+    CTE_I           reduce using rule 22 (relop -> GT .)
+    CTE_F           reduce using rule 22 (relop -> GT .)
+    CTE_CH          reduce using rule 22 (relop -> GT .)
+
+
+state 55
+
+    (23) relop -> LT .
+
+    LPAREN          reduce using rule 23 (relop -> LT .)
+    PLUS            reduce using rule 23 (relop -> LT .)
+    MINUS           reduce using rule 23 (relop -> LT .)
+    ID              reduce using rule 23 (relop -> LT .)
+    CTE_I           reduce using rule 23 (relop -> LT .)
+    CTE_F           reduce using rule 23 (relop -> LT .)
+    CTE_CH          reduce using rule 23 (relop -> LT .)
+
+
+state 56
+
+    (24) relop -> GTE .
+
+    LPAREN          reduce using rule 24 (relop -> GTE .)
+    PLUS            reduce using rule 24 (relop -> GTE .)
+    MINUS           reduce using rule 24 (relop -> GTE .)
+    ID              reduce using rule 24 (relop -> GTE .)
+    CTE_I           reduce using rule 24 (relop -> GTE .)
+    CTE_F           reduce using rule 24 (relop -> GTE .)
+    CTE_CH          reduce using rule 24 (relop -> GTE .)
+
+
+state 57
+
+    (25) relop -> LTE .
+
+    LPAREN          reduce using rule 25 (relop -> LTE .)
+    PLUS            reduce using rule 25 (relop -> LTE .)
+    MINUS           reduce using rule 25 (relop -> LTE .)
+    ID              reduce using rule 25 (relop -> LTE .)
+    CTE_I           reduce using rule 25 (relop -> LTE .)
+    CTE_F           reduce using rule 25 (relop -> LTE .)
+    CTE_CH          reduce using rule 25 (relop -> LTE .)
+
+
+state 58
+
+    (26) relop -> DOUBLEEQUAL .
+
+    LPAREN          reduce using rule 26 (relop -> DOUBLEEQUAL .)
+    PLUS            reduce using rule 26 (relop -> DOUBLEEQUAL .)
+    MINUS           reduce using rule 26 (relop -> DOUBLEEQUAL .)
+    ID              reduce using rule 26 (relop -> DOUBLEEQUAL .)
+    CTE_I           reduce using rule 26 (relop -> DOUBLEEQUAL .)
+    CTE_F           reduce using rule 26 (relop -> DOUBLEEQUAL .)
+    CTE_CH          reduce using rule 26 (relop -> DOUBLEEQUAL .)
+
+
+state 59
+
+    (27) relop -> NE .
+
+    LPAREN          reduce using rule 27 (relop -> NE .)
+    PLUS            reduce using rule 27 (relop -> NE .)
+    MINUS           reduce using rule 27 (relop -> NE .)
+    ID              reduce using rule 27 (relop -> NE .)
+    CTE_I           reduce using rule 27 (relop -> NE .)
+    CTE_F           reduce using rule 27 (relop -> NE .)
+    CTE_CH          reduce using rule 27 (relop -> NE .)
+
+
+state 60
+
+    (49) array -> LCORCH array1 . RCORCH
+
+    RCORCH          shift and go to state 76
+
+
+state 61
+
+    (50) array1 -> exp .
+    (51) array1 -> exp . COMMA array1
+
+    RCORCH          reduce using rule 50 (array1 -> exp .)
+    COMMA           shift and go to state 77
+
+
+state 62
+
+    (29) exp -> termino exp1 .
+
+    GT              reduce using rule 29 (exp -> termino exp1 .)
+    LT              reduce using rule 29 (exp -> termino exp1 .)
+    GTE             reduce using rule 29 (exp -> termino exp1 .)
+    LTE             reduce using rule 29 (exp -> termino exp1 .)
+    DOUBLEEQUAL     reduce using rule 29 (exp -> termino exp1 .)
+    NE              reduce using rule 29 (exp -> termino exp1 .)
+    SEMICOLON       reduce using rule 29 (exp -> termino exp1 .)
+    RPAREN          reduce using rule 29 (exp -> termino exp1 .)
+    COMMA           reduce using rule 29 (exp -> termino exp1 .)
+    RCORCH          reduce using rule 29 (exp -> termino exp1 .)
+    AND             reduce using rule 29 (exp -> termino exp1 .)
+    OR              reduce using rule 29 (exp -> termino exp1 .)
+
+
+state 63
+
+    (30) exp1 -> PLUS . exp
+    (28) exp -> . termino
+    (29) exp -> . termino exp1
+    (32) termino -> . factor
+    (33) termino -> . factor termino1
+    (36) factor -> . LPAREN expresion RPAREN
+    (37) factor -> . PLUS var_cte
+    (38) factor -> . MINUS var_cte
+    (39) factor -> . var_cte
+    (40) var_cte -> . ID
+    (41) var_cte -> . CTE_I
+    (42) var_cte -> . CTE_F
+    (43) var_cte -> . CTE_CH
+
+    LPAREN          shift and go to state 38
+    PLUS            shift and go to state 39
+    MINUS           shift and go to state 41
+    ID              shift and go to state 31
+    CTE_I           shift and go to state 42
+    CTE_F           shift and go to state 43
+    CTE_CH          shift and go to state 44
+
+    exp                            shift and go to state 78
+    termino                        shift and go to state 36
+    factor                         shift and go to state 37
+    var_cte                        shift and go to state 40
+
+state 64
+
+    (31) exp1 -> MINUS . exp
+    (28) exp -> . termino
+    (29) exp -> . termino exp1
+    (32) termino -> . factor
+    (33) termino -> . factor termino1
+    (36) factor -> . LPAREN expresion RPAREN
+    (37) factor -> . PLUS var_cte
+    (38) factor -> . MINUS var_cte
+    (39) factor -> . var_cte
+    (40) var_cte -> . ID
+    (41) var_cte -> . CTE_I
+    (42) var_cte -> . CTE_F
+    (43) var_cte -> . CTE_CH
+
+    LPAREN          shift and go to state 38
+    PLUS            shift and go to state 39
+    MINUS           shift and go to state 41
+    ID              shift and go to state 31
+    CTE_I           shift and go to state 42
+    CTE_F           shift and go to state 43
+    CTE_CH          shift and go to state 44
+
+    exp                            shift and go to state 79
+    termino                        shift and go to state 36
+    factor                         shift and go to state 37
+    var_cte                        shift and go to state 40
+
+state 65
+
+    (33) termino -> factor termino1 .
+
+    PLUS            reduce using rule 33 (termino -> factor termino1 .)
+    MINUS           reduce using rule 33 (termino -> factor termino1 .)
+    GT              reduce using rule 33 (termino -> factor termino1 .)
+    LT              reduce using rule 33 (termino -> factor termino1 .)
+    GTE             reduce using rule 33 (termino -> factor termino1 .)
+    LTE             reduce using rule 33 (termino -> factor termino1 .)
+    DOUBLEEQUAL     reduce using rule 33 (termino -> factor termino1 .)
+    NE              reduce using rule 33 (termino -> factor termino1 .)
+    SEMICOLON       reduce using rule 33 (termino -> factor termino1 .)
+    RPAREN          reduce using rule 33 (termino -> factor termino1 .)
+    COMMA           reduce using rule 33 (termino -> factor termino1 .)
+    RCORCH          reduce using rule 33 (termino -> factor termino1 .)
+    AND             reduce using rule 33 (termino -> factor termino1 .)
+    OR              reduce using rule 33 (termino -> factor termino1 .)
+
+
+state 66
+
+    (34) termino1 -> MULT . termino
+    (32) termino -> . factor
+    (33) termino -> . factor termino1
+    (36) factor -> . LPAREN expresion RPAREN
+    (37) factor -> . PLUS var_cte
+    (38) factor -> . MINUS var_cte
+    (39) factor -> . var_cte
+    (40) var_cte -> . ID
+    (41) var_cte -> . CTE_I
+    (42) var_cte -> . CTE_F
+    (43) var_cte -> . CTE_CH
+
+    LPAREN          shift and go to state 38
+    PLUS            shift and go to state 39
+    MINUS           shift and go to state 41
+    ID              shift and go to state 31
+    CTE_I           shift and go to state 42
+    CTE_F           shift and go to state 43
+    CTE_CH          shift and go to state 44
+
+    termino                        shift and go to state 80
+    factor                         shift and go to state 37
+    var_cte                        shift and go to state 40
+
+state 67
+
+    (35) termino1 -> DIV . termino
+    (32) termino -> . factor
+    (33) termino -> . factor termino1
+    (36) factor -> . LPAREN expresion RPAREN
+    (37) factor -> . PLUS var_cte
+    (38) factor -> . MINUS var_cte
+    (39) factor -> . var_cte
+    (40) var_cte -> . ID
+    (41) var_cte -> . CTE_I
+    (42) var_cte -> . CTE_F
+    (43) var_cte -> . CTE_CH
+
+    LPAREN          shift and go to state 38
+    PLUS            shift and go to state 39
+    MINUS           shift and go to state 41
+    ID              shift and go to state 31
+    CTE_I           shift and go to state 42
+    CTE_F           shift and go to state 43
+    CTE_CH          shift and go to state 44
+
+    termino                        shift and go to state 81
+    factor                         shift and go to state 37
+    var_cte                        shift and go to state 40
+
+state 68
+
+    (36) factor -> LPAREN expresion . RPAREN
+
+    RPAREN          shift and go to state 82
+
+
+state 69
+
+    (37) factor -> PLUS var_cte .
+
+    MULT            reduce using rule 37 (factor -> PLUS var_cte .)
+    DIV             reduce using rule 37 (factor -> PLUS var_cte .)
+    PLUS            reduce using rule 37 (factor -> PLUS var_cte .)
+    MINUS           reduce using rule 37 (factor -> PLUS var_cte .)
+    GT              reduce using rule 37 (factor -> PLUS var_cte .)
+    LT              reduce using rule 37 (factor -> PLUS var_cte .)
+    GTE             reduce using rule 37 (factor -> PLUS var_cte .)
+    LTE             reduce using rule 37 (factor -> PLUS var_cte .)
+    DOUBLEEQUAL     reduce using rule 37 (factor -> PLUS var_cte .)
+    NE              reduce using rule 37 (factor -> PLUS var_cte .)
+    SEMICOLON       reduce using rule 37 (factor -> PLUS var_cte .)
+    RPAREN          reduce using rule 37 (factor -> PLUS var_cte .)
+    COMMA           reduce using rule 37 (factor -> PLUS var_cte .)
+    RCORCH          reduce using rule 37 (factor -> PLUS var_cte .)
+    AND             reduce using rule 37 (factor -> PLUS var_cte .)
+    OR              reduce using rule 37 (factor -> PLUS var_cte .)
+
+
+state 70
+
+    (38) factor -> MINUS var_cte .
+
+    MULT            reduce using rule 38 (factor -> MINUS var_cte .)
+    DIV             reduce using rule 38 (factor -> MINUS var_cte .)
+    PLUS            reduce using rule 38 (factor -> MINUS var_cte .)
+    MINUS           reduce using rule 38 (factor -> MINUS var_cte .)
+    GT              reduce using rule 38 (factor -> MINUS var_cte .)
+    LT              reduce using rule 38 (factor -> MINUS var_cte .)
+    GTE             reduce using rule 38 (factor -> MINUS var_cte .)
+    LTE             reduce using rule 38 (factor -> MINUS var_cte .)
+    DOUBLEEQUAL     reduce using rule 38 (factor -> MINUS var_cte .)
+    NE              reduce using rule 38 (factor -> MINUS var_cte .)
+    SEMICOLON       reduce using rule 38 (factor -> MINUS var_cte .)
+    RPAREN          reduce using rule 38 (factor -> MINUS var_cte .)
+    COMMA           reduce using rule 38 (factor -> MINUS var_cte .)
+    RCORCH          reduce using rule 38 (factor -> MINUS var_cte .)
+    AND             reduce using rule 38 (factor -> MINUS var_cte .)
+    OR              reduce using rule 38 (factor -> MINUS var_cte .)
+
+
+state 71
+
+    (44) condicion -> IF LPAREN expresion RPAREN . THEN bloque condicion1
+
+    THEN            shift and go to state 83
+
+
+state 72
+
+    (47) lectura -> INPUT LPAREN ID RPAREN . SEMICOLON
+
+    SEMICOLON       shift and go to state 84
+
+
+state 73
+
+    (48) escritura -> OUTPUT LPAREN exp RPAREN . SEMICOLON
+
+    SEMICOLON       shift and go to state 85
+
+
+state 74
+
+    (52) loop -> LOOP LPAREN expresion RPAREN . THEN bloque SEMICOLON
+
+    THEN            shift and go to state 86
+
+
+state 75
+
+    (19) expresion -> exp relop exp .
+    (20) expresion -> exp relop exp . AND expresion
+    (21) expresion -> exp relop exp . OR expresion
+
+    SEMICOLON       reduce using rule 19 (expresion -> exp relop exp .)
+    RPAREN          reduce using rule 19 (expresion -> exp relop exp .)
+    AND             shift and go to state 87
+    OR              shift and go to state 88
+
+
+state 76
+
+    (49) array -> LCORCH array1 RCORCH .
+
+    SEMICOLON       reduce using rule 49 (array -> LCORCH array1 RCORCH .)
+
+
+state 77
+
+    (51) array1 -> exp COMMA . array1
+    (50) array1 -> . exp
+    (51) array1 -> . exp COMMA array1
+    (28) exp -> . termino
+    (29) exp -> . termino exp1
+    (32) termino -> . factor
+    (33) termino -> . factor termino1
+    (36) factor -> . LPAREN expresion RPAREN
+    (37) factor -> . PLUS var_cte
+    (38) factor -> . MINUS var_cte
+    (39) factor -> . var_cte
+    (40) var_cte -> . ID
+    (41) var_cte -> . CTE_I
+    (42) var_cte -> . CTE_F
+    (43) var_cte -> . CTE_CH
+
+    LPAREN          shift and go to state 38
+    PLUS            shift and go to state 39
+    MINUS           shift and go to state 41
+    ID              shift and go to state 31
+    CTE_I           shift and go to state 42
+    CTE_F           shift and go to state 43
+    CTE_CH          shift and go to state 44
+
+    exp                            shift and go to state 61
+    array1                         shift and go to state 89
+    termino                        shift and go to state 36
+    factor                         shift and go to state 37
+    var_cte                        shift and go to state 40
+
+state 78
+
+    (30) exp1 -> PLUS exp .
+
+    GT              reduce using rule 30 (exp1 -> PLUS exp .)
+    LT              reduce using rule 30 (exp1 -> PLUS exp .)
+    GTE             reduce using rule 30 (exp1 -> PLUS exp .)
+    LTE             reduce using rule 30 (exp1 -> PLUS exp .)
+    DOUBLEEQUAL     reduce using rule 30 (exp1 -> PLUS exp .)
+    NE              reduce using rule 30 (exp1 -> PLUS exp .)
+    SEMICOLON       reduce using rule 30 (exp1 -> PLUS exp .)
+    RPAREN          reduce using rule 30 (exp1 -> PLUS exp .)
+    COMMA           reduce using rule 30 (exp1 -> PLUS exp .)
+    RCORCH          reduce using rule 30 (exp1 -> PLUS exp .)
+    AND             reduce using rule 30 (exp1 -> PLUS exp .)
+    OR              reduce using rule 30 (exp1 -> PLUS exp .)
+
+
+state 79
+
+    (31) exp1 -> MINUS exp .
+
+    GT              reduce using rule 31 (exp1 -> MINUS exp .)
+    LT              reduce using rule 31 (exp1 -> MINUS exp .)
+    GTE             reduce using rule 31 (exp1 -> MINUS exp .)
+    LTE             reduce using rule 31 (exp1 -> MINUS exp .)
+    DOUBLEEQUAL     reduce using rule 31 (exp1 -> MINUS exp .)
+    NE              reduce using rule 31 (exp1 -> MINUS exp .)
+    SEMICOLON       reduce using rule 31 (exp1 -> MINUS exp .)
+    RPAREN          reduce using rule 31 (exp1 -> MINUS exp .)
+    COMMA           reduce using rule 31 (exp1 -> MINUS exp .)
+    RCORCH          reduce using rule 31 (exp1 -> MINUS exp .)
+    AND             reduce using rule 31 (exp1 -> MINUS exp .)
+    OR              reduce using rule 31 (exp1 -> MINUS exp .)
+
+
+state 80
+
+    (34) termino1 -> MULT termino .
+
+    PLUS            reduce using rule 34 (termino1 -> MULT termino .)
+    MINUS           reduce using rule 34 (termino1 -> MULT termino .)
+    GT              reduce using rule 34 (termino1 -> MULT termino .)
+    LT              reduce using rule 34 (termino1 -> MULT termino .)
+    GTE             reduce using rule 34 (termino1 -> MULT termino .)
+    LTE             reduce using rule 34 (termino1 -> MULT termino .)
+    DOUBLEEQUAL     reduce using rule 34 (termino1 -> MULT termino .)
+    NE              reduce using rule 34 (termino1 -> MULT termino .)
+    SEMICOLON       reduce using rule 34 (termino1 -> MULT termino .)
+    RPAREN          reduce using rule 34 (termino1 -> MULT termino .)
+    COMMA           reduce using rule 34 (termino1 -> MULT termino .)
+    RCORCH          reduce using rule 34 (termino1 -> MULT termino .)
+    AND             reduce using rule 34 (termino1 -> MULT termino .)
+    OR              reduce using rule 34 (termino1 -> MULT termino .)
+
+
+state 81
+
+    (35) termino1 -> DIV termino .
+
+    PLUS            reduce using rule 35 (termino1 -> DIV termino .)
+    MINUS           reduce using rule 35 (termino1 -> DIV termino .)
+    GT              reduce using rule 35 (termino1 -> DIV termino .)
+    LT              reduce using rule 35 (termino1 -> DIV termino .)
+    GTE             reduce using rule 35 (termino1 -> DIV termino .)
+    LTE             reduce using rule 35 (termino1 -> DIV termino .)
+    DOUBLEEQUAL     reduce using rule 35 (termino1 -> DIV termino .)
+    NE              reduce using rule 35 (termino1 -> DIV termino .)
+    SEMICOLON       reduce using rule 35 (termino1 -> DIV termino .)
+    RPAREN          reduce using rule 35 (termino1 -> DIV termino .)
+    COMMA           reduce using rule 35 (termino1 -> DIV termino .)
+    RCORCH          reduce using rule 35 (termino1 -> DIV termino .)
+    AND             reduce using rule 35 (termino1 -> DIV termino .)
+    OR              reduce using rule 35 (termino1 -> DIV termino .)
+
+
+state 82
+
+    (36) factor -> LPAREN expresion RPAREN .
+
+    MULT            reduce using rule 36 (factor -> LPAREN expresion RPAREN .)
+    DIV             reduce using rule 36 (factor -> LPAREN expresion RPAREN .)
+    PLUS            reduce using rule 36 (factor -> LPAREN expresion RPAREN .)
+    MINUS           reduce using rule 36 (factor -> LPAREN expresion RPAREN .)
+    GT              reduce using rule 36 (factor -> LPAREN expresion RPAREN .)
+    LT              reduce using rule 36 (factor -> LPAREN expresion RPAREN .)
+    GTE             reduce using rule 36 (factor -> LPAREN expresion RPAREN .)
+    LTE             reduce using rule 36 (factor -> LPAREN expresion RPAREN .)
+    DOUBLEEQUAL     reduce using rule 36 (factor -> LPAREN expresion RPAREN .)
+    NE              reduce using rule 36 (factor -> LPAREN expresion RPAREN .)
+    SEMICOLON       reduce using rule 36 (factor -> LPAREN expresion RPAREN .)
+    RPAREN          reduce using rule 36 (factor -> LPAREN expresion RPAREN .)
+    COMMA           reduce using rule 36 (factor -> LPAREN expresion RPAREN .)
+    RCORCH          reduce using rule 36 (factor -> LPAREN expresion RPAREN .)
+    AND             reduce using rule 36 (factor -> LPAREN expresion RPAREN .)
+    OR              reduce using rule 36 (factor -> LPAREN expresion RPAREN .)
+
+
+state 83
+
+    (44) condicion -> IF LPAREN expresion RPAREN THEN . bloque condicion1
+    (11) bloque -> . asignacion
+    (12) bloque -> . condicion
+    (13) bloque -> . lectura
+    (14) bloque -> . escritura
+    (15) bloque -> . loop
+    (16) asignacion -> . ID EQUAL expresion SEMICOLON
+    (17) asignacion -> . ID EQUAL array SEMICOLON
+    (44) condicion -> . IF LPAREN expresion RPAREN THEN bloque condicion1
+    (47) lectura -> . INPUT LPAREN ID RPAREN SEMICOLON
+    (48) escritura -> . OUTPUT LPAREN exp RPAREN SEMICOLON
+    (52) loop -> . LOOP LPAREN expresion RPAREN THEN bloque SEMICOLON
+
+    ID              shift and go to state 15
+    IF              shift and go to state 16
+    INPUT           shift and go to state 17
+    OUTPUT          shift and go to state 18
+    LOOP            shift and go to state 19
+
+    bloque                         shift and go to state 90
+    asignacion                     shift and go to state 10
+    condicion                      shift and go to state 11
+    lectura                        shift and go to state 12
+    escritura                      shift and go to state 13
+    loop                           shift and go to state 14
+
+state 84
+
+    (47) lectura -> INPUT LPAREN ID RPAREN SEMICOLON .
+
+    ID              reduce using rule 47 (lectura -> INPUT LPAREN ID RPAREN SEMICOLON .)
+    IF              reduce using rule 47 (lectura -> INPUT LPAREN ID RPAREN SEMICOLON .)
+    INPUT           reduce using rule 47 (lectura -> INPUT LPAREN ID RPAREN SEMICOLON .)
+    OUTPUT          reduce using rule 47 (lectura -> INPUT LPAREN ID RPAREN SEMICOLON .)
+    LOOP            reduce using rule 47 (lectura -> INPUT LPAREN ID RPAREN SEMICOLON .)
+    END             reduce using rule 47 (lectura -> INPUT LPAREN ID RPAREN SEMICOLON .)
+    SEMICOLON       reduce using rule 47 (lectura -> INPUT LPAREN ID RPAREN SEMICOLON .)
+    ELSE            reduce using rule 47 (lectura -> INPUT LPAREN ID RPAREN SEMICOLON .)
+
+
+state 85
+
+    (48) escritura -> OUTPUT LPAREN exp RPAREN SEMICOLON .
+
+    ID              reduce using rule 48 (escritura -> OUTPUT LPAREN exp RPAREN SEMICOLON .)
+    IF              reduce using rule 48 (escritura -> OUTPUT LPAREN exp RPAREN SEMICOLON .)
+    INPUT           reduce using rule 48 (escritura -> OUTPUT LPAREN exp RPAREN SEMICOLON .)
+    OUTPUT          reduce using rule 48 (escritura -> OUTPUT LPAREN exp RPAREN SEMICOLON .)
+    LOOP            reduce using rule 48 (escritura -> OUTPUT LPAREN exp RPAREN SEMICOLON .)
+    END             reduce using rule 48 (escritura -> OUTPUT LPAREN exp RPAREN SEMICOLON .)
+    SEMICOLON       reduce using rule 48 (escritura -> OUTPUT LPAREN exp RPAREN SEMICOLON .)
+    ELSE            reduce using rule 48 (escritura -> OUTPUT LPAREN exp RPAREN SEMICOLON .)
+
+
+state 86
+
+    (52) loop -> LOOP LPAREN expresion RPAREN THEN . bloque SEMICOLON
+    (11) bloque -> . asignacion
+    (12) bloque -> . condicion
+    (13) bloque -> . lectura
+    (14) bloque -> . escritura
+    (15) bloque -> . loop
+    (16) asignacion -> . ID EQUAL expresion SEMICOLON
+    (17) asignacion -> . ID EQUAL array SEMICOLON
+    (44) condicion -> . IF LPAREN expresion RPAREN THEN bloque condicion1
+    (47) lectura -> . INPUT LPAREN ID RPAREN SEMICOLON
+    (48) escritura -> . OUTPUT LPAREN exp RPAREN SEMICOLON
+    (52) loop -> . LOOP LPAREN expresion RPAREN THEN bloque SEMICOLON
+
+    ID              shift and go to state 15
+    IF              shift and go to state 16
+    INPUT           shift and go to state 17
+    OUTPUT          shift and go to state 18
+    LOOP            shift and go to state 19
+
+    bloque                         shift and go to state 91
+    asignacion                     shift and go to state 10
+    condicion                      shift and go to state 11
+    lectura                        shift and go to state 12
+    escritura                      shift and go to state 13
+    loop                           shift and go to state 14
+
+state 87
+
+    (20) expresion -> exp relop exp AND . expresion
+    (18) expresion -> . exp
+    (19) expresion -> . exp relop exp
+    (20) expresion -> . exp relop exp AND expresion
+    (21) expresion -> . exp relop exp OR expresion
+    (28) exp -> . termino
+    (29) exp -> . termino exp1
+    (32) termino -> . factor
+    (33) termino -> . factor termino1
+    (36) factor -> . LPAREN expresion RPAREN
+    (37) factor -> . PLUS var_cte
+    (38) factor -> . MINUS var_cte
+    (39) factor -> . var_cte
+    (40) var_cte -> . ID
+    (41) var_cte -> . CTE_I
+    (42) var_cte -> . CTE_F
+    (43) var_cte -> . CTE_CH
+
+    LPAREN          shift and go to state 38
+    PLUS            shift and go to state 39
+    MINUS           shift and go to state 41
+    ID              shift and go to state 31
+    CTE_I           shift and go to state 42
+    CTE_F           shift and go to state 43
+    CTE_CH          shift and go to state 44
+
+    exp                            shift and go to state 34
+    expresion                      shift and go to state 92
+    termino                        shift and go to state 36
+    factor                         shift and go to state 37
+    var_cte                        shift and go to state 40
+
+state 88
+
+    (21) expresion -> exp relop exp OR . expresion
+    (18) expresion -> . exp
+    (19) expresion -> . exp relop exp
+    (20) expresion -> . exp relop exp AND expresion
+    (21) expresion -> . exp relop exp OR expresion
+    (28) exp -> . termino
+    (29) exp -> . termino exp1
+    (32) termino -> . factor
+    (33) termino -> . factor termino1
+    (36) factor -> . LPAREN expresion RPAREN
+    (37) factor -> . PLUS var_cte
+    (38) factor -> . MINUS var_cte
+    (39) factor -> . var_cte
+    (40) var_cte -> . ID
+    (41) var_cte -> . CTE_I
+    (42) var_cte -> . CTE_F
+    (43) var_cte -> . CTE_CH
+
+    LPAREN          shift and go to state 38
+    PLUS            shift and go to state 39
+    MINUS           shift and go to state 41
+    ID              shift and go to state 31
+    CTE_I           shift and go to state 42
+    CTE_F           shift and go to state 43
+    CTE_CH          shift and go to state 44
+
+    exp                            shift and go to state 34
+    expresion                      shift and go to state 93
+    termino                        shift and go to state 36
+    factor                         shift and go to state 37
+    var_cte                        shift and go to state 40
+
+state 89
+
+    (51) array1 -> exp COMMA array1 .
+
+    RCORCH          reduce using rule 51 (array1 -> exp COMMA array1 .)
+
+
+state 90
+
+    (44) condicion -> IF LPAREN expresion RPAREN THEN bloque . condicion1
+    (45) condicion1 -> . SEMICOLON
+    (46) condicion1 -> . ELSE bloque SEMICOLON
+
+    SEMICOLON       shift and go to state 95
+    ELSE            shift and go to state 96
+
+    condicion1                     shift and go to state 94
+
+state 91
+
+    (52) loop -> LOOP LPAREN expresion RPAREN THEN bloque . SEMICOLON
+
+    SEMICOLON       shift and go to state 97
+
+
+state 92
+
+    (20) expresion -> exp relop exp AND expresion .
+
+    SEMICOLON       reduce using rule 20 (expresion -> exp relop exp AND expresion .)
+    RPAREN          reduce using rule 20 (expresion -> exp relop exp AND expresion .)
+
+
+state 93
+
+    (21) expresion -> exp relop exp OR expresion .
+
+    SEMICOLON       reduce using rule 21 (expresion -> exp relop exp OR expresion .)
+    RPAREN          reduce using rule 21 (expresion -> exp relop exp OR expresion .)
+
+
+state 94
+
+    (44) condicion -> IF LPAREN expresion RPAREN THEN bloque condicion1 .
+
+    ID              reduce using rule 44 (condicion -> IF LPAREN expresion RPAREN THEN bloque condicion1 .)
+    IF              reduce using rule 44 (condicion -> IF LPAREN expresion RPAREN THEN bloque condicion1 .)
+    INPUT           reduce using rule 44 (condicion -> IF LPAREN expresion RPAREN THEN bloque condicion1 .)
+    OUTPUT          reduce using rule 44 (condicion -> IF LPAREN expresion RPAREN THEN bloque condicion1 .)
+    LOOP            reduce using rule 44 (condicion -> IF LPAREN expresion RPAREN THEN bloque condicion1 .)
+    END             reduce using rule 44 (condicion -> IF LPAREN expresion RPAREN THEN bloque condicion1 .)
+    SEMICOLON       reduce using rule 44 (condicion -> IF LPAREN expresion RPAREN THEN bloque condicion1 .)
+    ELSE            reduce using rule 44 (condicion -> IF LPAREN expresion RPAREN THEN bloque condicion1 .)
+
+
+state 95
+
+    (45) condicion1 -> SEMICOLON .
+
+    ID              reduce using rule 45 (condicion1 -> SEMICOLON .)
+    IF              reduce using rule 45 (condicion1 -> SEMICOLON .)
+    INPUT           reduce using rule 45 (condicion1 -> SEMICOLON .)
+    OUTPUT          reduce using rule 45 (condicion1 -> SEMICOLON .)
+    LOOP            reduce using rule 45 (condicion1 -> SEMICOLON .)
+    END             reduce using rule 45 (condicion1 -> SEMICOLON .)
+    SEMICOLON       reduce using rule 45 (condicion1 -> SEMICOLON .)
+    ELSE            reduce using rule 45 (condicion1 -> SEMICOLON .)
+
+
+state 96
+
+    (46) condicion1 -> ELSE . bloque SEMICOLON
+    (11) bloque -> . asignacion
+    (12) bloque -> . condicion
+    (13) bloque -> . lectura
+    (14) bloque -> . escritura
+    (15) bloque -> . loop
+    (16) asignacion -> . ID EQUAL expresion SEMICOLON
+    (17) asignacion -> . ID EQUAL array SEMICOLON
+    (44) condicion -> . IF LPAREN expresion RPAREN THEN bloque condicion1
+    (47) lectura -> . INPUT LPAREN ID RPAREN SEMICOLON
+    (48) escritura -> . OUTPUT LPAREN exp RPAREN SEMICOLON
+    (52) loop -> . LOOP LPAREN expresion RPAREN THEN bloque SEMICOLON
+
+    ID              shift and go to state 15
+    IF              shift and go to state 16
+    INPUT           shift and go to state 17
+    OUTPUT          shift and go to state 18
+    LOOP            shift and go to state 19
+
+    bloque                         shift and go to state 98
+    asignacion                     shift and go to state 10
+    condicion                      shift and go to state 11
+    lectura                        shift and go to state 12
+    escritura                      shift and go to state 13
+    loop                           shift and go to state 14
+
+state 97
+
+    (52) loop -> LOOP LPAREN expresion RPAREN THEN bloque SEMICOLON .
+
+    ID              reduce using rule 52 (loop -> LOOP LPAREN expresion RPAREN THEN bloque SEMICOLON .)
+    IF              reduce using rule 52 (loop -> LOOP LPAREN expresion RPAREN THEN bloque SEMICOLON .)
+    INPUT           reduce using rule 52 (loop -> LOOP LPAREN expresion RPAREN THEN bloque SEMICOLON .)
+    OUTPUT          reduce using rule 52 (loop -> LOOP LPAREN expresion RPAREN THEN bloque SEMICOLON .)
+    LOOP            reduce using rule 52 (loop -> LOOP LPAREN expresion RPAREN THEN bloque SEMICOLON .)
+    END             reduce using rule 52 (loop -> LOOP LPAREN expresion RPAREN THEN bloque SEMICOLON .)
+    SEMICOLON       reduce using rule 52 (loop -> LOOP LPAREN expresion RPAREN THEN bloque SEMICOLON .)
+    ELSE            reduce using rule 52 (loop -> LOOP LPAREN expresion RPAREN THEN bloque SEMICOLON .)
+
+
+state 98
+
+    (46) condicion1 -> ELSE bloque . SEMICOLON
+
+    SEMICOLON       shift and go to state 99
+
+
+state 99
+
+    (46) condicion1 -> ELSE bloque SEMICOLON .
+
+    ID              reduce using rule 46 (condicion1 -> ELSE bloque SEMICOLON .)
+    IF              reduce using rule 46 (condicion1 -> ELSE bloque SEMICOLON .)
+    INPUT           reduce using rule 46 (condicion1 -> ELSE bloque SEMICOLON .)
+    OUTPUT          reduce using rule 46 (condicion1 -> ELSE bloque SEMICOLON .)
+    LOOP            reduce using rule 46 (condicion1 -> ELSE bloque SEMICOLON .)
+    END             reduce using rule 46 (condicion1 -> ELSE bloque SEMICOLON .)
+    SEMICOLON       reduce using rule 46 (condicion1 -> ELSE bloque SEMICOLON .)
+    ELSE            reduce using rule 46 (condicion1 -> ELSE bloque SEMICOLON .)
+
