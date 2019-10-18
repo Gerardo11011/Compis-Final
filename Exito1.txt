@@ -1,10 +1,5 @@
 begin
 
-  func puta(int c) {
-    int b;
-    c = 2;
-  }
-
   main {
     int a, b;
     string nombre;

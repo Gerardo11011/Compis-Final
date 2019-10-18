@@ -7,6 +7,7 @@ import sys
 # Obtener la lista de tokens del lexer.
 from lex import tokens
 import vars_table as varsTable
+import dirFunc as dirFunc
 
 # Leer archivo de prueba.
 prueba = open("Exito1.txt", "r")
@@ -20,6 +21,12 @@ def p_programa(p):
              | BEGIN programa2 MAIN LKEY vars programa3 RKEY END
              | BEGIN MAIN LKEY vars programa3 RKEY END
     '''
+    # if (len(p) == 10):
+    #     dirFunc.insert(p[4], None)
+    # elif(len(p) == 9):
+    #     dirFunc.insert(p[3], None)
+    # elif(len(p) == 8):
+    #     dirFunc.insert(p[2], None)
 
 def p_programa2(p):
     '''
@@ -44,6 +51,7 @@ def p_vars1(p):
     vars1 : ID
           | ID COMMA vars1
     '''
+    varsTable.insert(p[1], varsTable.miTipo)
 
 def p_tipo(p):
     '''
@@ -52,6 +60,7 @@ def p_tipo(p):
          | STRING
          | BOOL
     '''
+    varsTable.miTipo = p[1]
 
 def p_bloque(p):
     '''
@@ -70,6 +79,7 @@ def p_asignacion(p):
                | ID EQUAL funcion SEMICOLON
                | ID LCORCH exp RCORCH EQUAL expresion SEMICOLON
     '''
+    varsTable.update(p[1], varsTable.miValor)
 
 def p_expresion(p):
     '''expresion : exp
@@ -133,6 +143,7 @@ def p_var_cte(p):
             | TRUE
             | FALSE
     '''
+    varsTable.miValor = p[1]
 
 def p_condicion(p):
     '''
@@ -215,4 +226,4 @@ parser = yacc.yacc()
 result = parser.parse(entrada)
 print(result)
 
-# varsTable.show()
+varsTable.show()

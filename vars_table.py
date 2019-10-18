@@ -11,9 +11,9 @@ miTipo = None
 miID = None
 miValor = None
 
-# Objeto tabla
-class tabla(object):
-    """docstring for tabla."""
+# Objeto variable
+class variable(object):
+    """docstring for variable."""
     def __init__(self, id, type_data, value=None):
         self.id = str(id)
         self.type_data = str(type_data)
@@ -21,7 +21,7 @@ class tabla(object):
 
 # Funciones para modificar la tabla
 def insert(id, type_data):
-    temp = tabla(id, type_data)
+    temp = variable(id, type_data)
     if len(simbolos) >= 1 and not itFound(id):
         simbolos.append(temp)
     if len(simbolos) == 0:
@@ -49,7 +49,7 @@ def validate(dato, id):
         return True
     if temp == "<class 'int'>" and aux == 'int':
         return True
-    if temp == "<class 'str'>" and aux == 'char':
+    if temp == "<class 'str'>" and aux == 'string':
         return True
     else:
         print("ERROR: Dato no válido.")
