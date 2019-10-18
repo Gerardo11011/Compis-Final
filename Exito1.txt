@@ -1,0 +1,15 @@
+begin
+  int a;
+  int b;
+  char nombre;
+
+  a = 10;
+  b = "Oscar";
+  nombre = "Ponce";
+
+  if(a >= b) then
+    nombre = "Oscar";
+  else
+    nombre = "Chido";
+  ;
+end

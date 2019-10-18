@@ -1,0 +1,9 @@
+begin
+  int a;
+  char yo;
+  float b;
+
+  a = 10;
+  yo = "Oscar";
+  b = {2.34, 4.56, 3.75};
+end
