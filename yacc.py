@@ -37,6 +37,7 @@ def p_vars(p):
     '''
     vars : tipo vars1 SEMICOLON
          | tipo vars1 SEMICOLON vars
+
     '''
 
 def p_vars1(p):
@@ -61,6 +62,7 @@ def p_bloque(p):
            | escritura
            | loop
            | funcion
+
     '''
 
 def p_asignacion(p):
@@ -79,6 +81,7 @@ def p_expresion(p):
 def p_expresion1(p):
     '''expresion1 : relop exp
                   | empty
+
     '''
 
 def p_relop(p):
@@ -159,10 +162,12 @@ def p_array1(p):
     '''
     array1 : exp
            | exp COMMA array1
+
     '''
 
 def p_loop(p):
     '''
+
     loop : LOOP LPAREN expresion RPAREN LKEY bloque RKEY
     '''
 
@@ -214,5 +219,6 @@ print("Parsing . . . \n")
 parser = yacc.yacc()
 result = parser.parse(entrada)
 print(result)
+
 
 # varsTable.show()
