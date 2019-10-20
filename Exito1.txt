@@ -2,9 +2,11 @@ begin
 
   main {
     int a, b;
+    float c;
     string nombre, pancho;
     a = 10;
     b = 5;
+    c = 5.324;
     nombre = "Ponce";
     pancho = judas;
 
