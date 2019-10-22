@@ -1,7 +1,9 @@
-/__pycache__/
+# Don't track content of these folders
+__pycache__/
 parsetab.py
 parser.out
 
 
 *.pdf
+
 *.DS_Store

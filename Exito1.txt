@@ -1,15 +1,28 @@
 begin
-  int a;
-  int b;
-  char nombre;
 
-  a = 10;
-  b = 13;
-  nombre = "Ponce";
+int j;
 
-  if(a >= b) then
-    nombre = "Oscar";
-  else
-    nombre = "Chido";
-  ;
+func puta(int j){
+  int h;
+  j = 2;
+}
+
+  main {
+    int a, b;
+    float c;
+    string nombre, pancho;
+    a = 10;
+    b = 5;
+    c = 5.324;
+    nombre = "Ponce";
+    pancho = judas;
+
+
+    if(a >= b) {
+      nombre = "Oscar";
+    }
+    else {
+      nombre = "123342";
+    }
+  }
 end

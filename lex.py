@@ -1,3 +1,4 @@
+
 # Oscar Guevara     A01825177
 # Gerardo Ponce     A00818934
 
@@ -7,17 +8,24 @@ import sys
 
 # Lista de palabras reservadas.
 reserved = {
-    'if' : 'IF' ,
-    'else' : 'ELSE',
-    'float' : 'FLOAT',
-    'int' : 'INT',
-    'output' : 'OUTPUT',
-    'loop' : 'LOOP',
     'begin' : 'BEGIN',
     'end' : 'END',
-    'then' : 'THEN',
-    'char' : 'CHAR',
-    'input' : 'INPUT'
+    'main' : 'MAIN',
+    'if' : 'IF',
+    'else' : 'ELSE',
+    'loop' : 'LOOP',
+    'func' : 'FUNC',
+    'int' : 'INT',
+    'float' : 'FLOAT',
+    'string' : 'STRING',
+    'bool' : 'BOOL',
+    'input' : 'INPUT',
+    'output' : 'OUTPUT',
+    'return' : 'RETURN',
+    'true' : 'TRUE',
+    'false' : 'FALSE',
+    'and' : 'AND',
+    'or' : 'OR'
 }
 
 # Lista de Tokens.
@@ -38,7 +46,6 @@ tokens = [
 
     'SEMICOLON',
     'COMMA',
-    'DP',
     'LKEY',
     'RKEY',
     'LPAREN',
@@ -46,13 +53,11 @@ tokens = [
     'LCORCH',
     'RCORCH',
 
-    'CTE_CH',
+    'CTE_S',
     'CTE_I',
     'CTE_F',
 
-    'ID',
-    'AND',
-    'OR'
+    'ID'
 
 ]
 
@@ -73,7 +78,6 @@ t_NE = r'\<>'
 
 t_SEMICOLON = r'\;'
 t_COMMA = r'\,'
-t_DP = r'\:'
 t_LKEY = r'\{'
 t_RKEY = r'\}'
 t_LPAREN = r'\('
@@ -81,7 +85,7 @@ t_RPAREN = r'\)'
 t_LCORCH = r'\['
 t_RCORCH = r'\]'
 
-t_CTE_CH = r'\"([^\\\n]|(\\.))*?\"'
+t_CTE_S = r'\"([^\\\n]|(\\.))*?\"'
 
 tokens += list(reserved.values())
 
@@ -122,8 +126,8 @@ entrada = prueba.read()
 lexer.input(entrada)
 
 # Mostrar tokens.
-# while True:
-#     tok = lexer.token()
-#     if not tok:
-#         break
-#     print(tok)
+while True:
+    tok = lexer.token()
+    if not tok:
+        break
+    #print(tok)
