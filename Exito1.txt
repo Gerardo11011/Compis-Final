@@ -2,7 +2,7 @@ begin
 
 int j;
 
-func puta(int j){
+func prueba(int j){
   int h;
   j = 2;
 }
