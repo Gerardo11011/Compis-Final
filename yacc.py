@@ -24,20 +24,6 @@ def p_programa(p):
     '''
 
 
-def p_programa2(p):
-    '''
-    programa2 : modulo
-              | modulo programa2
-    '''
-
-
-def p_programa3(p):
-    '''
-    programa3 : bloque
-              | bloque programa3
-    '''
-
-
 def p_vars(p):
     '''
     vars : tipo vars1 SEMICOLON
@@ -51,6 +37,47 @@ def p_vars1(p):
           | ID COMMA vars1
     '''
     varsTable.insert(p[1], varsTable.miTipo)
+
+
+def p_programa2(p):
+    '''
+    programa2 : modulo
+              | modulo programa2
+    '''
+
+
+def p_modulo(p):
+    '''
+    modulo : FUNC ID LPAREN modulo1 RPAREN LKEY vars modulo2 modulo3
+    '''
+
+
+def p_modulo1(p):
+    '''
+    modulo1 : tipo ID
+            | tipo ID COMMA modulo1
+    '''
+
+
+def p_modulo2(p):
+    '''
+    modulo2 : bloque
+            | bloque modulo2
+    '''
+
+
+def p_modulo3(p):
+    '''
+    modulo3 : RETURN exp SEMICOLON RKEY
+            | RKEY
+    '''
+
+
+def p_programa3(p):
+    '''
+    programa3 : bloque
+              | bloque programa3
+    '''
 
 
 def p_tipo(p):
@@ -205,33 +232,6 @@ def p_funcion1(p):
     '''
     funcion1 : exp
              | exp COMMA funcion1
-    '''
-
-
-def p_modulo(p):
-    '''
-    modulo : FUNC ID LPAREN modulo1 RPAREN LKEY vars modulo2 modulo3
-    '''
-
-
-def p_modulo1(p):
-    '''
-    modulo1 : tipo ID
-            | tipo ID COMMA modulo1
-    '''
-
-
-def p_modulo2(p):
-    '''
-    modulo2 : bloque
-            | bloque modulo2
-    '''
-
-
-def p_modulo3(p):
-    '''
-    modulo3 : RETURN exp SEMICOLON RKEY
-            | RKEY
     '''
 
 

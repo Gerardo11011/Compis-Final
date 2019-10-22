@@ -1,5 +1,12 @@
 begin
 
+int j;
+
+func puta(int j){
+  int h;
+  j = 2;
+}
+
   main {
     int a, b;
     float c;
