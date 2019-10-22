@@ -6,7 +6,8 @@ import sys
 
 # Obtener la lista de tokens del lexer.
 from lex import tokens
-import vars_table as varsTable
+# import vars_table as master
+import tabla_master as master
 
 # Leer archivo de prueba.
 prueba = open("Exito1.txt", "r")
@@ -36,7 +37,7 @@ def p_vars1(p):
     vars1 : ID
           | ID COMMA vars1
     '''
-    varsTable.insert(p[1], varsTable.miTipo)
+    master.insert(p[1], master.miTipo)
 
 
 def p_programa2(p):
@@ -87,7 +88,7 @@ def p_tipo(p):
          | STRING
          | BOOL
     '''
-    varsTable.miTipo = p[1]
+    master.miTipo = p[1]
 
 
 def p_bloque(p):
@@ -108,7 +109,7 @@ def p_asignacion(p):
                | ID EQUAL funcion SEMICOLON
                | ID LCORCH exp RCORCH EQUAL expresion SEMICOLON
     '''
-    varsTable.update(p[1], varsTable.miValor)
+    master.update(p[1], master.miValor)
 
 
 def p_expresion(p):
@@ -181,7 +182,7 @@ def p_var_cte(p):
             | TRUE
             | FALSE
     '''
-    varsTable.miValor = p[1]
+    master.miValor = p[1]
 
 
 def p_condicion(p):
@@ -253,4 +254,4 @@ parser = yacc.yacc()
 result = parser.parse(entrada)
 print(result)
 
-varsTable.show()
+master.show()
