@@ -2,10 +2,18 @@ begin
 
 int j;
 
-func puta(int j){
-  int h;
-  j = 2;
+func int puta(){
+  int h, M;
+  h = 3;
+  M = 97;
 }
+
+func float judas(){
+  float w, k;
+  w = 3.1416;
+  k = 97.48;
+}
+
 
   main {
     int a, b;
