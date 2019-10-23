@@ -12,7 +12,7 @@ miValor = None
 
 
 # Objeto tabla
-class tabla(object):
+class tabla_local(object):
     """docstring for tabla."""
 
     def __init__(self, type_data, value=None):
@@ -21,20 +21,20 @@ class tabla(object):
 
 
 # Funciones para modificar la tabla
-def insert(id, type_data):
-    temp = tabla(type_data)
-    if len(simbolos) >= 1 and not itFound(id):
+def insert_local(id, type_data):
+    temp = tabla_local(type_data)
+    if len(simbolos) >= 1 and not itFound_local(id):
         simbolos[id] = temp
     if len(simbolos) == 0:
         simbolos[id] = temp
 
 
-def update(id, value):
-    if validate(value, id):
+def update_local(id, value):
+    if validate_local(value, id):
         simbolos[id].value = value
 
 
-def validate(dato, id):
+def validate_local(dato, id):
     temp = str(type(dato))
     aux = None
     encontro = False
@@ -55,7 +55,7 @@ def validate(dato, id):
         sys.exit()
 
 
-def itFound(id):
+def itFound_local(id):
     aux = False
     if id in simbolos:
         aux = True
@@ -64,7 +64,7 @@ def itFound(id):
     return aux
 
 
-def show():
+def show_local():
     for keys in simbolos:
         print("ID: ", keys)
         print("VALOR: ", simbolos[keys].value, " TYPE DATA: ", simbolos[keys].type_data)
