@@ -313,6 +313,6 @@ parser = yacc.yacc()
 result = parser.parse(entrada)
 print(result)
 
-# master.show()
-funciones.insertarMaster()
+funciones.separar()
+master.show()
 # funciones.imp()

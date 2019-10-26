@@ -80,7 +80,7 @@ def imp():
     pprint.pprint(simbolos)
 
 
-def insertarMaster():
+def separar():
     temp = next(iter(funciones))
     aux = funciones[temp].id_funcion
     for keys in funciones:
@@ -90,8 +90,15 @@ def insertarMaster():
         else:
             prueba.append(temp_id)
             temp_id.clear()
+            insertarMaster(aux)
             aux = funciones[keys].id_funcion
             obj = tabla.tabla_local(funciones[keys].type_data, funciones[keys].value)
             temp_id.append(obj)
     prueba.append(temp_id)
-    pprint.pprint(prueba)
+    insertarMaster(aux)
+
+
+def insertarMaster(id):
+    for keys in simbolos:
+        if keys == id:
+            simbolos[keys].value = temp_id
