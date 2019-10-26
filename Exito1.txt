@@ -2,14 +2,23 @@ begin
 
 int j;
 
-func int puta(){
+func int judas(){
   int h;
+  int l;
   h = 3;
+  l = 6;
 }
 
-func float judas(){
+func float simon(){
   float t;
+  int q;
   t = 3.1416;
+  q = 342;
+}
+
+func float oscar(){
+  string e;
+  e = "Judas ambos";
 }
 
   main {

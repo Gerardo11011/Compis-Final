@@ -13,6 +13,8 @@ import dirFunc as funciones
 prueba = open("Exito1.txt", "r")
 entrada = prueba.read()
 
+idTemporal = None
+
 # Declaración de funciones.
 
 
@@ -48,11 +50,22 @@ def p_programa2(p):
     '''
 
 
+
 def p_modulo(p):
     '''
     modulo : FUNC tipo ID LPAREN modulo1 RPAREN LKEY varsF modulo2 modulo3
     '''
+    global idTemporal
+    idTemporal = p[3]
     master.insert(p[3], master.miTipo)
+    funciones.miIdFunciones = p[3]
+    # print("inserto id funcion")
+    for i in funciones.funciones:
+        if funciones.funciones[i].id_funcion is None:
+            funciones.funciones[i].id_funcion = p[3]
+            # print("Inserto ID")
+    # print(funciones.miIdFunciones)
+
 
 
 def p_modulo1(p):
@@ -75,7 +88,8 @@ def p_varsF1(p):
     varsF1 : ID
           | ID COMMA varsF1
     '''
-    funciones.insert(p[1], funciones.miTipo_f)
+    funciones.insert(p[1], funciones.miTipo_f, None)
+    # print("Inserto variable")
 
 
 def p_modulo2(p):
@@ -98,7 +112,10 @@ def p_asignacionF(p):
                | ID EQUAL funcion SEMICOLON
                | ID LCORCH exp RCORCH EQUAL expresion SEMICOLON
     '''
-    funciones.update(p[1], funciones.miValor_f)
+    funciones.update(p[1], funciones.miValor_f, funciones.miIdFunciones)
+    funciones.miID_f = p[1]
+    # print("Actualizo variable")
+
 
 
 def p_modulo3(p):
@@ -296,5 +313,6 @@ parser = yacc.yacc()
 result = parser.parse(entrada)
 print(result)
 
-master.show()
-funciones.show()
+# master.show()
+funciones.insertarMaster()
+# funciones.imp()
