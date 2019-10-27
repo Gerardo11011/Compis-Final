@@ -1,3 +1,4 @@
+
 # Oscar Guevara     A01825177
 # Gerardo Ponce     A00818934
 
@@ -129,4 +130,4 @@ while True:
     tok = lexer.token()
     if not tok:
         break
-    print(tok)
+    #print(tok)

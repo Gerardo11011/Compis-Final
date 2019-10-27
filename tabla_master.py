@@ -2,8 +2,8 @@
 # Gerardo Ponce     A00818934
 import sys
 
-# Tabla de funciones
-funciones = {}
+# Tabla de simbolos_master
+simbolos_master = {}
 
 # Declaración de variables globales
 miTipo = None
@@ -12,7 +12,7 @@ miValor = None
 
 
 # Objeto tabla
-class tabla_funciones(object):
+class tabla(object):
     """docstring for tabla."""
 
     def __init__(self, type_data, value=None):
@@ -21,25 +21,25 @@ class tabla_funciones(object):
 
 
 # Funciones para modificar la tabla
-def insert_funciones(id, type_data):
-    temp = tabla_funciones(type_data)
-    if len(funciones) >= 1 and not itFound_funciones(id):
-        funciones[id] = temp
-    if len(funciones) == 0:
-        funciones[id] = temp
+def insert(id, type_data):
+    temp = tabla(type_data)
+    if len(simbolos_master) >= 1 and not itFound(id):
+        simbolos_master[id] = temp
+    if len(simbolos_master) == 0:
+        simbolos_master[id] = temp
 
 
-def update_funciones(id, value):
-    if validate_funciones(value, id):
-        funciones[id].value = value
+def update(id, value):
+    if validate(value, id):
+        simbolos_master[id].value = value
 
 
-def validate_funciones(dato, id):
+def validate(dato, id):
     temp = str(type(dato))
     aux = None
     encontro = False
-    if id in funciones:
-        aux = funciones[id].type_data
+    if id in simbolos_master:
+        aux = simbolos_master[id].type_data
         encontro = True
     if not encontro:
         print('ERROR: ID no declarado:', id)
@@ -55,17 +55,17 @@ def validate_funciones(dato, id):
         sys.exit()
 
 
-def itFound_funciones(id):
+def itFound(id):
     aux = False
-    if id in funciones:
+    if id in simbolos_master:
         aux = True
         print("ERROR: ID ya definido: ", id)
         sys.exit()
     return aux
 
 
-def show_funciones():
-    for keys in funciones:
+def show():
+    for keys in simbolos_master:
         print("ID: ", keys)
-        print("VALOR: ", funciones[keys].value, " TYPE DATA: ", funciones[keys].type_data)
+        print("VALOR: ", simbolos_master[keys].value, " TYPE DATA: ", simbolos_master[keys].type_data)
         print("")

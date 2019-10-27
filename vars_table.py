@@ -1,47 +1,46 @@
 # Oscar Guevara     A01825177
 # Gerardo Ponce     A00818934
-
 import sys
 
-# Tabla de variables
-simbolos = []
+# Tabla de simbolos
+simbolos = {}
 
 # Declaración de variables globales
 miTipo = None
 miID = None
 miValor = None
 
-# Objeto variable
-class variable(object):
-    """docstring for variable."""
-    def __init__(self, id, type_data, value=None):
-        self.id = str(id)
+
+# Objeto tabla
+class tabla_local(object):
+    """docstring for tabla."""
+
+    def __init__(self, type_data, value=None):
         self.type_data = str(type_data)
         self.value = value
 
+
 # Funciones para modificar la tabla
-def insert(id, type_data):
-    temp = variable(id, type_data)
-    if len(simbolos) >= 1 and not itFound(id):
-        simbolos.append(temp)
+def insert_local(id, type_data):
+    temp = tabla_local(type_data)
+    if len(simbolos) >= 1 and not itFound_local(id):
+        simbolos[id] = temp
     if len(simbolos) == 0:
-        simbolos.append(temp)
+        simbolos[id] = temp
 
-def update(id, value):
-    if validate(value, id):
-        for i in range(0, len(simbolos)):
-            if simbolos[i].id == id:
-                simbolos[i].value = value
 
-def validate(dato, id):
+def update_local(id, value):
+    if validate_local(value, id):
+        simbolos[id].value = value
+
+
+def validate_local(dato, id):
     temp = str(type(dato))
-    longitud = len(simbolos)
     aux = None
     encontro = False
-    for i in range(0, longitud):
-        if simbolos[i].id == id:
-            aux = simbolos[i].type_data
-            encontro = True
+    if id in simbolos:
+        aux = simbolos[id].type_data
+        encontro = True
     if not encontro:
         print('ERROR: ID no declarado:', id)
         sys.exit()
@@ -55,17 +54,18 @@ def validate(dato, id):
         print("ERROR: Dato no válido.")
         sys.exit()
 
-def itFound(id):
+
+def itFound_local(id):
     aux = False
-    for i in range(0, len(simbolos)):
-        if simbolos[i].id == id:
-            aux = True
-            print("ERROR: ID ya definido: ", id)
-            sys.exit()
+    if id in simbolos:
+        aux = True
+        print("ERROR: ID ya definido: ", id)
+        sys.exit()
     return aux
 
-def show():
-    longitud = len(simbolos)
-    i = 0
-    for i in range(0, longitud):
-        print(simbolos[i].id, simbolos[i].type_data, simbolos[i].value, sep=', ')
+
+def show_local():
+    for keys in simbolos:
+        print("ID: ", keys)
+        print("VALOR: ", simbolos[keys].value, " TYPE DATA: ", simbolos[keys].type_data)
+        print("")

@@ -1,17 +1,28 @@
 begin
 
+int j;
+
+func prueba(int j){
+  int h;
+  j = 2;
+}
+
   main {
     int a, b;
-    string nombre;
+    float c;
+    string nombre, pancho;
     a = 10;
     b = 5;
+    c = 5.324;
     nombre = "Ponce";
+    pancho = judas;
+
 
     if(a >= b) {
       nombre = "Oscar";
     }
     else {
-      nombre = "Chido";
+      nombre = "123342";
     }
   }
 end
