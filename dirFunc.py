@@ -88,8 +88,10 @@ def separar():
         if funciones[keys].id_funcion == aux:
             temporal[keys] = tabla.tabla_local(funciones[keys].type_data, funciones[keys].value)
         else:
-            master.insertarMaster(aux, temporal)
+            pasar = temporal.copy()
+            master.insertarMaster(aux, pasar)
             temporal = {}
             aux = funciones[keys].id_funcion
             temporal[keys] = tabla.tabla_local(funciones[keys].type_data, funciones[keys].value)
+    pasar = temporal.copy()
     master.insertarMaster(aux, temporal)
