@@ -96,7 +96,6 @@ def p_modulo2(p):
     modulo2 : bloqueF
             | bloqueF modulo2
     '''
-    master.insert(p[1], master.miTipo)
 
 
 def p_bloqueF(p):
