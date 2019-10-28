@@ -42,8 +42,8 @@ def p_vars1(p):
     '''
     master.insert(p[1], master.miTipo)
 
- ############################################## INICIAN FUNCIONES F ##################
 
+# ############################# INICIAN FUNCIONES F ##########################
 def p_programa2(p):
     '''
     programa2 : modulo
@@ -78,14 +78,14 @@ def p_modulo1(p):
 def p_varsF(p):
     '''
     varsF : tipo varsF1 SEMICOLON
-         | tipo varsF1 SEMICOLON varsF
+          | tipo varsF1 SEMICOLON varsF
     '''
 
 
 def p_varsF1(p):
     '''
     varsF1 : ID
-          | ID COMMA varsF1
+           | ID COMMA varsF1
     '''
     funciones.insert(p[1], funciones.miTipo_f, None)
     # print("Inserto variable")
@@ -101,20 +101,20 @@ def p_modulo2(p):
 def p_bloqueF(p):
     '''
     bloqueF : asignacionF
-           | condicion
-           | lectura
-           | escritura
-           | loop
-           | funcion
+            | condicion
+            | lectura
+            | escritura
+            | loop
+            | funcion
     '''
 
 
 def p_asignacionF(p):
     '''
     asignacionF : ID EQUAL expresion SEMICOLON
-               | ID EQUAL array SEMICOLON
-               | ID EQUAL funcion SEMICOLON
-               | ID LCORCH exp RCORCH EQUAL expresion SEMICOLON
+                | ID EQUAL array SEMICOLON
+                | ID EQUAL funcion SEMICOLON
+                | ID LCORCH exp RCORCH EQUAL expresion SEMICOLON
     '''
     funciones.update(p[1], funciones.miValor_f, funciones.miIdFunciones)
     funciones.miID_f = p[1]
@@ -128,26 +128,22 @@ def p_modulo3(p):
             | RKEY
     '''
 
+# ########################### ACABA FUNCIONES  ##############################
 
 
-
-
-################################### ACABA FUNCIONES  ########################
-
-
-############################# INICIA VARIABLES MAIN #########################
+# ############################ INICIA VARIABLES MAIN #########################
 
 def p_varsM(p):
     '''
     varsM : tipo varsM1 SEMICOLON
-         | tipo varsM1 SEMICOLON varsM
+          | tipo varsM1 SEMICOLON varsM
     '''
 
 
 def p_varsM1(p):
     '''
     varsM1 : ID
-          | ID COMMA varsM1
+           | ID COMMA varsM1
     '''
     funciones.insert(p[1], funciones.miTipo_f, "MAIN")
 
