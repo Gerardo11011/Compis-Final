@@ -88,7 +88,7 @@ def imp():
 
 
 def separar():
-    temp = next(iter(funciones))
+    temp = list(funciones.keys())[0]
     aux = funciones[temp].id_funcion
     temporal = {}
     for keys in funciones:
