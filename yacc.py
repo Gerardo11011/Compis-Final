@@ -13,6 +13,7 @@ import dirFunc as funciones
 prueba = open("Exito1.txt", "r")
 entrada = prueba.read()
 
+
 idTemporal = None
 
 # Declaración de funciones.

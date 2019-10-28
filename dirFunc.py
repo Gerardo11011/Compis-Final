@@ -5,11 +5,11 @@ import pprint
 # import tabla_master as master
 import vars_table as tabla
 from tabla_master import simbolos
+import tabla_master as master
 
 # Tabla de funciones
 funciones = {}
-temp_id = []
-prueba = []
+ayuda = []
 
 # Declaración de variables globales
 miTipo_f = None
@@ -21,7 +21,7 @@ miIdFunciones = None
 
 
 def insert(id, type_data, id_funcion):
-    temp = tabla.tabla_funciones(type_data, None, id_funcion)
+    temp = tabla.tabla_funciones(type_data, None, id_funcion, id)
     if len(funciones) >= 1 and not itFound(id):
         funciones[id] = temp
     if len(funciones) == 0:
@@ -83,22 +83,13 @@ def imp():
 def separar():
     temp = next(iter(funciones))
     aux = funciones[temp].id_funcion
+    temporal = {}
     for keys in funciones:
         if funciones[keys].id_funcion == aux:
-            obj = tabla.tabla_local(funciones[keys].type_data, funciones[keys].value)
-            temp_id.append(obj)
+            temporal[keys] = tabla.tabla_local(funciones[keys].type_data, funciones[keys].value)
         else:
-            prueba.append(temp_id)
-            temp_id.clear()
-            insertarMaster(aux)
+            master.insertarMaster(aux, temporal)
+            temporal = {}
             aux = funciones[keys].id_funcion
-            obj = tabla.tabla_local(funciones[keys].type_data, funciones[keys].value)
-            temp_id.append(obj)
-    prueba.append(temp_id)
-    insertarMaster(aux)
-
-
-def insertarMaster(id):
-    for keys in simbolos:
-        if keys == id:
-            simbolos[keys].value = temp_id
+            temporal[keys] = tabla.tabla_local(funciones[keys].type_data, funciones[keys].value)
+    master.insertarMaster(aux, temporal)
