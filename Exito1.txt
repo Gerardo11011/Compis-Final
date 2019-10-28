@@ -2,6 +2,28 @@ begin
 
 int j;
 
+
+func int judas(){
+
+  int h;
+  int l;
+  h = 3;
+  l = 6;
+}
+
+func float simon(){
+  float t;
+  int q;
+  int b;
+  b = 213;
+  t = 3.1416;
+  q = 342;
+}
+
+func float oscar(){
+  string e;
+  e = "Judas ambos";
+}
 main {
   int a, b;
   float c, d;
@@ -15,5 +37,4 @@ main {
   a = b + d * a;
 
 }
-
 end

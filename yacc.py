@@ -178,7 +178,6 @@ def p_bloque(p):
            | escritura
            | loop
            | funcion
-
     '''
 
 
@@ -351,7 +350,7 @@ def p_error(p):
     sys.exit()
 
 
-# Construir el parser.
+# onstruir el parser.
 print("Parsing . . . \n")
 parser = yacc.yacc()
 result = parser.parse(entrada)
