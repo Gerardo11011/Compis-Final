@@ -2,27 +2,23 @@ begin
 
 int j;
 
-func prueba(int j){
+func prueba(int j) {
   int h;
   j = 2;
 }
 
-  main {
-    int a, b;
-    float c;
-    string nombre, pancho;
-    a = 10;
-    b = 5;
-    c = 5.324;
-    nombre = "Ponce";
-    pancho = judas;
+main {
+  int a, b;
+  float c, d;
+  string pedro;
 
+  a = 2;
+  b = 4;
+  c = 3.5;
+  d = 7.8;
 
-    if(a >= b) {
-      nombre = "Oscar";
-    }
-    else {
-      nombre = "123342";
-    }
-  }
+  a = b + pedro * a;
+
+}
+
 end

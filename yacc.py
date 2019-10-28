@@ -8,14 +8,15 @@ import sys
 from lex import tokens
 # import vars_table as master
 import tabla_master as master
+import quadruples as quad
+
 
 # Leer archivo de prueba.
 prueba = open("Exito1.txt", "r")
 entrada = prueba.read()
 
+
 # Declaración de funciones.
-
-
 def p_programa(p):
     '''
     programa : BEGIN vars programa2 MAIN LKEY vars programa3 RKEY END
@@ -71,7 +72,7 @@ def p_modulo2(p):
     modulo2 : bloque
             | bloque modulo2
     '''
-    varsTable.insert(p[1], varsTable.miTipo)
+    master.insert(p[1], master.miTipo)
 
 
 def p_modulo3(p):
@@ -145,31 +146,45 @@ def p_relop(p):
 
 def p_exp(p):
     '''
-    exp : termino
-        | termino exp1
+    exp : termino pop_term
+        | termino pop_term exp1
     '''
+
+
+def p_pop_term(p):
+    "pop_term :"
+    quad.popTerm()
 
 
 def p_exp1(p):
     '''
-    exp1 : PLUS exp
-         | MINUS exp
+    exp1 : PLUS push_poper exp
+         | MINUS push_poper exp
     '''
 
 
 def p_termino(p):
     '''
-    termino : factor
-            | factor termino1
+    termino : factor pop_fact
+            | factor pop_fact termino1
     '''
+
+
+def p_pop_fact(p):
+    "pop_fact :"
+    quad.popFact()
 
 
 def p_termino1(p):
     '''
-    termino1 : MULT termino
-             | DIV termino
+    termino1 : MULT push_poper termino
+             | DIV push_poper termino
     '''
 
+
+def p_push_poper(p):
+    "push_poper :"
+    quad.pushPoper(p[-1])
 
 def p_factor(p):
     '''
@@ -182,14 +197,21 @@ def p_factor(p):
 
 def p_var_cte(p):
     '''
-    var_cte : ID
+    var_cte : ID push_id
             | CTE_I
             | CTE_F
             | CTE_S
             | TRUE
             | FALSE
     '''
-    master.miValor = p[1]
+    if len(p) == 2:
+        master.miValor = p[1]
+
+
+def p_push_id(p):
+    "push_id :"
+    quad.pushID(p[-1])
+    master.miValor = 0
 
 
 def p_condicion(p):
@@ -261,4 +283,5 @@ parser = yacc.yacc()
 result = parser.parse(entrada)
 print(result)
 
-master.show()
+# master.show()
+quad.show()
