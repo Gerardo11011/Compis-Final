@@ -46,7 +46,6 @@ def validate(dato, id):
         print("ERROR: Dato no válido.")
         sys.exit()
 
-
 def itFound(id):
     aux = False
     if id in simbolos:
@@ -57,17 +56,29 @@ def itFound(id):
 
 
 def show():
-    for keys, obj in simbolos.items():
-        '''if keys == "judas":
+    for keys in simbolos:
+        if keys == "judas":
+            print("ID FUNCION: ", keys)
+            for id in simbolos[keys].value:
+                print("ID: ", id)
+                print("VALOR: ", simbolos[keys].value[id].value, " TYPE DATA: ", simbolos[keys].value[id].type_data)
+            print("")
+        elif keys == "simon":
+            print("ID FUNCION: ", keys)
+            for id in simbolos[keys].value:
+                print("ID: ", id)
+                print("VALOR: ", simbolos[keys].value[id].value, " TYPE DATA: ", simbolos[keys].value[id].type_data)
+            print("")
+        elif keys == "oscar":
+            print("ID FUNCION: ", keys)
+            for id in simbolos[keys].value:
+                print("ID: ", id)
+                print("VALOR: ", simbolos[keys].value[id].value, " TYPE DATA: ", simbolos[keys].value[id].type_data)
+            print("")
+        else:
             print("ID: ", keys)
-            print("id variable: ", obj.id[0], " Valor: ", obj.value[0], " Tipo de dato: ", obj.type_data[0])
-            print("id variable: ", obj.id[1], " Valor: ", obj.value[1], " Tipo de dato: ", obj.type_data[1])
-            # print(obj.value[0].value)
-
-        else:'''
-        print("ID: ", keys)
-        print("VALOR: ", simbolos[keys].value, " TYPE DATA: ", simbolos[keys].type_data)
-        print("")
+            print("VALOR: ", simbolos[keys].value, " TYPE DATA: ", simbolos[keys].type_data)
+            print("")
 
 
 def insertarMaster(id, objeto):
