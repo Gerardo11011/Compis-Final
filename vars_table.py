@@ -2,14 +2,8 @@
 # Gerardo Ponce     A00818934
 import sys
 
-# Tabla de simbolos
-simbolos = {}
-
-# Declaración de variables globales
-miTipo = None
-miID = None
-miValor = None
-
+# Tabla de simbolos_master
+# simbolos = {}
 
 # Objeto tabla
 class tabla_local(object):

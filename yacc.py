@@ -99,6 +99,10 @@ def p_modulo2(p):
             | bloqueF modulo2
     '''
 
+def p_bloqueF(p):
+    '''
+    bloqueF : asignacionF
+    '''
 
 def p_bloqueF(p):
     '''
