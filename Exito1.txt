@@ -2,9 +2,27 @@ begin
 
 int j;
 
-func prueba(int j){
+
+func int judas(){
+
   int h;
-  j = 2;
+  int l;
+  h = 3;
+  l = 6;
+}
+
+func float simon(){
+  float t;
+  int q;
+  int b;
+  b = 213;
+  t = 3.1416;
+  q = 342;
+}
+
+func float oscar(){
+  string e;
+  e = "Judas ambos";
 }
 
   main {
@@ -13,9 +31,9 @@ func prueba(int j){
     string nombre, pancho;
     a = 10;
     b = 5;
-    c = 5.324;
+    c = -5.324;
     nombre = "Ponce";
-    pancho = judas;
+    pancho = "judas";
 
 
     if(a >= b) {

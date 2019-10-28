@@ -1,40 +1,43 @@
 # Oscar Guevara     A01825177
 # Gerardo Ponce     A00818934
 import sys
+import pprint
+# import tabla_master as master
+import vars_table as tabla
+from tabla_master import simbolos
+import tabla_master as master
 
 # Tabla de funciones
 funciones = {}
+ayuda = []
 
 # Declaración de variables globales
-miTipo = None
-miID = None
-miValor = None
-
-
-# Objeto tabla
-class tabla_funciones(object):
-    """docstring for tabla."""
-
-    def __init__(self, type_data, value=None):
-        self.type_data = str(type_data)
-        self.value = value
-
+miTipo_f = None
+miID_f = None
+miValor_f = None
+miIdFunciones = None
 
 # Funciones para modificar la tabla
-def insert_funciones(id, type_data):
-    temp = tabla_funciones(type_data)
-    if len(funciones) >= 1 and not itFound_funciones(id):
+
+
+def insert(id, type_data, id_funcion):
+    temp = tabla.tabla_funciones(type_data, None, id_funcion, id)
+    if len(funciones) >= 1 and not itFound(id):
         funciones[id] = temp
     if len(funciones) == 0:
         funciones[id] = temp
 
 
-def update_funciones(id, value):
-    if validate_funciones(value, id):
+def updateIDFuncion(id, id_funcion):
+    funciones[id].id_funcion = id_funcion
+
+
+def update(id, value, id_funcion):
+    if validate(value, id):
         funciones[id].value = value
 
 
-def validate_funciones(dato, id):
+def validate(dato, id):
     temp = str(type(dato))
     aux = None
     encontro = False
@@ -51,11 +54,11 @@ def validate_funciones(dato, id):
     if temp == "<class 'str'>" and aux == 'string':
         return True
     else:
-        print("ERROR: Dato no válido.")
+        print("ERROR: Dato no válido funcion.")
         sys.exit()
 
 
-def itFound_funciones(id):
+def itFound(id):
     aux = False
     if id in funciones:
         aux = True
@@ -64,8 +67,31 @@ def itFound_funciones(id):
     return aux
 
 
-def show_funciones():
+def show():
+    print("AQUI EMPIEZAN LAS VARIABLES DE LAS FUNCIONES")
     for keys in funciones:
         print("ID: ", keys)
-        print("VALOR: ", funciones[keys].value, " TYPE DATA: ", funciones[keys].type_data)
+        print("VALOR: ", funciones[keys].value, " TYPE DATA: ", funciones[keys].type_data, " ID FUNCION: ", funciones[keys].id_funcion)
         print("")
+
+
+def imp():
+    print("NOMBRE DE LAS FUNCIONES: ")
+    pprint.pprint(simbolos)
+
+
+def separar():
+    temp = next(iter(funciones))
+    aux = funciones[temp].id_funcion
+    temporal = {}
+    for keys in funciones:
+        if funciones[keys].id_funcion == aux:
+            temporal[keys] = tabla.tabla_local(funciones[keys].type_data, funciones[keys].value)
+        else:
+            pasar = temporal.copy()
+            master.insertarMaster(aux, pasar)
+            temporal = {}
+            aux = funciones[keys].id_funcion
+            temporal[keys] = tabla.tabla_local(funciones[keys].type_data, funciones[keys].value)
+    pasar = temporal.copy()
+    master.insertarMaster(aux, temporal)
