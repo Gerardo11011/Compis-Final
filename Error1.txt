@@ -5,3 +5,8 @@ begin
   a : 10;
   yo : "Oscar";
 end
+
+func puta(int c) {
+  int b;
+  c = 2;
+}
