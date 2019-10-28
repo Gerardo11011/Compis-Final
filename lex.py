@@ -96,7 +96,7 @@ t_ignore =  ' \t\n'
 
 # Declaración de funciones.
 def t_CTE_F(t):
-    r'\d+\.\d+'
+    r'[+ -]?\d+\.\d+'
     t.value = float(t.value)
     return t
 

@@ -2,18 +2,26 @@ begin
 
 int j;
 
-func int puta(){
-  int h, M;
+func int judas(){
+  int h;
+  int l;
   h = 3;
-  M = 97;
+  l = 6;
 }
 
-func float judas(){
-  float w, k;
-  w = 3.1416;
-  k = 97.48;
+func float simon(){
+  float t;
+  int q;
+  int b;
+  b = 213;
+  t = 3.1416;
+  q = 342;
 }
 
+func float oscar(){
+  string e;
+  e = "Judas ambos";
+}
 
   main {
     int a, b;
@@ -21,9 +29,9 @@ func float judas(){
     string nombre, pancho;
     a = 10;
     b = 5;
-    c = 5.324;
+    c = -5.324;
     nombre = "Ponce";
-    pancho = judas;
+    pancho = "judas";
 
 
     if(a >= b) {
