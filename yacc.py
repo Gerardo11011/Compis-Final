@@ -8,6 +8,7 @@ import sys
 from lex import tokens
 # import vars_table as master
 import tabla_master as master
+import quadruples as quad
 import dirFunc as funciones
 # Leer archivo de prueba.
 prueba = open("Exito1.txt", "r")
@@ -16,9 +17,8 @@ entrada = prueba.read()
 
 idTemporal = None
 
+
 # Declaración de funciones.
-
-
 def p_programa(p):
     '''
     programa : BEGIN vars programa2 MAIN LKEY vars programa3 RKEY END
@@ -42,8 +42,8 @@ def p_vars1(p):
     '''
     master.insert(p[1], master.miTipo)
 
- ############################################## INICIAN FUNCIONES F ##################
 
+# ############################# INICIAN FUNCIONES F ##########################
 def p_programa2(p):
     '''
     programa2 : modulo
@@ -78,14 +78,14 @@ def p_modulo1(p):
 def p_varsF(p):
     '''
     varsF : tipo varsF1 SEMICOLON
-         | tipo varsF1 SEMICOLON varsF
+          | tipo varsF1 SEMICOLON varsF
     '''
 
 
 def p_varsF1(p):
     '''
     varsF1 : ID
-          | ID COMMA varsF1
+           | ID COMMA varsF1
     '''
     funciones.insert(p[1], funciones.miTipo_f, None)
     # print("Inserto variable")
@@ -96,25 +96,26 @@ def p_modulo2(p):
     modulo2 : bloqueF
             | bloqueF modulo2
     '''
+    master.insert(p[1], master.miTipo)
 
 
 def p_bloqueF(p):
     '''
     bloqueF : asignacionF
-           | condicion
-           | lectura
-           | escritura
-           | loop
-           | funcion
+            | condicion
+            | lectura
+            | escritura
+            | loop
+            | funcion
     '''
 
 
 def p_asignacionF(p):
     '''
     asignacionF : ID EQUAL expresion SEMICOLON
-               | ID EQUAL array SEMICOLON
-               | ID EQUAL funcion SEMICOLON
-               | ID LCORCH exp RCORCH EQUAL expresion SEMICOLON
+                | ID EQUAL array SEMICOLON
+                | ID EQUAL funcion SEMICOLON
+                | ID LCORCH exp RCORCH EQUAL expresion SEMICOLON
     '''
     funciones.update(p[1], funciones.miValor_f, funciones.miIdFunciones)
     funciones.miID_f = p[1]
@@ -128,26 +129,22 @@ def p_modulo3(p):
             | RKEY
     '''
 
+# ########################### ACABA FUNCIONES  ##############################
 
 
-
-
-################################### ACABA FUNCIONES  ########################
-
-
-############################# INICIA VARIABLES MAIN #########################
+# ############################ INICIA VARIABLES MAIN #########################
 
 def p_varsM(p):
     '''
     varsM : tipo varsM1 SEMICOLON
-         | tipo varsM1 SEMICOLON varsM
+          | tipo varsM1 SEMICOLON varsM
     '''
 
 
 def p_varsM1(p):
     '''
     varsM1 : ID
-          | ID COMMA varsM1
+           | ID COMMA varsM1
     '''
     funciones.insert(p[1], funciones.miTipo_f, "MAIN")
 
@@ -222,30 +219,45 @@ def p_relop(p):
 
 def p_exp(p):
     '''
-    exp : termino
-        | termino exp1
+    exp : termino pop_term
+        | termino pop_term exp1
     '''
+
+
+def p_pop_term(p):
+    "pop_term :"
+    quad.popTerm()
 
 
 def p_exp1(p):
     '''
-    exp1 : PLUS exp
-         | MINUS exp
+    exp1 : PLUS push_poper exp
+         | MINUS push_poper exp
     '''
 
 
 def p_termino(p):
     '''
-    termino : factor
-            | factor termino1
+    termino : factor pop_fact
+            | factor pop_fact termino1
     '''
+
+
+def p_pop_fact(p):
+    "pop_fact :"
+    quad.popFact()
 
 
 def p_termino1(p):
     '''
-    termino1 : MULT termino
-             | DIV termino
+    termino1 : MULT push_poper termino
+             | DIV push_poper termino
     '''
+
+
+def p_push_poper(p):
+    "push_poper :"
+    quad.pushPoper(p[-1])
 
 
 def p_factor(p):
@@ -259,15 +271,22 @@ def p_factor(p):
 
 def p_var_cte(p):
     '''
-    var_cte : ID
+    var_cte : ID push_id
             | CTE_I
             | CTE_F
             | CTE_S
             | TRUE
             | FALSE
     '''
-    master.miValor = p[1]
     funciones.miValor_f = p[1]
+    if len(p) == 2:
+        master.miValor = p[1]
+
+
+def p_push_id(p):
+    "push_id :"
+    quad.pushID(p[-1])
+    master.miValor = 0
 
 
 def p_condicion(p):
@@ -328,6 +347,7 @@ def p_empty(p):
 
 
 def p_error(p):
+    print(p)
     print("Error de sintaxis en linea '%s'" % p.lexpos)
     sys.exit()
 
@@ -338,6 +358,7 @@ parser = yacc.yacc()
 result = parser.parse(entrada)
 print(result)
 
+quad.show()
 funciones.separar()
 master.show()
 # funciones.imp()

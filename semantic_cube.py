@@ -43,10 +43,10 @@ def semantic(left, right, operator):
         else:
             return 'error'
 
-    elif(left == 'char'):
-        if(right == 'char'):
+    elif(left == 'string'):
+        if(right == 'string'):
             if(operator == '='):
-                return 'char'
+                return 'string'
             elif(operator == '==' or operator == '<>'):
                 return 'bool'
             else:
