@@ -26,6 +26,13 @@ def insert(id, type_data, id_funcion):
         funciones[id] = temp
     if len(funciones) == 0:
         funciones[id] = temp
+    '''if master.itFoundGlobal(id):
+        if len(funciones) >= 1 and not itFound(id):
+            funciones[id] = temp
+        if len(funciones) == 0:
+            funciones[id] = temp
+    else:
+        print("ERROR VARIABLE GLOBAL DECLARADA")'''
 
 
 def updateIDFuncion(id, id_funcion):
@@ -88,10 +95,8 @@ def separar():
         if funciones[keys].id_funcion == aux:
             temporal[keys] = tabla.tabla_local(funciones[keys].type_data, funciones[keys].value)
         else:
-            pasar = temporal.copy()
-            master.insertarMaster(aux, pasar)
+            master.insertarMaster(aux, temporal)
             temporal = {}
             aux = funciones[keys].id_funcion
             temporal[keys] = tabla.tabla_local(funciones[keys].type_data, funciones[keys].value)
-    pasar = temporal.copy()
     master.insertarMaster(aux, temporal)

@@ -102,6 +102,11 @@ def p_modulo2(p):
 def p_bloqueF(p):
     '''
     bloqueF : asignacionF
+           | condicion
+           | lectura
+           | escritura
+           | loop
+           | funcion
     '''
 
 
@@ -128,7 +133,24 @@ def p_modulo3(p):
 
 
 
-################################### ACABA FUNCIONES F ##################3333
+################################### ACABA FUNCIONES  ########################
+
+
+############################# INICIA VARIABLES MAIN #########################
+
+def p_varsM(p):
+    '''
+    varsM : tipo varsM1 SEMICOLON
+         | tipo varsM1 SEMICOLON varsM
+    '''
+
+
+def p_varsM1(p):
+    '''
+    varsM1 : ID
+          | ID COMMA varsM1
+    '''
+    funciones.insert(p[1], funciones.miTipo_f, "MAIN")
 
 
 def p_programa3(p):
@@ -136,6 +158,10 @@ def p_programa3(p):
     programa3 : bloque
               | bloque programa3
     '''
+
+
+
+############################# CIERRA VARIABLES MAIN #########################
 
 
 def p_tipo(p):
