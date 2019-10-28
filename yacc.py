@@ -51,7 +51,6 @@ def p_programa2(p):
     '''
 
 
-
 def p_modulo(p):
     '''
     modulo : FUNC tipo ID LPAREN modulo1 RPAREN LKEY varsF modulo2 modulo3
@@ -66,7 +65,6 @@ def p_modulo(p):
             funciones.funciones[i].id_funcion = p[3]
             # print("Inserto ID")
     # print(funciones.miIdFunciones)
-
 
 
 def p_modulo1(p):
@@ -99,14 +97,15 @@ def p_modulo2(p):
             | bloqueF modulo2
     '''
 
-def p_bloqueF(p):
-    '''
-    bloqueF : asignacionF
-    '''
 
 def p_bloqueF(p):
     '''
     bloqueF : asignacionF
+           | condicion
+           | lectura
+           | escritura
+           | loop
+           | funcion
     '''
 
 
@@ -133,7 +132,24 @@ def p_modulo3(p):
 
 
 
-################################### ACABA FUNCIONES F ##################3333
+################################### ACABA FUNCIONES  ########################
+
+
+############################# INICIA VARIABLES MAIN #########################
+
+def p_varsM(p):
+    '''
+    varsM : tipo varsM1 SEMICOLON
+         | tipo varsM1 SEMICOLON varsM
+    '''
+
+
+def p_varsM1(p):
+    '''
+    varsM1 : ID
+          | ID COMMA varsM1
+    '''
+    funciones.insert(p[1], funciones.miTipo_f, "MAIN")
 
 
 def p_programa3(p):
@@ -141,6 +157,10 @@ def p_programa3(p):
     programa3 : bloque
               | bloque programa3
     '''
+
+
+
+############################# CIERRA VARIABLES MAIN #########################
 
 
 def p_tipo(p):

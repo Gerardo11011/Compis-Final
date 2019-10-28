@@ -58,19 +58,19 @@ def itFound(id):
 def show():
     for keys in simbolos:
         if keys == "judas":
-            print("ID FUNCION: ", keys)
+            print("ID FUNCION: ", keys, " TYPE DATA: ", simbolos[keys].type_data)
             for id in simbolos[keys].value:
                 print("ID: ", id)
                 print("VALOR: ", simbolos[keys].value[id].value, " TYPE DATA: ", simbolos[keys].value[id].type_data)
             print("")
         elif keys == "simon":
-            print("ID FUNCION: ", keys)
+            print("ID FUNCION: ", keys, " TYPE DATA: ", simbolos[keys].type_data)
             for id in simbolos[keys].value:
                 print("ID: ", id)
                 print("VALOR: ", simbolos[keys].value[id].value, " TYPE DATA: ", simbolos[keys].value[id].type_data)
             print("")
         elif keys == "oscar":
-            print("ID FUNCION: ", keys)
+            print("ID FUNCION: ", keys, " TYPE DATA: ", simbolos[keys].type_data)
             for id in simbolos[keys].value:
                 print("ID: ", id)
                 print("VALOR: ", simbolos[keys].value[id].value, " TYPE DATA: ", simbolos[keys].value[id].type_data)
@@ -85,3 +85,10 @@ def insertarMaster(id, objeto):
     for keys in simbolos:
         if keys == id:
             simbolos[keys].value = objeto
+
+
+def itFoundGlobal(id):
+    for Keys in simbolos:
+        if id == Keys:
+            return True
+    return False
