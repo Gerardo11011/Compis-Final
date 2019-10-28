@@ -17,6 +17,7 @@ entrada = prueba.read()
 
 idTemporal = None
 
+
 # Declaración de funciones.
 def p_programa(p):
     '''
@@ -25,12 +26,6 @@ def p_programa(p):
              | BEGIN programa2 MAIN LKEY vars programa3 RKEY END
              | BEGIN MAIN LKEY vars programa3 RKEY END
     '''
-    # if (len(p) == 10):
-    #     dirFunc.insert(p[4], None)
-    # elif(len(p) == 9):
-    #     dirFunc.insert(p[3], None)
-    # elif(len(p) == 8):
-    #     dirFunc.insert(p[2], None)
 
 
 def p_vars(p):
@@ -47,14 +42,13 @@ def p_vars1(p):
     '''
     master.insert(p[1], master.miTipo)
 
- ############################################## INICIAN FUNCIONES F ##################
 
+# ############################# INICIAN FUNCIONES F ##########################
 def p_programa2(p):
     '''
     programa2 : modulo
               | modulo programa2
     '''
-
 
 
 def p_modulo(p):
@@ -71,7 +65,6 @@ def p_modulo(p):
             funciones.funciones[i].id_funcion = p[3]
             # print("Inserto ID")
     # print(funciones.miIdFunciones)
-
 
 
 def p_modulo1(p):
@@ -105,10 +98,6 @@ def p_modulo2(p):
     '''
     master.insert(p[1], master.miTipo)
 
-def p_bloqueF(p):
-    '''
-    bloqueF : asignacionF
-    '''
 
 def p_bloqueF(p):
     '''
@@ -248,6 +237,7 @@ def p_push_poper(p):
     "push_poper :"
     quad.pushPoper(p[-1])
 
+
 def p_factor(p):
     '''
     factor : LPAREN expresion RPAREN
@@ -335,6 +325,7 @@ def p_empty(p):
 
 
 def p_error(p):
+    print(p)
     print("Error de sintaxis en linea '%s'" % p.lexpos)
     sys.exit()
 
@@ -345,7 +336,6 @@ parser = yacc.yacc()
 result = parser.parse(entrada)
 print(result)
 
-# master.show()
 quad.show()
 funciones.separar()
 master.show()

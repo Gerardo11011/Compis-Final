@@ -3,7 +3,7 @@
 
 import sys
 
-from tabla_master import simbolos_master
+from tabla_master import simbolos
 from semantic_cube import semantic
 
 # Declaración de pilas
@@ -26,11 +26,11 @@ class quadruple(object):
 
 # Funciones operadores
 def pushID(id):
-    for keys in simbolos_master:
+    for keys in simbolos:
         if id == keys:
             PilaO.append(id)
-            PTypes.append(simbolos_master[keys].type_data)
-            AVAIL.append(simbolos_master[keys].value)
+            PTypes.append(simbolos[keys].type_data)
+            AVAIL.append(simbolos[keys].value)
 
 
 def pushPoper(operator):

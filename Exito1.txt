@@ -2,13 +2,6 @@ begin
 
 int j;
 
-func prueba(int j) {
-  int h;
-  int l;
-  h = 3;
-  l = 6;
-}
-
 main {
   int a, b;
   float c, d;
@@ -19,7 +12,7 @@ main {
   c = 3.5;
   d = 7.8;
 
-  a = b + pedro * a;
+  a = b + d * a;
 
 }
 
