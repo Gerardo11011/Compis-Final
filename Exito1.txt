@@ -2,28 +2,20 @@ begin
 
 int j;
 
+main {
+  int a, b;
+  float c, d;
+  string pedro;
 
-func int judas(){
+  a = 2;
+  b = 4;
+  c = 3.5;
+  d = 7.8;
 
-  int h;
-  int l;
-  h = 3;
-  l = 6;
+  a = b + d * a;
+
 }
 
-func float simon(){
-  float t;
-  int q;
-  int b;
-  b = 213;
-  t = 3.1416;
-  q = 342;
-}
-
-func float oscar(){
-  string e;
-  e = "Judas ambos";
-}
 
   main {
   int a, b;
