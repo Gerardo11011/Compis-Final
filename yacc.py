@@ -96,7 +96,7 @@ def p_modulo2(p):
     modulo2 : bloqueF
             | bloqueF modulo2
     '''
- 
+
 
 def p_bloqueF(p):
     '''
