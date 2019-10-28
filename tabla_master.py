@@ -1,9 +1,10 @@
 # Oscar Guevara     A01825177
 # Gerardo Ponce     A00818934
 import sys
+import vars_table as tabla
 
-# Tabla de simbolos_master
-simbolos_master = {}
+# Tabla de simbolos
+simbolos = {}
 
 # Declaración de variables globales
 miTipo = None
@@ -11,35 +12,26 @@ miID = None
 miValor = None
 
 
-# Objeto tabla
-class tabla(object):
-    """docstring for tabla."""
-
-    def __init__(self, type_data, value=None):
-        self.type_data = str(type_data)
-        self.value = value
-
-
 # Funciones para modificar la tabla
 def insert(id, type_data):
-    temp = tabla(type_data)
-    if len(simbolos_master) >= 1 and not itFound(id):
-        simbolos_master[id] = temp
-    if len(simbolos_master) == 0:
-        simbolos_master[id] = temp
+    temp = tabla.tabla_local(type_data)
+    if len(simbolos) >= 1 and not itFound(id):
+        simbolos[id] = temp
+    if len(simbolos) == 0:
+        simbolos[id] = temp
 
 
 def update(id, value):
     if validate(value, id):
-        simbolos_master[id].value = value
+        simbolos[id].value = value
 
 
 def validate(dato, id):
     temp = str(type(dato))
     aux = None
     encontro = False
-    if id in simbolos_master:
-        aux = simbolos_master[id].type_data
+    if id in simbolos:
+        aux = simbolos[id].type_data
         encontro = True
     if not encontro:
         print('ERROR: ID no declarado:', id)
@@ -54,10 +46,9 @@ def validate(dato, id):
         print("ERROR: Dato no válido.")
         sys.exit()
 
-
 def itFound(id):
     aux = False
-    if id in simbolos_master:
+    if id in simbolos:
         aux = True
         print("ERROR: ID ya definido: ", id)
         sys.exit()
@@ -65,7 +56,20 @@ def itFound(id):
 
 
 def show():
-    for keys in simbolos_master:
+    for keys, obj in simbolos.items():
+        '''if keys == "judas":
+            print("ID: ", keys)
+            print("id variable: ", obj.id[0], " Valor: ", obj.value[0], " Tipo de dato: ", obj.type_data[0])
+            print("id variable: ", obj.id[1], " Valor: ", obj.value[1], " Tipo de dato: ", obj.type_data[1])
+            # print(obj.value[0].value)
+
+        else:'''
         print("ID: ", keys)
-        print("VALOR: ", simbolos_master[keys].value, " TYPE DATA: ", simbolos_master[keys].type_data)
+        print("VALOR: ", simbolos[keys].value, " TYPE DATA: ", simbolos[keys].type_data)
         print("")
+
+
+def insertarMaster(id, objeto):
+    for keys in simbolos:
+        if keys == id:
+            simbolos[keys].value = objeto

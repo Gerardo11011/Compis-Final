@@ -9,12 +9,13 @@ from lex import tokens
 # import vars_table as master
 import tabla_master as master
 import quadruples as quad
-
-
+import dirFunc as funciones
 # Leer archivo de prueba.
 prueba = open("Exito1.txt", "r")
 entrada = prueba.read()
 
+
+idTemporal = None
 
 # Declaración de funciones.
 def p_programa(p):
@@ -46,6 +47,7 @@ def p_vars1(p):
     '''
     master.insert(p[1], master.miTipo)
 
+ ############################################## INICIAN FUNCIONES F ##################
 
 def p_programa2(p):
     '''
@@ -54,25 +56,77 @@ def p_programa2(p):
     '''
 
 
+
 def p_modulo(p):
     '''
-    modulo : FUNC ID LPAREN modulo1 RPAREN LKEY vars modulo2 modulo3
+    modulo : FUNC tipo ID LPAREN modulo1 RPAREN LKEY varsF modulo2 modulo3
     '''
+    global idTemporal
+    idTemporal = p[3]
+    master.insert(p[3], master.miTipo)
+    funciones.miIdFunciones = p[3]
+    # print("inserto id funcion")
+    for i in funciones.funciones:
+        if funciones.funciones[i].id_funcion is None:
+            funciones.funciones[i].id_funcion = p[3]
+            # print("Inserto ID")
+    # print(funciones.miIdFunciones)
+
 
 
 def p_modulo1(p):
     '''
     modulo1 : tipo ID
             | tipo ID COMMA modulo1
+            | empty
     '''
+
+
+def p_varsF(p):
+    '''
+    varsF : tipo varsF1 SEMICOLON
+         | tipo varsF1 SEMICOLON varsF
+    '''
+
+
+def p_varsF1(p):
+    '''
+    varsF1 : ID
+          | ID COMMA varsF1
+    '''
+    funciones.insert(p[1], funciones.miTipo_f, None)
+    # print("Inserto variable")
 
 
 def p_modulo2(p):
     '''
-    modulo2 : bloque
-            | bloque modulo2
+    modulo2 : bloqueF
+            | bloqueF modulo2
     '''
     master.insert(p[1], master.miTipo)
+
+def p_bloqueF(p):
+    '''
+    bloqueF : asignacionF
+    '''
+
+def p_bloqueF(p):
+    '''
+    bloqueF : asignacionF
+    '''
+
+
+def p_asignacionF(p):
+    '''
+    asignacionF : ID EQUAL expresion SEMICOLON
+               | ID EQUAL array SEMICOLON
+               | ID EQUAL funcion SEMICOLON
+               | ID LCORCH exp RCORCH EQUAL expresion SEMICOLON
+    '''
+    funciones.update(p[1], funciones.miValor_f, funciones.miIdFunciones)
+    funciones.miID_f = p[1]
+    # print("Actualizo variable")
+
 
 
 def p_modulo3(p):
@@ -80,6 +134,12 @@ def p_modulo3(p):
     modulo3 : RETURN exp SEMICOLON RKEY
             | RKEY
     '''
+
+
+
+
+
+################################### ACABA FUNCIONES F ##################3333
 
 
 def p_programa3(p):
@@ -97,6 +157,7 @@ def p_tipo(p):
          | BOOL
     '''
     master.miTipo = p[1]
+    funciones.miTipo_f = p[1]
 
 
 def p_bloque(p):
@@ -107,6 +168,7 @@ def p_bloque(p):
            | escritura
            | loop
            | funcion
+
     '''
 
 
@@ -204,6 +266,7 @@ def p_var_cte(p):
             | TRUE
             | FALSE
     '''
+    funciones.miValor_f = p[1]
     if len(p) == 2:
         master.miValor = p[1]
 
@@ -268,7 +331,6 @@ def p_funcion1(p):
 def p_empty(p):
     'empty :'
     pass
-
 # Regla de error para errores de sintaxis.
 
 
@@ -285,3 +347,6 @@ print(result)
 
 # master.show()
 quad.show()
+funciones.separar()
+master.show()
+# funciones.imp()
