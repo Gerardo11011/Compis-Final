@@ -8,6 +8,7 @@ import sys
 from lex import tokens
 # import vars_table as master
 import tabla_master as master
+import quadruples as quad
 import dirFunc as funciones
 # Leer archivo de prueba.
 prueba = open("Exito1.txt", "r")
@@ -16,9 +17,8 @@ entrada = prueba.read()
 
 idTemporal = None
 
+
 # Declaración de funciones.
-
-
 def p_programa(p):
     '''
     programa : BEGIN vars programa2 MAIN LKEY vars programa3 RKEY END
@@ -182,7 +182,6 @@ def p_bloque(p):
            | escritura
            | loop
            | funcion
-
     '''
 
 
@@ -222,30 +221,45 @@ def p_relop(p):
 
 def p_exp(p):
     '''
-    exp : termino
-        | termino exp1
+    exp : termino pop_term
+        | termino pop_term exp1
     '''
+
+
+def p_pop_term(p):
+    "pop_term :"
+    quad.popTerm()
 
 
 def p_exp1(p):
     '''
-    exp1 : PLUS exp
-         | MINUS exp
+    exp1 : PLUS push_poper exp
+         | MINUS push_poper exp
     '''
 
 
 def p_termino(p):
     '''
-    termino : factor
-            | factor termino1
+    termino : factor pop_fact
+            | factor pop_fact termino1
     '''
+
+
+def p_pop_fact(p):
+    "pop_fact :"
+    quad.popFact()
 
 
 def p_termino1(p):
     '''
-    termino1 : MULT termino
-             | DIV termino
+    termino1 : MULT push_poper termino
+             | DIV push_poper termino
     '''
+
+
+def p_push_poper(p):
+    "push_poper :"
+    quad.pushPoper(p[-1])
 
 
 def p_factor(p):
@@ -259,15 +273,22 @@ def p_factor(p):
 
 def p_var_cte(p):
     '''
-    var_cte : ID
+    var_cte : ID push_id
             | CTE_I
             | CTE_F
             | CTE_S
             | TRUE
             | FALSE
     '''
-    master.miValor = p[1]
     funciones.miValor_f = p[1]
+    if len(p) == 2:
+        master.miValor = p[1]
+
+
+def p_push_id(p):
+    "push_id :"
+    quad.pushID(p[-1])
+    master.miValor = 0
 
 
 def p_condicion(p):
@@ -328,16 +349,18 @@ def p_empty(p):
 
 
 def p_error(p):
+    print(p)
     print("Error de sintaxis en linea '%s'" % p.lexpos)
     sys.exit()
 
 
-# Construir el parser.
+# onstruir el parser.
 print("Parsing . . . \n")
 parser = yacc.yacc()
 result = parser.parse(entrada)
 print(result)
 
+quad.show()
 funciones.separar()
 master.show()
 # funciones.imp()
