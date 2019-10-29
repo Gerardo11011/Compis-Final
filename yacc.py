@@ -193,14 +193,19 @@ def p_asignacion(p):
 
 def p_expresion(p):
     '''expresion : exp
-                 | exp relop exp expresion1
+                 | exp relop exp pop_relop expresion1
     '''
 
 
 def p_expresion1(p):
-    '''expresion1 : relop exp
+    '''expresion1 : relop exp pop_relop
                   | empty
     '''
+
+
+def p_pop_relop(p):
+    "pop_relop :"
+    quad.popRelop()
 
 
 def p_relop(p):
@@ -213,6 +218,7 @@ def p_relop(p):
              | AND
              | OR
     '''
+    quad.pushPoper(p[1])
 
 
 def p_exp(p):
