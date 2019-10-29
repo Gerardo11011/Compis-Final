@@ -16,6 +16,8 @@ miTipo_f = None
 miID_f = None
 miValor_f = None
 miIdFunciones = None
+esFuncion = False
+esMain = False
 
 # Funciones para modificar la tabla
 

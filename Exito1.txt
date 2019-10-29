@@ -14,8 +14,6 @@ func int judas(){
 func float simon(){
   float t;
   int q;
-  int b;
-  b = 213;
   t = 3.1416;
   q = 342;
 }
@@ -24,6 +22,8 @@ func float oscar(){
   string e;
   e = "Judas ambos";
 }
+
+
 main {
   int a, b;
   float c, d;
@@ -33,8 +33,6 @@ main {
   b = 4;
   c = 3.5;
   d = 7.8;
-
-  a = b + d * a;
-
+  pedro = "prueba de que pedro funciona";
 }
 end
