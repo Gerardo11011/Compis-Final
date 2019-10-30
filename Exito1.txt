@@ -1,12 +1,14 @@
 begin
 
 int j;
-
+int p;
 
 func int judas(){
 
   int h;
   int l;
+  int q;
+  q = 43;
   h = 3;
   l = 6;
 }

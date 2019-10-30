@@ -25,8 +25,8 @@ class quadruple(object):
 
 
 # Funciones operadores
-def pushID(id):
-    for keys in simbolos:
+def pushID(var):
+    for keys, id in simbolos.items():
         if id == keys:
             PilaO.append(id)
             PTypes.append(simbolos[keys].type_data)

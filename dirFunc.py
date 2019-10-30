@@ -18,6 +18,7 @@ miValor_f = None
 miIdFunciones = None
 esFuncion = False
 esMain = False
+esGlobal = False
 
 # Funciones para modificar la tabla
 

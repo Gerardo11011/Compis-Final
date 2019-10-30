@@ -75,15 +75,17 @@ def show():
                 print("ID: ", id)
                 print("VALOR: ", simbolos[keys].value[id].value, " TYPE DATA: ", simbolos[keys].value[id].type_data)
             print("")
-        elif keys == "MAIN":
-            print("ID MAIN: ", keys, " TYPE DATA: ", simbolos[keys].type_data)
+        elif keys == "main":
+            print("ID main: ", keys, " TYPE DATA: ", simbolos[keys].type_data)
             for id in simbolos[keys].value:
                 print("ID: ", id)
                 print("VALOR: ", simbolos[keys].value[id].value, " TYPE DATA: ", simbolos[keys].value[id].type_data)
             print("")
         else:
             print("ID: ", keys)
-            print("VALOR: ", simbolos[keys].value, " TYPE DATA: ", simbolos[keys].type_data)
+            for id in simbolos[keys].value:
+                print("ID: ", id)
+                print("VALOR: ", simbolos[keys].value[id].value, " TYPE DATA: ", simbolos[keys].value[id].type_data)
             print("")
 
 

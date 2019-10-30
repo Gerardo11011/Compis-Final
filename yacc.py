@@ -3,6 +3,7 @@
 
 import ply.yacc as yacc
 import sys
+import pprint
 
 # Obtener la lista de tokens del lexer.
 from lex import tokens
@@ -21,14 +22,20 @@ idTemporal = None
 # Declaración de funciones.
 def p_programa(p):
     '''
-    programa : BEGIN vars programa2 separar MAIN mainfunc LKEY vars programa3 separar RKEY END
-             | BEGIN vars MAIN mainfunc LKEY vars programa3 separar RKEY END
-             | BEGIN programa2 separar MAIN mainfunc LKEY vars programa3 separar RKEY END
+    programa : BEGIN globalfunc vars programa2 funcfalse MAIN mainfunc LKEY vars programa3 separar RKEY END
+             | BEGIN globalfunc vars MAIN mainfunc LKEY vars programa3 separar RKEY END
+             | BEGIN programa2 funcfalse MAIN mainfunc LKEY vars programa3 separar RKEY END
              | BEGIN MAIN mainfunc LKEY vars programa3 separar RKEY END
     '''
 
 
 # ############################# INICIAN FUNCIONES F ##########################
+def p_globalfunc(p):
+    '''
+    globalfunc :
+    '''
+    master.insert("global", "int")
+
 def p_programa2(p):
     '''
     programa2 : functrue modulo
@@ -41,6 +48,13 @@ def p_functrue(p):
     functrue :
     '''
     funciones.esFuncion = True
+
+
+def p_funcfalse(p):
+    '''
+    funcfalse :
+    '''
+    funciones.esFuncion = False
 
 
 def p_separar(p):
@@ -64,9 +78,11 @@ def p_modulo(p):
     for i in funciones.funciones:
         if funciones.funciones[i].id_funcion is None:
             funciones.funciones[i].id_funcion = p[3]
+    funciones.separar()
+
+    funciones.funciones = {}
             # print("Inserto ID")
     # print(funciones.miIdFunciones)
-
 
 def p_modulo1(p):
     '''
@@ -104,7 +120,7 @@ def p_mainfunc(p):
     mainfunc :
     '''
     funciones.esMain = True
-    master.insert("MAIN", "INT")
+    master.insert("main", "int")
 
 
 def p_programa3(p):
@@ -132,9 +148,9 @@ def p_vars1(p):
     if funciones.esFuncion:
         funciones.insert(p[1], funciones.miTipo_f, None)
     elif funciones.esMain:
-        funciones.insert(p[1], funciones.miTipo_f, "MAIN")
+        funciones.insert(p[1], funciones.miTipo_f, "main")
     else:
-        master.insert(p[1], master.miTipo)
+        funciones.insert(p[1], funciones.miTipo_f, "global")
 
 
 def p_tipo(p):
@@ -170,10 +186,10 @@ def p_asignacion(p):
         funciones.update(p[1], funciones.miValor_f, funciones.miIdFunciones)
         funciones.miID_f = p[1]
     elif funciones.esMain:
-        funciones.update(p[1], funciones.miValor_f, "MAIN")
+        funciones.update(p[1], funciones.miValor_f, "main")
         funciones.miID_f = p[1]
     else:
-        master.update(p[1], master.miValor)
+        funciones.update(p[1], funciones.miValor_f, "global")
 
 
 
@@ -344,5 +360,6 @@ print(result)
 
 
 # quad.show()
-master.show()
+# master.show()
+pprint.pprint(master.simbolos)
 # funciones.imp()
