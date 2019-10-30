@@ -17,7 +17,7 @@ PJumps = []
 
 # Clase Cuadruplo
 class quadruple(object):
-    def __init__(self, operator, left_operand, right_operand, result):
+    def _init_(self, operator, left_operand, right_operand, result):
         self.operator = operator
         self.left_operand = left_operand
         self.right_operand = right_operand
@@ -25,12 +25,15 @@ class quadruple(object):
 
 
 # Funciones operadores
-def pushID(var):
-    for keys, id in simbolos.items():
-        if id == keys:
-            PilaO.append(id)
-            PTypes.append(simbolos[keys].type_data)
-            AVAIL.append(simbolos[keys].value)
+def pushID(id):
+    for keys in simbolos:
+        if simbolos[keys].value is not None:
+            for var in simbolos[keys].value:
+                print("IMPRIME LAS VARIABLES DE PUSH ID:", var)
+                if id == var:
+                    PilaO.append(id)
+                    PTypes.append(simbolos[keys].value[var].type_data)
+                    AVAIL.append(simbolos[keys].value[var].value)
 
 
 def pushPoper(operator):

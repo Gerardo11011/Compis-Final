@@ -2,7 +2,7 @@
 # Gerardo Ponce     A00818934
 import sys
 import vars_table as tabla
-
+import pprint
 # Tabla de simbolos
 simbolos = {}
 
@@ -10,14 +10,18 @@ simbolos = {}
 miTipo = None
 miID = None
 miValor = None
+miIdFunciones = None
+esFuncion = False
+esMain = False
+esGlobal = False
 
 
 # Funciones para modificar la tabla
 def insert(id, type_data):
-    temp = tabla.tabla_local(type_data)
-    if len(simbolos) >= 1 and not itFound(id):
+    temp = tabla.tabla_local(type_data, {})
+    if len(simbolos) >= 1 and not itFoundGlobal(id):
         simbolos[id] = temp
-    if len(simbolos) == 0:
+    if not simbolos:
         simbolos[id] = temp
 
 
@@ -26,12 +30,12 @@ def update(id, value):
         simbolos[id].value = value
 
 
-def validate(dato, id):
+def validate(dato, id, id_funcion):
     temp = str(type(dato))
     aux = None
     encontro = False
-    if id in simbolos:
-        aux = simbolos[id].type_data
+    if id in simbolos[id_funcion].value:
+        aux = simbolos[id_funcion].value[id].type_data
         encontro = True
     if not encontro:
         print('ERROR: ID no declarado:', id)
@@ -46,13 +50,26 @@ def validate(dato, id):
         print("ERROR: Dato no válido.")
         sys.exit()
 
-def itFound(id):
+
+def itFound(id, id_funcion):
     aux = False
-    if id in simbolos:
+    if id in simbolos[id_funcion].value:
         aux = True
         print("ERROR: ID ya definido: ", id)
         sys.exit()
     return aux
+
+
+def insertFuncToMaster(id, type_data, id_funcion):
+    if len(simbolos[id_funcion].value) >= 1 and not itFound(id, id_funcion):
+        simbolos[id_funcion].value[id] = tabla.tabla_local(type_data, None)
+    if len(simbolos[id_funcion].value) == 0:
+        simbolos[id_funcion].value[id] = tabla.tabla_local(type_data, None)
+
+
+def updateFuncToMaster(id, id_funcion, valor):
+    if validate(valor, id, id_funcion):
+        simbolos[id_funcion].value[id].value = valor
 
 
 def show():

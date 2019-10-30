@@ -10,7 +10,6 @@ from lex import tokens
 # import vars_table as master
 import tabla_master as master
 import quadruples as quad
-import dirFunc as funciones
 # Leer archivo de prueba.
 prueba = open("Exito1.txt", "r")
 entrada = prueba.read()
@@ -22,10 +21,10 @@ idTemporal = None
 # Declaración de funciones.
 def p_programa(p):
     '''
-    programa : BEGIN globalfunc vars programa2 funcfalse MAIN mainfunc LKEY vars programa3 separar RKEY END
-             | BEGIN globalfunc vars MAIN mainfunc LKEY vars programa3 separar RKEY END
-             | BEGIN programa2 funcfalse MAIN mainfunc LKEY vars programa3 separar RKEY END
-             | BEGIN MAIN mainfunc LKEY vars programa3 separar RKEY END
+    programa : BEGIN globalfunc vars programa2 funcfalse MAIN mainfunc LKEY vars programa3 RKEY END
+             | BEGIN globalfunc vars MAIN mainfunc LKEY vars programa3 RKEY END
+             | BEGIN programa2 funcfalse MAIN mainfunc LKEY vars programa3 RKEY END
+             | BEGIN MAIN mainfunc LKEY vars programa3 RKEY END
     '''
 
 
@@ -47,42 +46,35 @@ def p_functrue(p):
     '''
     functrue :
     '''
-    funciones.esFuncion = True
+    master.esFuncion = True
 
 
 def p_funcfalse(p):
     '''
     funcfalse :
     '''
-    funciones.esFuncion = False
-
-
-def p_separar(p):
-    '''
-    separar :
-    '''
-    if funciones.funciones:
-        funciones.separar()
-        funciones.esFuncion = False
+    master.esFuncion = False
 
 
 def p_modulo(p):
     '''
-    modulo : FUNC tipo ID LPAREN modulo1 RPAREN LKEY vars modulo2 modulo3
+    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY vars modulo2 modulo3
     '''
-    global idTemporal
-    idTemporal = p[3]
-    master.insert(p[3], master.miTipo)
-    funciones.miIdFunciones = p[3]
-    # print("inserto id funcion")
-    for i in funciones.funciones:
-        if funciones.funciones[i].id_funcion is None:
-            funciones.funciones[i].id_funcion = p[3]
-    funciones.separar()
 
-    funciones.funciones = {}
-            # print("Inserto ID")
-    # print(funciones.miIdFunciones)
+
+def p_seen_ID(p):
+    '''
+    seen_ID :
+    '''
+    master.miIdFunciones = p[-1]
+
+
+def p_declararFunc(p):
+    '''
+    declararFunc :
+    '''
+    master.insert(master.miIdFunciones, master.miTipo)
+
 
 def p_modulo1(p):
     '''
@@ -119,7 +111,7 @@ def p_mainfunc(p):
     '''
     mainfunc :
     '''
-    funciones.esMain = True
+    master.esMain = True
     master.insert("main", "int")
 
 
@@ -145,12 +137,12 @@ def p_vars1(p):
     vars1 : ID
           | ID COMMA vars1
     '''
-    if funciones.esFuncion:
-        funciones.insert(p[1], funciones.miTipo_f, None)
-    elif funciones.esMain:
-        funciones.insert(p[1], funciones.miTipo_f, "main")
+    if master.esFuncion:
+        master.insertFuncToMaster(p[1], master.miTipo, master.miIdFunciones)
+    elif master.esMain:
+        master.insertFuncToMaster(p[1], master.miTipo, "main")
     else:
-        funciones.insert(p[1], funciones.miTipo_f, "global")
+        master.insertFuncToMaster(p[1], master.miTipo, "global")
 
 
 def p_tipo(p):
@@ -161,7 +153,6 @@ def p_tipo(p):
          | BOOL
     '''
     master.miTipo = p[1]
-    funciones.miTipo_f = p[1]
 
 
 def p_bloque(p):
@@ -176,21 +167,19 @@ def p_bloque(p):
 
 
 def p_asignacion(p):
+
     '''
     asignacion : ID EQUAL expresion SEMICOLON
                | ID EQUAL array SEMICOLON
                | ID EQUAL funcion SEMICOLON
                | ID LCORCH exp RCORCH EQUAL expresion SEMICOLON
     '''
-    if funciones.esFuncion:
-        funciones.update(p[1], funciones.miValor_f, funciones.miIdFunciones)
-        funciones.miID_f = p[1]
-    elif funciones.esMain:
-        funciones.update(p[1], funciones.miValor_f, "main")
-        funciones.miID_f = p[1]
+    if master.esFuncion:
+        master.updateFuncToMaster(p[1], master.miIdFunciones, master.miValor)
+    elif master.esMain:
+        master.updateFuncToMaster(p[1], "main", master.miValor)
     else:
-        funciones.update(p[1], funciones.miValor_f, "global")
-
+        master.updateFuncToMaster(p[1], "global", master.miValor)
 
 
 def p_expresion(p):
@@ -257,7 +246,7 @@ def p_termino1(p):
 
 def p_push_poper(p):
     "push_poper :"
-    # quad.pushPoper(p[-1])
+    quad.pushPoper(p[-1])
 
 
 def p_factor(p):
@@ -278,7 +267,7 @@ def p_var_cte(p):
             | TRUE
             | FALSE
     '''
-    funciones.miValor_f = p[1]
+    master.miValor = p[1]
     if len(p) == 2:
         master.miValor = p[1]
 
@@ -359,7 +348,7 @@ result = parser.parse(entrada)
 print(result)
 
 
-# quad.show()
-# master.show()
-pprint.pprint(master.simbolos)
+quad.show()
+master.show()
+# pprint.pprint(master.simbolos)
 # funciones.imp()
