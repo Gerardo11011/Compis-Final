@@ -2,8 +2,8 @@
 # Gerardo Ponce     A00818934
 import sys
 import vars_table as tabla
-import pprint
-# Tabla de simbolos
+
+# Tabla de simbolos y arreglo con id de funciones
 simbolos = {}
 funciones = []
 
@@ -20,10 +20,21 @@ esGlobal = False
 # Funcion que inicializa la tabla con funciones, global, y main
 def insert(id, type_data):
     temp = tabla.tabla_local(type_data, {})
-    if len(simbolos) >= 1 and not itFoundGlobal(id):
+    if len(simbolos) >= 1 and not itFoundIdFunc(id):
         simbolos[id] = temp
     if not simbolos:
         simbolos[id] = temp
+
+
+# Funcion que revisa que no haya dos funciones con el mismo nombre
+def itFoundIdFunc(id):
+    for Keys in simbolos:
+        if id == Keys:
+            print("Id de funcion declarado previamente:", id)
+            sys.exit()
+            return True
+    return False
+
 
 # Funcion que valida si no hay una variable global con el mismo id ya definido
 def itFoundGlobalVar(id):
@@ -33,6 +44,17 @@ def itFoundGlobalVar(id):
             sys.exit()
             return True
     return False
+
+
+# Funcion que comprueba que no se puedan volver a declarar dos variables con el mismo ID
+def itFoundLocal(id, id_funcion):
+    aux = False
+    if id in simbolos[id_funcion].value:
+        aux = True
+        print("ERROR: ID ya definido: ", id)
+        sys.exit()
+    return aux
+
 
 # Funcion que valida que el valor ingresado y el tipo de la variable sean iguales
 def validate(dato, id, id_funcion):
@@ -56,26 +78,16 @@ def validate(dato, id, id_funcion):
         sys.exit()
 
 
-# Funcion que comprueba que no se puedan volver a declarar dos variables con el mismo ID
-def itFound(id, id_funcion):
-    aux = False
-    if id in simbolos[id_funcion].value:
-        aux = True
-        print("ERROR: ID ya definido: ", id)
-        sys.exit()
-    return aux
-
-
 # Funcion que inserta las variables en su respectiva tabla local
-def insertFuncToMaster(id, type_data, id_funcion):
-    if len(simbolos[id_funcion].value) >= 1 and not itFoundGlobalVar(id) and not itFound(id, id_funcion):
+def insertIdToFunc(id, type_data, id_funcion):
+    if len(simbolos[id_funcion].value) >= 1 and not itFoundGlobalVar(id) and not itFoundLocal(id, id_funcion):
         simbolos[id_funcion].value[id] = tabla.tabla_local(type_data, None)
     if len(simbolos[id_funcion].value) == 0 and not itFoundGlobalVar(id):
         simbolos[id_funcion].value[id] = tabla.tabla_local(type_data, None)
 
 
 # Funcion que actualiza el valor de una variable
-def updateFuncToMaster(id, id_funcion, valor):
+def updateIdInFunc(id, id_funcion, valor):
     if validate(valor, id, id_funcion):
         simbolos[id_funcion].value[id].value = valor
 
@@ -89,13 +101,3 @@ def show():
                 print("ID:", id)
                 print("VALOR:", simbolos[keys].value[id].value, " TYPE DATA:", simbolos[keys].value[id].type_data)
             print("")
-
-
-# Funcion que revisa que no haya dos funciones con el mismo nombre
-def itFoundGlobal(id):
-    for Keys in simbolos:
-        if id == Keys:
-            print("Id de funcion declarado previamente:", id)
-            sys.exit()
-            return True
-    return False

@@ -141,11 +141,11 @@ def p_vars1(p):
           | ID COMMA vars1
     '''
     if master.esFuncion:
-        master.insertFuncToMaster(p[1], master.miTipo, master.miIdFunciones)
+        master.insertIdToFunc(p[1], master.miTipo, master.miIdFunciones)
     elif master.esMain:
-        master.insertFuncToMaster(p[1], master.miTipo, "main")
+        master.insertIdToFunc(p[1], master.miTipo, "main")
     else:
-        master.insertFuncToMaster(p[1], master.miTipo, "global")
+        master.insertIdToFunc(p[1], master.miTipo, "global")
 
 
 def p_tipo(p):
@@ -178,11 +178,11 @@ def p_asignacion(p):
                | ID LCORCH exp RCORCH EQUAL expresion SEMICOLON
     '''
     if master.esFuncion:
-        master.updateFuncToMaster(p[1], master.miIdFunciones, master.miValor)
+        master.updateIdInFunc(p[1], master.miIdFunciones, master.miValor)
     elif master.esMain:
-        master.updateFuncToMaster(p[1], "main", master.miValor)
+        master.updateIdInFunc(p[1], "main", master.miValor)
     else:
-        master.updateFuncToMaster(p[1], "global", master.miValor)
+        master.updateIdInFunc(p[1], "global", master.miValor)
 
 
 def p_expresion(p):
