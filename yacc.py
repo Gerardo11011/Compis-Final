@@ -21,8 +21,8 @@ idTemporal = None
 # Declaración de funciones.
 def p_programa(p):
     '''
-    programa : BEGIN globalfunc vars declaraGlobal programa2 funcfalse MAIN mainfunc LKEY vars programa3 RKEY END
-             | BEGIN globalfunc vars declaraGlobal MAIN mainfunc LKEY vars programa3 RKEY END
+    programa : BEGIN globalfunc vars modulo2 programa2 funcfalse MAIN mainfunc LKEY vars programa3 RKEY END
+             | BEGIN globalfunc vars modulo2 MAIN mainfunc LKEY vars programa3 RKEY END
              | BEGIN programa2 funcfalse MAIN mainfunc LKEY vars programa3 RKEY END
              | BEGIN MAIN mainfunc LKEY vars programa3 RKEY END
     '''
@@ -76,14 +76,6 @@ def p_declararFunc(p):
     declararFunc :
     '''
     master.insert(master.miIdFunciones, master.miTipo)
-
-def p_declarGlobal(p):
-    '''
-    declaraGlobal : asignacion declaraGlobal
-                 | asignacion
-                 | empty
-    '''
-
 
 
 def p_modulo1(p):
