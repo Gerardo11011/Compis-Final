@@ -1,6 +1,9 @@
 begin
 
 int j;
+float t;
+t = 213.321;
+j = 3;
 
 func int judas(){
 
@@ -11,31 +14,30 @@ func int judas(){
 }
 
 func float simon(){
-  float t;
+  float h;
   int q;
-  t = 3.1416;
+  h = 3.1416;
   q = 342;
 }
 
 func float oscar(){
   string e;
-  int q;
-  q = 432;
+  int h;
+  h = 432;
   e = "Judas ambos";
 }
 
 
 main {
   int a, b;
-  float c, d;
+  float h, d;
   string pedro;
   int r;
 
   a = 2;
   b = 4;
-  c = 3.5;
+  h = 3.5;
   d = 7.8;
   pedro = "prueba de que pedro funciona";
-  r = a * b;
 }
 end

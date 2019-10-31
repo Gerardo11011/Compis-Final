@@ -5,6 +5,7 @@ import vars_table as tabla
 import pprint
 # Tabla de simbolos
 simbolos = {}
+funciones = []
 
 # Declaración de variables globales
 miTipo = None
@@ -16,7 +17,7 @@ esMain = False
 esGlobal = False
 
 
-# Funciones para modificar la tabla
+# Funcion que inicializa la tabla con funciones, global, y main
 def insert(id, type_data):
     temp = tabla.tabla_local(type_data, {})
     if len(simbolos) >= 1 and not itFoundGlobal(id):
@@ -24,12 +25,16 @@ def insert(id, type_data):
     if not simbolos:
         simbolos[id] = temp
 
+# Funcion que valida si no hay una variable global con el mismo id ya definido
+def itFoundGlobalVar(id):
+    for keys in simbolos["global"].value:
+        if id == keys:
+            print("Variable global con el mismo ID:", id)
+            sys.exit()
+            return True
+    return False
 
-def update(id, value):
-    if validate(value, id):
-        simbolos[id].value = value
-
-
+# Funcion que valida que el valor ingresado y el tipo de la variable sean iguales
 def validate(dato, id, id_funcion):
     temp = str(type(dato))
     aux = None
@@ -51,6 +56,7 @@ def validate(dato, id, id_funcion):
         sys.exit()
 
 
+# Funcion que comprueba que no se puedan volver a declarar dos variables con el mismo ID
 def itFound(id, id_funcion):
     aux = False
     if id in simbolos[id_funcion].value:
@@ -60,60 +66,36 @@ def itFound(id, id_funcion):
     return aux
 
 
+# Funcion que inserta las variables en su respectiva tabla local
 def insertFuncToMaster(id, type_data, id_funcion):
-    if len(simbolos[id_funcion].value) >= 1 and not itFound(id, id_funcion):
+    if len(simbolos[id_funcion].value) >= 1 and not itFoundGlobalVar(id) and not itFound(id, id_funcion):
         simbolos[id_funcion].value[id] = tabla.tabla_local(type_data, None)
-    if len(simbolos[id_funcion].value) == 0:
+    if len(simbolos[id_funcion].value) == 0 and not itFoundGlobalVar(id):
         simbolos[id_funcion].value[id] = tabla.tabla_local(type_data, None)
 
 
+# Funcion que actualiza el valor de una variable
 def updateFuncToMaster(id, id_funcion, valor):
     if validate(valor, id, id_funcion):
         simbolos[id_funcion].value[id].value = valor
 
 
+# Funcion que imprime la tabla master
 def show():
     for keys in simbolos:
-        if keys == "judas":
-            print("ID FUNCION: ", keys, " TYPE DATA: ", simbolos[keys].type_data)
+        if keys in funciones:
+            print("ID FUNCION:", keys, " TYPE DATA:", simbolos[keys].type_data)
             for id in simbolos[keys].value:
-                print("ID: ", id)
-                print("VALOR: ", simbolos[keys].value[id].value, " TYPE DATA: ", simbolos[keys].value[id].type_data)
-            print("")
-        elif keys == "simon":
-            print("ID FUNCION: ", keys, " TYPE DATA: ", simbolos[keys].type_data)
-            for id in simbolos[keys].value:
-                print("ID: ", id)
-                print("VALOR: ", simbolos[keys].value[id].value, " TYPE DATA: ", simbolos[keys].value[id].type_data)
-            print("")
-        elif keys == "oscar":
-            print("ID FUNCION: ", keys, " TYPE DATA: ", simbolos[keys].type_data)
-            for id in simbolos[keys].value:
-                print("ID: ", id)
-                print("VALOR: ", simbolos[keys].value[id].value, " TYPE DATA: ", simbolos[keys].value[id].type_data)
-            print("")
-        elif keys == "main":
-            print("ID main: ", keys, " TYPE DATA: ", simbolos[keys].type_data)
-            for id in simbolos[keys].value:
-                print("ID: ", id)
-                print("VALOR: ", simbolos[keys].value[id].value, " TYPE DATA: ", simbolos[keys].value[id].type_data)
-            print("")
-        else:
-            print("ID: ", keys)
-            for id in simbolos[keys].value:
-                print("ID: ", id)
-                print("VALOR: ", simbolos[keys].value[id].value, " TYPE DATA: ", simbolos[keys].value[id].type_data)
+                print("ID:", id)
+                print("VALOR:", simbolos[keys].value[id].value, " TYPE DATA:", simbolos[keys].value[id].type_data)
             print("")
 
 
-def insertarMaster(id, objeto):
-    for keys in simbolos:
-        if keys == id:
-            simbolos[keys].value = objeto
-
-
+# Funcion que revisa que no haya dos funciones con el mismo nombre
 def itFoundGlobal(id):
     for Keys in simbolos:
         if id == Keys:
+            print("Id de funcion declarado previamente:", id)
+            sys.exit()
             return True
     return False
