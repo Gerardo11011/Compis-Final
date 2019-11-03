@@ -5,7 +5,7 @@ float t;
 t = 213.321;
 j = 3;
 
-func int judas(){
+func int judas(int p, float ert){
 
   int h;
   int l;
@@ -13,7 +13,7 @@ func int judas(){
   l = 6;
 }
 
-func float simon(){
+func float simon(int k){
   float h;
   int q;
   h = 3.1416;
@@ -21,6 +21,13 @@ func float simon(){
 }
 
 func float oscar(){
+  string e;
+  int h;
+  h = 432;
+  e = "Judas ambos";
+}
+
+func float tony(){
   string e;
   int h;
   h = 432;

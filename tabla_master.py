@@ -1,7 +1,7 @@
 # Oscar Guevara     A01825177
 # Gerardo Ponce     A00818934
 import sys
-import vars_table as tabla
+import estructuras as tabla
 
 # Tabla de simbolos y arreglo con id de funciones
 simbolos = {}
@@ -14,7 +14,6 @@ miValor = None
 miIdFunciones = None
 esFuncion = False
 esMain = False
-esGlobal = False
 
 
 # Funcion que inicializa la tabla con funciones, global, y main
@@ -95,9 +94,8 @@ def updateIdInFunc(id, id_funcion, valor):
 # Funcion que imprime la tabla master
 def show():
     for keys in simbolos:
-        if keys in funciones:
-            print("ID FUNCION:", keys, " TYPE DATA:", simbolos[keys].type_data)
-            for id in simbolos[keys].value:
-                print("ID:", id)
-                print("VALOR:", simbolos[keys].value[id].value, " TYPE DATA:", simbolos[keys].value[id].type_data)
-            print("")
+        print("ID FUNCION:", keys, " TYPE DATA:", simbolos[keys].type_data)
+        for id in simbolos[keys].value:
+            print("ID:", id)
+            print("VALOR:", simbolos[keys].value[id].value, " TYPE DATA:", simbolos[keys].value[id].type_data)
+        print("")

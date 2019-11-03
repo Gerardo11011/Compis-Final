@@ -3,6 +3,7 @@
 # Tabla de simbolos_master
 # simbolos = {}
 
+
 # Objeto tabla
 class tabla_local(object):
     """docstring for tabla."""
@@ -10,3 +11,12 @@ class tabla_local(object):
     def __init__(self, type_data, value=None):
         self.type_data = str(type_data)
         self.value = value
+
+
+# Estructura de memoria
+class memoria_est(object):
+    """docstring for memoria_est."""
+
+    def __init__(self, tipo, valor):
+        self.tipo = tipo
+        self.valor = valor

@@ -36,6 +36,8 @@ def p_globalfunc(p):
     master.insert("global", None)
     master.funciones.append("global")
 
+
+# Funcion que declarar cuantas funciones puede haber
 def p_programa2(p):
     '''
     programa2 : functrue modulo
@@ -78,14 +80,23 @@ def p_declararFunc(p):
     master.insert(master.miIdFunciones, master.miTipo)
 
 
+# Modulo que declara los parametros de la funcion
 def p_modulo1(p):
     '''
-    modulo1 : tipo ID
-            | tipo ID COMMA modulo1
+    modulo1 : modulo1Aux
             | empty
     '''
 
+# Modulo que declara los parametros de la funcion
+def p_modulo1Aux(p):
+    '''
+    modulo1Aux : tipo ID
+               | tipo ID COMMA modulo1
+    '''
+    master.insertIdToFunc(p[2], master.miTipo, master.miIdFunciones)
 
+
+# Modulo que declara el pedazo bloque
 def p_modulo2(p):
     '''
     modulo2 : bloque
@@ -352,6 +363,6 @@ print(result)
 
 
 quad.show()
-master.show()
 # pprint.pprint(master.simbolos)
+master.show()
 # funciones.imp()

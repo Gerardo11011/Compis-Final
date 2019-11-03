@@ -91,7 +91,7 @@ tokens += list(reserved.values())
 
 
 # Ignorar caracteres especiales.
-t_ignore =  ' \t\n'
+t_ignore = ' \t\n'
 
 
 # Declaración de funciones.
