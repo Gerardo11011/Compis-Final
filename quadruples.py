@@ -25,12 +25,20 @@ class quadruple(object):
 
 
 # Funciones operadores
-def pushID(id):
+def pushID(id, funcion):
+    encontro = False
     for keys in simbolos:
-        if id == keys:
-            PilaO.append(id)
-            PTypes.append(simbolos[keys].type_data)
-            AVAIL.append(simbolos[keys].value)
+        if funcion == keys:
+            if simbolos[keys].value is not None:
+                for var in simbolos[keys].value:
+                    if id == var:
+                        encontro = True
+                        PilaO.append(id)
+                        PTypes.append(simbolos[keys].value[var].type_data)
+                        AVAIL.append(simbolos[keys].value[var].value)
+    if encontro is False:
+        print('ERROR: Variable no declarada.')
+        sys.exit()
 
 
 def pushPoper(operator):
@@ -96,8 +104,7 @@ def popRelop():
     if POperSize > 0:
         if(POper[POperSize-1] == '>' or POper[POperSize-1] == '>='
             or POper[POperSize-1] == '<' or POper[POperSize-1] == '<='
-            or POper[POperSize-1] == '==' or POper[POperSize-1] == '<>'
-            or POper[POperSize-1] == 'and' or POper[POperSize-1] == 'or'):
+            or POper[POperSize-1] == '==' or POper[POperSize-1] == '<>'):
             right_operand = PilaO.pop()
             right_type = PTypes.pop()
             right_value = AVAIL.pop()
@@ -119,9 +126,32 @@ def popRelop():
                     result = left_value == right_value
                 elif(operator == '<>'):
                     result = left_value != right_value
-                elif(operator == 'and'):
+                quadr = quadruple(operator, left_operand, right_operand, result)
+                Quad.append(quadr)
+                PilaO.append(result)
+                AVAIL.append(result)
+                PTypes.append(result_type)
+            else:
+                print("ERROR: Type mismatch.")
+                sys.exit()
+
+
+def popLog():
+    POperSize = len(POper)
+    if POperSize > 0:
+        if POper[POperSize-1] == 'and' or POper[POperSize-1] == 'or':
+            right_operand = PilaO.pop()
+            right_type = PTypes.pop()
+            right_value = AVAIL.pop()
+            left_operand = PilaO.pop()
+            left_type = PTypes.pop()
+            left_value = AVAIL.pop()
+            operator = POper.pop()
+            result_type = semantic(left_type, right_type, operator)
+            if(result_type != 'error'):
+                if(operator == 'and'):
                     result = left_value and right_value
-                elif(operator == 'or'):
+                else:
                     result = left_value or right_value
                 quadr = quadruple(operator, left_operand, right_operand, result)
                 Quad.append(quadr)
@@ -131,6 +161,7 @@ def popRelop():
             else:
                 print("ERROR: Type mismatch.")
                 sys.exit()
+
 
 # Funciones para producir representación intermedia para If Else
 def fill(cuadruplo, salto):

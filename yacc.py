@@ -3,13 +3,13 @@
 
 import ply.yacc as yacc
 import sys
+import pprint
 
 # Obtener la lista de tokens del lexer.
 from lex import tokens
 # import vars_table as master
 import tabla_master as master
 import quadruples as quad
-import dirFunc as funciones
 # Leer archivo de prueba.
 prueba = open("Exito1.txt", "r")
 entrada = prueba.read()
@@ -21,11 +21,106 @@ idTemporal = None
 # Declaración de funciones.
 def p_programa(p):
     '''
-    programa : BEGIN vars programa2 MAIN LKEY vars programa3 RKEY END
-             | BEGIN vars MAIN LKEY vars programa3 RKEY END
-             | BEGIN programa2 MAIN LKEY vars programa3 RKEY END
-             | BEGIN MAIN LKEY vars programa3 RKEY END
+    programa : BEGIN globalfunc vars modulo2 programa2 funcfalse MAIN mainfunc LKEY vars programa3 RKEY END
+             | BEGIN globalfunc vars modulo2 MAIN mainfunc LKEY vars programa3 RKEY END
+             | BEGIN programa2 funcfalse MAIN mainfunc LKEY vars programa3 RKEY END
+             | BEGIN MAIN mainfunc LKEY vars programa3 RKEY END
     '''
+
+
+# ############################# INICIAN FUNCIONES F ##########################
+def p_globalfunc(p):
+    '''
+    globalfunc :
+    '''
+    master.insert("global", None)
+    master.funciones.append("global")
+
+
+def p_programa2(p):
+    '''
+    programa2 : functrue modulo
+              | functrue modulo programa2
+    '''
+
+
+def p_functrue(p):
+    '''
+    functrue :
+    '''
+    master.esFuncion = True
+
+
+def p_funcfalse(p):
+    '''
+    funcfalse :
+    '''
+    master.esFuncion = False
+
+
+def p_modulo(p):
+    '''
+    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY vars modulo2 modulo3
+    '''
+
+
+def p_seen_ID(p):
+    '''
+    seen_ID :
+    '''
+    master.miIdFunciones = p[-1]
+    master.funciones.append(p[-1])
+
+
+def p_declararFunc(p):
+    '''
+    declararFunc :
+    '''
+    master.insert(master.miIdFunciones, master.miTipo)
+
+
+def p_modulo1(p):
+    '''
+    modulo1 : tipo ID
+            | tipo ID COMMA modulo1
+            | empty
+    '''
+
+
+def p_modulo2(p):
+    '''
+    modulo2 : bloque
+            | bloque modulo2
+    '''
+
+
+def p_modulo3(p):
+    '''
+    modulo3 : RETURN exp SEMICOLON RKEY
+            | RKEY
+    '''
+
+# ########################### ACABA FUNCIONES  ##############################
+
+
+# ############################ INICIA VARIABLES MAIN #########################
+def p_mainfunc(p):
+    '''
+    mainfunc :
+    '''
+    master.esMain = True
+    master.insert("main", None)
+    master.funciones.append("main")
+
+
+def p_programa3(p):
+    '''
+    programa3 : bloque
+              | bloque programa3
+    '''
+
+
+# ############################ CIERRA VARIABLES MAIN #########################
 
 
 def p_vars(p):
@@ -40,123 +135,12 @@ def p_vars1(p):
     vars1 : ID
           | ID COMMA vars1
     '''
-    master.insert(p[1], master.miTipo)
-
-
-# ############################# INICIAN FUNCIONES F ##########################
-def p_programa2(p):
-    '''
-    programa2 : modulo
-              | modulo programa2
-    '''
-
-
-def p_modulo(p):
-    '''
-    modulo : FUNC tipo ID LPAREN modulo1 RPAREN LKEY varsF modulo2 modulo3
-    '''
-    global idTemporal
-    idTemporal = p[3]
-    master.insert(p[3], master.miTipo)
-    funciones.miIdFunciones = p[3]
-    # print("inserto id funcion")
-    for i in funciones.funciones:
-        if funciones.funciones[i].id_funcion is None:
-            funciones.funciones[i].id_funcion = p[3]
-            # print("Inserto ID")
-    # print(funciones.miIdFunciones)
-
-
-def p_modulo1(p):
-    '''
-    modulo1 : tipo ID
-            | tipo ID COMMA modulo1
-            | empty
-    '''
-
-
-def p_varsF(p):
-    '''
-    varsF : tipo varsF1 SEMICOLON
-          | tipo varsF1 SEMICOLON varsF
-    '''
-
-
-def p_varsF1(p):
-    '''
-    varsF1 : ID
-           | ID COMMA varsF1
-    '''
-    funciones.insert(p[1], funciones.miTipo_f, None)
-    # print("Inserto variable")
-
-
-def p_modulo2(p):
-    '''
-    modulo2 : bloqueF
-            | bloqueF modulo2
-    '''
-
-
-def p_bloqueF(p):
-    '''
-    bloqueF : asignacionF
-            | condicion
-            | lectura
-            | escritura
-            | loop
-            | funcion
-    '''
-
-
-def p_asignacionF(p):
-    '''
-    asignacionF : ID EQUAL expresion SEMICOLON
-                | ID EQUAL array SEMICOLON
-                | ID EQUAL funcion SEMICOLON
-                | ID LCORCH exp RCORCH EQUAL expresion SEMICOLON
-    '''
-    funciones.update(p[1], funciones.miValor_f, funciones.miIdFunciones)
-    funciones.miID_f = p[1]
-    # print("Actualizo variable")
-
-
-
-def p_modulo3(p):
-    '''
-    modulo3 : RETURN exp SEMICOLON RKEY
-            | RKEY
-    '''
-
-# ########################### ACABA FUNCIONES  ##############################
-
-
-# ############################ INICIA VARIABLES MAIN #########################
-
-def p_varsM(p):
-    '''
-    varsM : tipo varsM1 SEMICOLON
-          | tipo varsM1 SEMICOLON varsM
-    '''
-
-
-def p_varsM1(p):
-    '''
-    varsM1 : ID
-           | ID COMMA varsM1
-    '''
-    funciones.insert(p[1], funciones.miTipo_f, "MAIN")
-
-
-def p_programa3(p):
-    '''
-    programa3 : bloque
-              | bloque programa3
-    '''
-
-
-
-############################# CIERRA VARIABLES MAIN #########################
+    if master.esFuncion:
+        master.insertIdToFunc(p[1], master.miTipo, master.miIdFunciones)
+    elif master.esMain:
+        master.insertIdToFunc(p[1], master.miTipo, "main")
+    else:
+        master.insertIdToFunc(p[1], master.miTipo, "global")
 
 
 def p_tipo(p):
@@ -167,7 +151,6 @@ def p_tipo(p):
          | BOOL
     '''
     master.miTipo = p[1]
-    funciones.miTipo_f = p[1]
 
 
 def p_bloque(p):
@@ -188,24 +171,24 @@ def p_asignacion(p):
                | ID EQUAL funcion SEMICOLON
                | ID LCORCH exp RCORCH EQUAL expresion SEMICOLON
     '''
-    master.update(p[1], master.miValor)
+    if master.esFuncion:
+        master.updateIdInFunc(p[1], master.miIdFunciones, master.miValor)
+    elif master.esMain:
+        master.updateIdInFunc(p[1], "main", master.miValor)
+    else:
+        master.updateIdInFunc(p[1], "global", master.miValor)
 
 
 def p_expresion(p):
     '''expresion : exp
-                 | exp relop exp pop_relop expresion1
+                 | exp relop exp expresion1
     '''
 
 
 def p_expresion1(p):
-    '''expresion1 : relop exp pop_relop
+    '''expresion1 : relop exp
                   | empty
     '''
-
-
-def p_pop_relop(p):
-    "pop_relop :"
-    quad.popRelop()
 
 
 def p_relop(p):
@@ -218,7 +201,6 @@ def p_relop(p):
              | AND
              | OR
     '''
-    quad.pushPoper(p[1])
 
 
 def p_exp(p):
@@ -282,15 +264,18 @@ def p_var_cte(p):
             | TRUE
             | FALSE
     '''
-    funciones.miValor_f = p[1]
+    # master.miValor = p[1]
     if len(p) == 2:
         master.miValor = p[1]
 
 
 def p_push_id(p):
     "push_id :"
-    quad.pushID(p[-1])
-    master.miValor = 0
+    if master.esMain:
+        quad.pushID(p[-1], 'main')
+    else:
+        quad.pushID(p[-1], master.miIdFunciones)
+    master.miValor = 0.0
 
 
 def p_condicion(p):
@@ -362,7 +347,8 @@ parser = yacc.yacc()
 result = parser.parse(entrada)
 print(result)
 
+
 quad.show()
-funciones.separar()
 master.show()
+# pprint.pprint(master.simbolos)
 # funciones.imp()
