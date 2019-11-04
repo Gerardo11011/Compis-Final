@@ -38,12 +38,13 @@ def itFoundIdFunc(id):
 
 # Funcion que valida si no hay una variable global con el mismo id ya definido
 def itFoundGlobalVar(id):
-    for keys in simbolos["global"].value:
-        if id == keys:
-            print("Variable global con el mismo ID:", id)
-            sys.exit()
-            return True
-    return False
+    if "global" in simbolos.keys():
+        for keys in simbolos["global"].value:
+            if id == keys:
+                print("Variable global con el mismo ID:", id)
+                sys.exit()
+                return True
+        return False
 
 
 # Funcion que comprueba que no se puedan volver a declarar dos variables con el mismo ID

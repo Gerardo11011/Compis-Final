@@ -166,17 +166,23 @@ def p_bloque(p):
 
 def p_asignacion(p):
     '''
-    asignacion : ID EQUAL expresion SEMICOLON
-               | ID EQUAL array SEMICOLON
-               | ID EQUAL funcion SEMICOLON
-               | ID LCORCH exp RCORCH EQUAL expresion SEMICOLON
+    asignacion : ID push_id EQUAL push_poper expresion pop_assign SEMICOLON
+               | ID push_id EQUAL push_poper array pop_assign SEMICOLON
+               | ID push_id EQUAL push_poper funcion pop_assign SEMICOLON
+               | ID push_id LCORCH exp RCORCH EQUAL push_poper expresion pop_assign SEMICOLON
     '''
+
+
+def p_pop_assign(p):
+    "pop_assign :"
+    master.miValor = quad.popAssign()
+    print(master.miValor)
     if master.esFuncion:
-        master.updateIdInFunc(p[1], master.miIdFunciones, master.miValor)
+        master.updateIdInFunc(p[-5], master.miIdFunciones, master.miValor)
     elif master.esMain:
-        master.updateIdInFunc(p[1], "main", master.miValor)
+        master.updateIdInFunc(p[-5], "main", master.miValor)
     else:
-        master.updateIdInFunc(p[1], "global", master.miValor)
+        master.updateIdInFunc(p[-5], "global", master.miValor)
 
 
 def p_expresion(p):
@@ -258,11 +264,11 @@ def p_factor(p):
 def p_var_cte(p):
     '''
     var_cte : ID push_id
-            | CTE_I
-            | CTE_F
-            | CTE_S
-            | TRUE
-            | FALSE
+            | CTE_I push_cte
+            | CTE_F push_cte
+            | CTE_S push_cte
+            | TRUE push_cte
+            | FALSE push_cte
     '''
     # master.miValor = p[1]
     if len(p) == 2:
@@ -271,11 +277,17 @@ def p_var_cte(p):
 
 def p_push_id(p):
     "push_id :"
-    if master.esMain:
+    if master.esFuncion:
+        quad.pushID(p[-1], master.miIdFunciones)
+    elif master.esMain:
         quad.pushID(p[-1], 'main')
     else:
-        quad.pushID(p[-1], master.miIdFunciones)
-    master.miValor = 0.0
+        quad.pushID(p[-1], 'global')
+
+
+def p_push_cte(p):
+    "push_cte :"
+    quad.pushCte(p[-1])
 
 
 def p_condicion(p):

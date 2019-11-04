@@ -37,12 +37,46 @@ def pushID(id, funcion):
                         PTypes.append(simbolos[keys].value[var].type_data)
                         AVAIL.append(simbolos[keys].value[var].value)
     if encontro is False:
-        print('ERROR: Variable no declarada.')
+        print('ERROR: Variable no declarada.', id)
         sys.exit()
+
+
+def pushCte(cte):
+    PilaO.append(cte)
+    tipo = str(type(cte))
+    if tipo == "<class 'float'>":
+        PTypes.append('float')
+    if tipo == "<class 'int'>":
+        PTypes.append('int')
+    if tipo == "<class 'str'>":
+        PTypes.append('string')
+    AVAIL.append(cte)
 
 
 def pushPoper(operator):
     POper.append(operator)
+
+
+def popAssign():
+    POperSize = len(POper)
+    if POperSize > 0:
+        if POper[POperSize-1] == '=':
+            right_operand = PilaO.pop()
+            right_type = PTypes.pop()
+            right_value = AVAIL.pop()
+            left_operand = PilaO.pop()
+            left_type = PTypes.pop()
+            left_value = AVAIL.pop()
+            operator = POper.pop()
+            result_type = semantic(left_type, right_type, operator)
+            if(result_type != 'error'):
+                result = right_value
+                quadr = quadruple(operator, right_operand, None, result)
+                Quad.append(quadr)
+            else:
+                print("ERROR: Type mismatch.")
+                sys.exit()
+    return result
 
 
 def popTerm():
