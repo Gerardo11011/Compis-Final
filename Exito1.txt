@@ -6,7 +6,6 @@ t = 213.321;
 j = 3;
 
 func int judas(){
-
   int h;
   int l;
   h = 3;
@@ -39,6 +38,9 @@ main {
   h = 3.5;
   d = 7.8;
   pedro = "prueba de que pedro funciona";
-  a = a * b + a;
+  if(a - b > b + a * d or h <= d) {
+    a = a * b + a;
+  }
 }
+
 end

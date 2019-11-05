@@ -166,17 +166,16 @@ def p_bloque(p):
 
 def p_asignacion(p):
     '''
-    asignacion : ID push_id EQUAL push_poper expresion pop_assign SEMICOLON
+    asignacion : ID push_id EQUAL push_poper logico pop_assign SEMICOLON
                | ID push_id EQUAL push_poper array pop_assign SEMICOLON
                | ID push_id EQUAL push_poper funcion pop_assign SEMICOLON
-               | ID push_id LCORCH exp RCORCH EQUAL push_poper expresion pop_assign SEMICOLON
+               | ID push_id LCORCH exp RCORCH EQUAL push_poper logico pop_assign SEMICOLON
     '''
 
 
 def p_pop_assign(p):
     "pop_assign :"
     master.miValor = quad.popAssign()
-    print(master.miValor)
     if master.esFuncion:
         master.updateIdInFunc(p[-5], master.miIdFunciones, master.miValor)
     elif master.esMain:
@@ -185,16 +184,40 @@ def p_pop_assign(p):
         master.updateIdInFunc(p[-5], "global", master.miValor)
 
 
+def p_logico(p):
+    '''
+    logico : expresion pop_log
+           | expresion pop_log logico1
+    '''
+
+
+def p_pop_log(p):
+    "pop_log :"
+    quad.popLog()
+
+
+def p_logico1(p):
+    '''
+    logico1 : AND push_poper logico
+            | OR push_poper logico
+    '''
+
+
 def p_expresion(p):
     '''expresion : exp
-                 | exp relop exp expresion1
+                 | exp relop exp pop_relop
     '''
 
 
-def p_expresion1(p):
-    '''expresion1 : relop exp
-                  | empty
-    '''
+# def p_expresion1(p):
+#     '''expresion1 : relop exp
+#                   | empty
+#     '''
+
+
+def p_pop_relop(p):
+    "pop_relop :"
+    quad.popRelop()
 
 
 def p_relop(p):
@@ -204,9 +227,8 @@ def p_relop(p):
              | LTE
              | DOUBLEEQUAL
              | NE
-             | AND
-             | OR
     '''
+    quad.pushPoper(p[1])
 
 
 def p_exp(p):
@@ -254,7 +276,7 @@ def p_push_poper(p):
 
 def p_factor(p):
     '''
-    factor : LPAREN expresion RPAREN
+    factor : LPAREN logico RPAREN
            | PLUS var_cte
            | MINUS var_cte
            | var_cte
@@ -292,8 +314,8 @@ def p_push_cte(p):
 
 def p_condicion(p):
     '''
-    condicion : IF LPAREN expresion RPAREN LKEY bloque RKEY
-              | IF LPAREN expresion RPAREN LKEY bloque RKEY ELSE LKEY bloque RKEY
+    condicion : IF LPAREN logico RPAREN LKEY bloque RKEY
+              | IF LPAREN logico RPAREN LKEY bloque RKEY ELSE LKEY bloque RKEY
     '''
 
 
@@ -324,7 +346,7 @@ def p_array1(p):
 
 def p_loop(p):
     '''
-    loop : LOOP LPAREN expresion RPAREN LKEY bloque RKEY
+    loop : LOOP LPAREN logico RPAREN LKEY bloque RKEY
     '''
 
 
