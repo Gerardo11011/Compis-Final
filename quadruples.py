@@ -65,9 +65,9 @@ def popAssign():
             right_operand = PilaO.pop()
             right_type = PTypes.pop()
             right_value = AVAIL.pop()
-            left_operand = PilaO.pop()
+            PilaO.pop()
             left_type = PTypes.pop()
-            left_value = AVAIL.pop()
+            AVAIL.pop()
             operator = POper.pop()
             result_type = semantic(left_type, right_type, operator)
             if(result_type != 'error'):
@@ -198,6 +198,19 @@ def popLog():
                 sys.exit()
 
 
+# Función para producir representación intermedia para lectura y escritura
+def popOut():
+    POperSize = len(POper)
+    if POperSize > 0:
+        if POper[POperSize-1] == 'output' or POper[POperSize-1] == 'input':
+            right_operand = PilaO.pop()
+            PTypes.pop()
+            AVAIL.pop()
+            operator = POper.pop()
+            quadr = quadruple(len(Quad), operator, None, None, right_operand)
+            Quad.append(quadr)
+
+
 # Funciones para producir representación intermedia para If Else
 def fill(cuadruplo, salto):
     Quad[cuadruplo].result = salto
@@ -251,6 +264,7 @@ def loopTres():
     quadr = quadruple(len(Quad), "goto", None, None, regresa)
     Quad.append(quadr)
     fill(end, len(Quad))
+
 
 
 def show():

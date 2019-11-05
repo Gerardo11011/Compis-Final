@@ -10,6 +10,7 @@ main {
     if(a < b) {
       a = 0;
       b = b + d;
+      output(a + b * 2);
     }
     else {
       c = a + b;
@@ -18,6 +19,7 @@ main {
   else {
     a = b + c;
   }
+  input(b);
   d = b + a * c;
 }
 

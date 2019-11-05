@@ -122,7 +122,7 @@ def t_error(t):
 lexer = lex.lex()
 
 # Leer archivo de prueba.
-prueba = open("Exito4.txt", "r")
+prueba = open("Exito3.txt", "r")
 entrada = prueba.read()
 
 # Entrada del lexer.

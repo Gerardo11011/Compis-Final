@@ -11,7 +11,7 @@ from lex import tokens
 import tabla_master as master
 import quadruples as quad
 # Leer archivo de prueba.
-prueba = open("Exito4.txt", "r")
+prueba = open("Exito3.txt", "r")
 entrada = prueba.read()
 
 
@@ -336,14 +336,19 @@ def p_ifelse3(p):
 
 def p_lectura(p):
     '''
-    lectura : INPUT LPAREN ID RPAREN SEMICOLON
+    lectura : INPUT push_poper LPAREN ID push_id RPAREN pop_out SEMICOLON
     '''
 
 
 def p_escritura(p):
     '''
-    escritura : OUTPUT LPAREN exp RPAREN SEMICOLON
+    escritura : OUTPUT push_poper LPAREN exp RPAREN pop_out SEMICOLON
     '''
+
+
+def p_pop_out(p):
+    "pop_out :"
+    quad.popOut()
 
 
 def p_array(p):
@@ -382,7 +387,7 @@ def p_loop3(p):
 
 def p_funcion(p):
     '''
-    funcion : ID LPAREN funcion1 RPAREN
+    funcion : ID LPAREN funcion1 RPAREN SEMICOLON
     '''
 
 
