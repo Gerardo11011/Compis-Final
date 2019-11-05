@@ -58,6 +58,10 @@ def pushPoper(operator):
     POper.append(operator)
 
 
+def popPoper():
+    POper.pop()
+
+
 def popAssign():
     POperSize = len(POper)
     if POperSize > 0:
@@ -199,7 +203,7 @@ def popLog():
 
 
 # Función para producir representación intermedia para lectura y escritura
-def popOut():
+def popIO():
     POperSize = len(POper)
     if POperSize > 0:
         if POper[POperSize-1] == 'output' or POper[POperSize-1] == 'input':

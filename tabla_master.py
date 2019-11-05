@@ -74,6 +74,8 @@ def validate(dato, id, id_funcion):
         return True
     if temp == "<class 'str'>" and aux == 'string':
         return True
+    if temp == "<class 'bool'>" and aux == 'bool':
+        return True
     else:
         print("ERROR: Dato no válido.")
         sys.exit()

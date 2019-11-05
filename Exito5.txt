@@ -1,0 +1,22 @@
+begin
+
+main {
+  float a, b, c, d, e, f, g, h, j, k, l;
+  bool prueba;
+  a = 0.0;
+  b = 1.0;
+  c = 2.0;
+  d = 2.0;
+  e = 3.0;
+  f = 4.0;
+  g = 5.0;
+  h = 6.0;
+  j = 7.0;
+  k = 8.0;
+  l = 9.0;
+
+  prueba = ((a + b) * c + d * e * f + k / h * j) + g * l + h + j > (a - c * d) / f;
+
+}
+
+end

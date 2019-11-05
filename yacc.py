@@ -11,7 +11,7 @@ from lex import tokens
 import tabla_master as master
 import quadruples as quad
 # Leer archivo de prueba.
-prueba = open("Exito3.txt", "r")
+prueba = open("Exito5.txt", "r")
 entrada = prueba.read()
 
 
@@ -176,6 +176,8 @@ def p_asignacion(p):
 def p_pop_assign(p):
     "pop_assign :"
     master.miValor = quad.popAssign()
+    print(master.miValor)
+    print(type(master.miValor))
     if master.esFuncion:
         master.updateIdInFunc(p[-5], master.miIdFunciones, master.miValor)
     elif master.esMain:
@@ -274,9 +276,18 @@ def p_push_poper(p):
     quad.pushPoper(p[-1])
 
 
+def p_pop_poper(p):
+    "pop_poper :"
+    # quad.popTerm()
+    # quad.popFact()
+    # quad.popRelop()
+    # quad.popLog()
+    quad.popPoper()
+
+
 def p_factor(p):
     '''
-    factor : LPAREN logico RPAREN
+    factor : LPAREN push_poper logico RPAREN pop_poper
            | PLUS var_cte
            | MINUS var_cte
            | var_cte
@@ -336,19 +347,19 @@ def p_ifelse3(p):
 
 def p_lectura(p):
     '''
-    lectura : INPUT push_poper LPAREN ID push_id RPAREN pop_out SEMICOLON
+    lectura : INPUT push_poper LPAREN ID push_id RPAREN pop_io SEMICOLON
     '''
 
 
 def p_escritura(p):
     '''
-    escritura : OUTPUT push_poper LPAREN exp RPAREN pop_out SEMICOLON
+    escritura : OUTPUT push_poper LPAREN exp RPAREN pop_io SEMICOLON
     '''
 
 
-def p_pop_out(p):
-    "pop_out :"
-    quad.popOut()
+def p_pop_io(p):
+    "pop_io :"
+    quad.popIO()
 
 
 def p_array(p):
