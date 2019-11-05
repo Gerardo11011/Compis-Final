@@ -11,7 +11,7 @@ from lex import tokens
 import tabla_master as master
 import quadruples as quad
 # Leer archivo de prueba.
-prueba = open("Exito3.txt", "r")
+prueba = open("Exito4.txt", "r")
 entrada = prueba.read()
 
 
