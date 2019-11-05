@@ -41,6 +41,10 @@ main {
   if(a - b > b + a * d or h <= d) {
     a = a * b + a;
   }
+  else {
+    b = a + b;
+  }
+  d = 7.3;
 }
 
 end

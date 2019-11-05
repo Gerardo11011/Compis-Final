@@ -1,0 +1,24 @@
+begin
+
+main {
+  int a, b, d, c;
+  a = 4;
+  b = 5;
+  c = 2;
+  d = 1;
+  if(a + b > d) {
+    if(a < b) {
+      a = 0;
+      b = b + d;
+    }
+    else {
+      c = a + b;
+    }
+  }
+  else {
+    a = b + c;
+  }
+  d = b + a * c;
+}
+
+end

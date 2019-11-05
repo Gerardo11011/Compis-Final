@@ -122,7 +122,7 @@ def t_error(t):
 lexer = lex.lex()
 
 # Leer archivo de prueba.
-prueba = open("Exito1.txt", "r")
+prueba = open("Exito3.txt", "r")
 entrada = prueba.read()
 
 # Entrada del lexer.
@@ -133,4 +133,4 @@ while True:
     tok = lexer.token()
     if not tok:
         break
-    # print(tok)
+    print(tok)

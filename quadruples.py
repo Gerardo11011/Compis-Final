@@ -17,7 +17,8 @@ PJumps = []
 
 # Clase Cuadruplo
 class quadruple(object):
-    def __init__(self, operator, left_operand, right_operand, result):
+    def __init__(self, num, operator, left_operand, right_operand, result):
+        self.num = num
         self.operator = operator
         self.left_operand = left_operand
         self.right_operand = right_operand
@@ -71,7 +72,7 @@ def popAssign():
             result_type = semantic(left_type, right_type, operator)
             if(result_type != 'error'):
                 result = right_value
-                quadr = quadruple(operator, right_operand, None, result)
+                quadr = quadruple(len(Quad), operator, right_operand, None, result)
                 Quad.append(quadr)
             else:
                 print("ERROR: Type mismatch.")
@@ -96,7 +97,7 @@ def popTerm():
                     result = left_value + right_value
                 else:
                     result = left_value - right_value
-                quadr = quadruple(operator, left_operand, right_operand, result)
+                quadr = quadruple(len(Quad), operator, left_operand, right_operand, result)
                 Quad.append(quadr)
                 PilaO.append(result)
                 AVAIL.append(result)
@@ -123,7 +124,7 @@ def popFact():
                     result = left_value * right_value
                 else:
                     result = left_value / right_value
-                quadr = quadruple(operator, left_operand, right_operand, result)
+                quadr = quadruple(len(Quad), operator, left_operand, right_operand, result)
                 Quad.append(quadr)
                 PilaO.append(result)
                 AVAIL.append(result)
@@ -160,7 +161,7 @@ def popRelop():
                     result = left_value == right_value
                 elif(operator == '<>'):
                     result = left_value != right_value
-                quadr = quadruple(operator, left_operand, right_operand, result)
+                quadr = quadruple(len(Quad), operator, left_operand, right_operand, result)
                 Quad.append(quadr)
                 PilaO.append(result)
                 AVAIL.append(result)
@@ -187,7 +188,7 @@ def popLog():
                     result = left_value and right_value
                 else:
                     result = left_value or right_value
-                quadr = quadruple(operator, left_operand, right_operand, result)
+                quadr = quadruple(len(Quad), operator, left_operand, right_operand, result)
                 Quad.append(quadr)
                 PilaO.append(result)
                 AVAIL.append(result)
@@ -206,7 +207,7 @@ def ifelseUno():
     exp_type = PTypes.pop()
     if exp_type == "bool":
         result = PilaO.pop()
-        quadr = quadruple("gotof", result, None, None)
+        quadr = quadruple(len(Quad), "gotof", result, None, None)
         Quad.append(quadr)
         PJumps.append(len(Quad)-1)
     else:
@@ -220,7 +221,7 @@ def ifelseDos():
 
 
 def ifelseTres():
-    quadr = quadruple("goto", None, None, None)
+    quadr = quadruple(len(Quad), "goto", None, None, None)
     Quad.append(quadr)
     false = PJumps.pop()
     PJumps.append(len(Quad)-1)
@@ -236,7 +237,7 @@ def loopDos():
     exp_type = PTypes.pop()
     if exp_type == "bool":
         result = PilaO.pop()
-        quadr = quadruple("gotof", result, None, None)
+        quadr = quadruple(len(Quad), "gotof", result, None, None)
         Quad.append(quadr)
         PJumps.append(len(Quad)-1)
     else:
@@ -247,11 +248,11 @@ def loopDos():
 def loopTres():
     end = PJumps.pop()
     regresa = PJumps.pop()
-    quadr = quadruple("goto", None, None, regresa)
+    quadr = quadruple(len(Quad), "goto", None, None, regresa)
     Quad.append(quadr)
     fill(end, len(Quad))
 
 
 def show():
     for i in range(0, len(Quad)):
-        print(Quad[i].operator, Quad[i].left_operand, Quad[i].right_operand, Quad[i].result, sep = '\t')
+        print(Quad[i].num, Quad[i].operator, Quad[i].left_operand, Quad[i].right_operand, Quad[i].result, sep = '\t')

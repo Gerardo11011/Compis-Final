@@ -11,7 +11,7 @@ from lex import tokens
 import tabla_master as master
 import quadruples as quad
 # Leer archivo de prueba.
-prueba = open("Exito1.txt", "r")
+prueba = open("Exito3.txt", "r")
 entrada = prueba.read()
 
 
@@ -314,9 +314,24 @@ def p_push_cte(p):
 
 def p_condicion(p):
     '''
-    condicion : IF LPAREN logico RPAREN LKEY bloque RKEY
-              | IF LPAREN logico RPAREN LKEY bloque RKEY ELSE LKEY bloque RKEY
+    condicion : IF LPAREN logico RPAREN ifelse1 LKEY modulo2 RKEY ifelse2
+              | IF LPAREN logico RPAREN ifelse1 LKEY modulo2 RKEY ELSE ifelse3 LKEY modulo2 RKEY ifelse2
     '''
+
+
+def p_ifelse1(p):
+    "ifelse1 :"
+    quad.ifelseUno()
+
+
+def p_ifelse2(p):
+    "ifelse2 :"
+    quad.ifelseDos()
+
+
+def p_ifelse3(p):
+    "ifelse3 :"
+    quad.ifelseTres()
 
 
 def p_lectura(p):
@@ -346,8 +361,23 @@ def p_array1(p):
 
 def p_loop(p):
     '''
-    loop : LOOP LPAREN logico RPAREN LKEY bloque RKEY
+    loop : LOOP loop1 LPAREN logico RPAREN loop2 LKEY modulo2 RKEY loop3
     '''
+
+
+def p_loop1(p):
+    "loop1 :"
+    quad.loopUno()
+
+
+def p_loop2(p):
+    "loop2 :"
+    quad.loopDos()
+
+
+def p_loop3(p):
+    "loop3 :"
+    quad.loopTres()
 
 
 def p_funcion(p):

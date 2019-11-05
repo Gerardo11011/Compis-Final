@@ -1,0 +1,14 @@
+begin
+
+main {
+  int a, b, c, d;
+  a = 4;
+  b = 5;
+  c = 2;
+  d = 1;
+  loop(a + b * c < d) {
+    if(a + b < c) {
+      a = b + c;
+    }
+  }
+}
