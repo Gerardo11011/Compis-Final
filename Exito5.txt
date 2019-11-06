@@ -15,7 +15,7 @@ main {
   k = 8.0;
   l = 9.0;
 
-  prueba = ((a + b) * c + d * e * f + k / h * j) + g * l + h + j > (a - c * d) / f;
+  prueba = ((a * b - c * d) > c + d * e / f) and (g * h - j > l - a) and b + c > d * f;
 
 }
 
