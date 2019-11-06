@@ -156,6 +156,7 @@ def p_vars1(p):
     vars1 : ID
           | ID COMMA vars1
     '''
+
     if master.esFuncion:
         master.insertIdToFunc(p[1], master.miTipo, master.miIdFunciones, None)
     elif master.esMain:
