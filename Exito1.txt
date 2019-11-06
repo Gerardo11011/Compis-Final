@@ -6,7 +6,9 @@ float t;
 t = 213.321;
 j = 3;
 
-func int judas(float p, int r){
+
+func int judas(){
+
   int h;
   float l;
   h = 3;
@@ -16,40 +18,32 @@ func int judas(float p, int r){
 }
 
 func float simon(){
-  float h;
+  float t;
   int q;
-  int temp;
-  h = 3.1416;
+  int b;
+  b = 213;
+  t = 3.1416;
   q = 342;
   return q;
 }
 
 func float oscar(string p){
   string e;
-  int h;
-  int temp;
-  h = 432;
   e = "Judas ambos";
   temp = h * 3;
   return temp;
 }
-
-
 main {
   int a, b;
-  float h, d;
-  string pedro, hector;
-  int r;
-
+  float c, d;
+  string pedro;
   a = 2;
   b = 4;
   h = 3.5;
   d = 7.8;
-  pedro = "prueba de que pedro funciona";
-  a = a * b + a;
-  hector = "prueba de que hector funciona";
-  judas(h, b);
 
+
+  a = b + d * a;
 
 }
 end
