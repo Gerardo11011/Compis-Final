@@ -1,44 +1,44 @@
 begin
 
 int j;
+int erw;
 float t;
 t = 213.321;
 j = 3;
 
-func int judas(int p, float ert){
-
+func int judas(float p, int r){
   int h;
-  int l;
+  float l;
   h = 3;
-  l = 6;
+  l = 6.21;
+  r = 999;
+  return h;
 }
 
-func float simon(int k){
+func float simon(){
   float h;
   int q;
+  int temp;
   h = 3.1416;
   q = 342;
+  return q;
 }
 
-func float oscar(){
+func float oscar(string p){
   string e;
   int h;
+  int temp;
   h = 432;
   e = "Judas ambos";
-}
-
-func float tony(){
-  string e;
-  int h;
-  h = 432;
-  e = "Judas ambos";
+  temp = h * 3;
+  return temp;
 }
 
 
 main {
   int a, b;
   float h, d;
-  string pedro;
+  string pedro, hector;
   int r;
 
   a = 2;
@@ -46,5 +46,10 @@ main {
   h = 3.5;
   d = 7.8;
   pedro = "prueba de que pedro funciona";
+  a = a * b + a;
+  hector = "prueba de que hector funciona";
+  judas(h, b);
+
+
 }
 end

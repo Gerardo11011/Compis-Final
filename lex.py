@@ -1,4 +1,3 @@
-
 # Oscar Guevara     A01825177
 # Gerardo Ponce     A00818934
 
@@ -100,15 +99,18 @@ def t_CTE_F(t):
     t.value = float(t.value)
     return t
 
+
 def t_CTE_I(t):
     r'\d+'
     t.value = int(t.value)
     return t
 
+
 def t_ID(t):
     r'[a-zA-Z][a-zA-Z]*'
-    t.type = reserved.get(t.value,'ID')
+    t.type = reserved.get(t.value, 'ID')
     return t
+
 
 def t_error(t):
     print("Illegal character")
