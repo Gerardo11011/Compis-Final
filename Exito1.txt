@@ -1,6 +1,10 @@
 begin
 
 int j;
+int erw;
+float t;
+t = 213.321;
+j = 3;
 
 
 func int judas(){
@@ -28,11 +32,11 @@ main {
   int a, b;
   float c, d;
   string pedro;
-
   a = 2;
   b = 4;
-  c = 3.5;
+  h = 3.5;
   d = 7.8;
+
 
   a = b + d * a;
 

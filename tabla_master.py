@@ -1,37 +1,77 @@
 # Oscar Guevara     A01825177
 # Gerardo Ponce     A00818934
 import sys
-import vars_table as tabla
+import estructuras as tabla
+import memoria as memo
 
-# Tabla de simbolos
+# Tabla de simbolos y arreglo con id de funciones
 simbolos = {}
+funciones = []
+arrParam = []
 
 # Declaración de variables globales
 miTipo = None
+miTipoAux = None
 miID = None
 miValor = None
+miIdFunciones = None
+esFuncion = False
+esMain = False
+esGlobal = False
+prueba = None
+returnValor = None
+miParamFunc = None
+esParam = False
 
 
-# Funciones para modificar la tabla
+# Funcion que inicializa la tabla con funciones, global, y main
 def insert(id, type_data):
-    temp = tabla.tabla_local(type_data)
-    if len(simbolos) >= 1 and not itFound(id):
+    temp = tabla.tabla_local(type_data, {})
+    if len(simbolos) >= 1 and not itFoundIdFunc(id):
         simbolos[id] = temp
-    if len(simbolos) == 0:
+    if not simbolos:
         simbolos[id] = temp
 
 
-def update(id, value):
-    if validate(value, id):
-        simbolos[id].value = value
+# Funcion que revisa que no haya dos funciones con el mismo nombre
+def itFoundIdFunc(id):
+    for Keys in simbolos:
+        if id == Keys:
+            print("Id de funcion declarado previamente:", id)
+            sys.exit()
+            return True
+    return False
 
 
-def validate(dato, id):
+# Funcion que valida si no hay una variable global con el mismo id ya definido
+def itFoundGlobalVar(id):
+    if "global" in simbolos.keys():
+        for keys in simbolos["global"].value:
+            if id == keys:
+                print("Variable global con el mismo ID:", id)
+                sys.exit()
+                return True
+        return False
+
+
+# Funcion que comprueba que no se puedan volver a declarar dos variables con el mismo ID
+def itFoundLocal(id, id_funcion):
+    aux = False
+    if id in simbolos[id_funcion].value:
+        aux = True
+        print("ERROR: ID ya definido: ", id)
+        sys.exit()
+    return aux
+
+
+# Funcion que valida que el valor ingresado y el tipo de la variable sean iguales
+# Funcion que valida que el valor ingresado y el tipo de la variable sean iguales
+def validate(dato, id, id_funcion):
     temp = str(type(dato))
     aux = None
     encontro = False
-    if id in simbolos:
-        aux = simbolos[id].type_data
+    if id in simbolos[id_funcion].value:
+        aux = simbolos[id_funcion].value[id].type_data
         encontro = True
     if not encontro:
         print('ERROR: ID no declarado:', id)
@@ -42,53 +82,63 @@ def validate(dato, id):
         return True
     if temp == "<class 'str'>" and aux == 'string':
         return True
+    if temp == "<class 'bool'>" and aux == 'bool':
+        return True
     else:
         print("ERROR: Dato no válido.")
         sys.exit()
 
-def itFound(id):
-    aux = False
-    if id in simbolos:
-        aux = True
-        print("ERROR: ID ya definido: ", id)
-        sys.exit()
-    return aux
+
+# Funcion que inserta las variables en su respectiva tabla local
+def insertIdToFunc(id, type_data, id_funcion, direccion):
+    if len(simbolos[id_funcion].value) >= 1 and not itFoundGlobalVar(id) and not itFoundLocal(id, id_funcion):
+        simbolos[id_funcion].value[id] = tabla.tabla_local(type_data, None, direccion)
+    if len(simbolos[id_funcion].value) == 0 and not itFoundGlobalVar(id):
+        simbolos[id_funcion].value[id] = tabla.tabla_local(type_data, None, direccion)
 
 
+# Funcion que actualiza el valor de una variable
+def updateIdInFunc(id, id_funcion, valor):
+    if validate(valor, id, id_funcion):
+        simbolos[id_funcion].value[id].value = valor
+
+
+# Funcion que actualiza el valor de una variable
+def getDireccion(id, id_funcion):
+    dir = simbolos[id_funcion].value[id].direccion
+    return dir
+
+
+def getType(id, id_funcion):
+    type = simbolos[id_funcion].value[id].type_data
+    return type
+
+
+def getValor(id, id_funcion):
+    valor = simbolos[id_funcion].value[id].value
+    return valor
+
+
+def getidParam(id_funcion):
+    temp = []
+    for id in simbolos[id_funcion].value:
+        if simbolos[id_funcion].value[id].direccion == 'Param':
+            simbolos[id_funcion].value[id].direccion = None
+            temp.append(id)
+    return temp
+
+# Funcion que imprime la tabla master
 def show():
     for keys in simbolos:
-        if keys == "judas":
-            print("ID FUNCION: ", keys, " TYPE DATA: ", simbolos[keys].type_data)
-            for id in simbolos[keys].value:
-                print("ID: ", id)
-                print("VALOR: ", simbolos[keys].value[id].value, " TYPE DATA: ", simbolos[keys].value[id].type_data)
-            print("")
-        elif keys == "simon":
-            print("ID FUNCION: ", keys, " TYPE DATA: ", simbolos[keys].type_data)
-            for id in simbolos[keys].value:
-                print("ID: ", id)
-                print("VALOR: ", simbolos[keys].value[id].value, " TYPE DATA: ", simbolos[keys].value[id].type_data)
-            print("")
-        elif keys == "oscar":
-            print("ID FUNCION: ", keys, " TYPE DATA: ", simbolos[keys].type_data)
-            for id in simbolos[keys].value:
-                print("ID: ", id)
-                print("VALOR: ", simbolos[keys].value[id].value, " TYPE DATA: ", simbolos[keys].value[id].type_data)
-            print("")
-        else:
-            print("ID: ", keys)
-            print("VALOR: ", simbolos[keys].value, " TYPE DATA: ", simbolos[keys].type_data)
-            print("")
+        print("ID FUNCION:", keys, " TYPE DATA:", simbolos[keys].type_data)
+        for id in simbolos[keys].value:
+            print("ID:", id)
+            print("VALOR:", simbolos[keys].value[id].value, " TYPE DATA:", simbolos[keys].value[id].type_data, " MEMORIA:", simbolos[keys].value[id].direccion)
+        print("")
 
-
-def insertarMaster(id, objeto):
-    for keys in simbolos:
-        if keys == id:
-            simbolos[keys].value = objeto
-
-
-def itFoundGlobal(id):
-    for Keys in simbolos:
-        if id == Keys:
-            return True
-    return False
+def returnValue(id, id_funcion):
+    if id in simbolos[id_funcion].value.keys():
+        temp = simbolos[id_funcion].value[id].value
+        return temp
+    else:
+        return id
