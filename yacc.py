@@ -442,6 +442,7 @@ def p_funcion(p):
     '''
     funcion : ID getParamId LPAREN funcion1 RPAREN paramFalse SEMICOLON
     '''
+    memo.insertToLocalFunc(p[1])
 
 
 def p_getParamId(p):
@@ -484,6 +485,6 @@ result = parser.parse(entrada)
 print(result)
 
 
-quad.show()
-master.show()
-# memo.show()
+# quad.show()
+# master.show()
+memo.show()

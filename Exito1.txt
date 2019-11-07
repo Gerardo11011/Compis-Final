@@ -5,6 +5,7 @@ int erw;
 float t;
 t = 213.321;
 j = 3;
+erw = 3213;
 
 func int judas(float p, int r){
   int h;
@@ -49,7 +50,7 @@ main {
   a = a * b + a;
   hector = "prueba de que hector funciona";
   judas(h, b);
-
+  oscar(hector);
 
 }
 end
