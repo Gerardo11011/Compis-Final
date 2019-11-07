@@ -156,6 +156,7 @@ def p_vars1(p):
     vars1 : ID
           | ID COMMA vars1
     '''
+
     if master.esFuncion:
         master.insertIdToFunc(p[1], master.miTipo, master.miIdFunciones, None)
     elif master.esMain:
@@ -441,6 +442,7 @@ def p_funcion(p):
     '''
     funcion : ID getParamId LPAREN funcion1 RPAREN paramFalse SEMICOLON
     '''
+    memo.insertToLocalFunc(p[1])
 
 
 def p_getParamId(p):
@@ -483,6 +485,6 @@ result = parser.parse(entrada)
 print(result)
 
 
-quad.show()
-master.show()
-# memo.show()
+# quad.show()
+# master.show()
+memo.show()

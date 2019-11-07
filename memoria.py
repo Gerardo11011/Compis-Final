@@ -31,22 +31,22 @@ def insertGlobal(tipo):
     global globalSTRING
     global globalBOOL
     if tipo == "int":
-        memoria_global.integers = {globalINT: None}
+        memoria_global.integers[globalINT] = None
         temp = globalINT
         globalINT += 1
         return temp
     if tipo == "float":
-        memoria_global.float = {globalFLOAT: None}
+        memoria_global.float[globalFLOAT] = None
         temp = globalFLOAT
         globalFLOAT += 1
         return temp
     if tipo == "string":
-        memoria_global.string = {globalSTRING: None}
+        memoria_global.string[globalSTRING] = None
         temp = globalSTRING
         globalSTRING += 1
         return temp
     if tipo == "bool":
-        memoria_global.booleanos = {globalBOOL: None}
+        memoria_global.booleanos[globalBOOL] = None
         temp = globalBOOL
         globalBOOL += 1
         return temp
@@ -63,34 +63,35 @@ def updateGlobal(valor, direccion, tipo):
         memoria_global.booleanos[direccion] = valor
 
 
-def insertLocal(tipo):
+def insertLocal(tipo, cond=None):
     global localINT
     global localFLOAT
     global localSTRING
     global localBOOL
     if tipo == "int":
-        memoria_local.integers = {localINT: None}
+        memoria_local.integers[localINT] = None
         temp = localINT
         localINT += 1
         return temp
     if tipo == "float":
-        memoria_local.float = {localFLOAT: None}
+        memoria_local.float[localFLOAT] = None
         temp = localFLOAT
         localFLOAT += 1
         return temp
     if tipo == "string":
-        memoria_local.string = {localSTRING: None}
+        memoria_local.string[localSTRING] = None
         temp = localSTRING
         localSTRING += 1
         return temp
     if tipo == "bool":
-        memoria_local.booleanos = {localBOOL: None}
+        memoria_local.booleanos[localBOOL] = None
         temp = localBOOL
         localBOOL += 1
+        print("INTRODUJO BOOL")
         return temp
 
 
-def updateLocal(valor, direccion, tipo):
+def updateLocal(valor, direccion, tipo, cond=None):
     if tipo == "int":
         memoria_local.integers[direccion] = valor
     if tipo == "float":
@@ -99,6 +100,17 @@ def updateLocal(valor, direccion, tipo):
         memoria_local.string[direccion] = valor
     if tipo == "bool":
         memoria_local.booleanos[direccion] = valor
+
+
+def insertToLocalFunc(id_funcion):
+    for id in master.simbolos[id_funcion].value:
+        tipo = master.simbolos[id_funcion].value[id].type_data
+        value = master.simbolos[id_funcion].value[id].value
+        dir = insertLocal(tipo, True)
+        # show()
+        # print("TIPO:", tipo, "VALOR:", value, "DIR:", dir)
+        master.simbolos[id_funcion].value[id].direccion = dir
+        updateLocal(value, dir, tipo, True)
 
 
 def show():
@@ -110,6 +122,7 @@ def show():
     pprint(memoria_global.string, width=50)
     print("BOOL GLOBALS")
     pprint(memoria_global.booleanos, width=1)
+
     print("INTEGERS LOCAL")
     pprint(memoria_local.integers, width=1)
     print("FLOAT LOCAL")
