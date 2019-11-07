@@ -485,6 +485,6 @@ result = parser.parse(entrada)
 print(result)
 
 
-# quad.show()
-# master.show()
+quad.show()
+master.show()
 memo.show()
