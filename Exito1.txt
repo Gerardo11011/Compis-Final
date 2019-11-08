@@ -7,7 +7,7 @@ t = 213.321;
 j = 3;
 erw = 3213;
 
-func int judas(float p, int r){
+func int judasOSCAR(float p, int r){
   int h;
   float l;
   h = 3;
@@ -16,16 +16,17 @@ func int judas(float p, int r){
   return h;
 }
 
-func float simon(){
+func float SIMONA(){
   float h;
   int q;
   int temp;
   h = 3.1416;
-  q = 342;
-  return q;
+  if (h > 3){
+    h = 4.0;
+  }
 }
 
-func float oscar(string p){
+func float oscar(){
   string e;
   int h;
   int temp;
@@ -40,8 +41,8 @@ main {
   int a, b;
   float h, d;
   string pedro, hector;
-  int r;
-
+  int r, contador;
+  contador = 0;
   a = 2;
   b = 4;
   h = 3.5;
@@ -49,8 +50,9 @@ main {
   pedro = "prueba de que pedro funciona";
   a = a * b + a;
   hector = "prueba de que hector funciona";
-  judas(h, b);
-  oscar(hector);
+  judasOSCAR(h, b);
+  oscar();
+  SIMONA();
 
 }
 end
