@@ -5,6 +5,8 @@ import ply.lex as lex
 import ply.yacc as yacc
 import sys
 
+archivo = None
+
 # Lista de palabras reservadas.
 reserved = {
     'begin' : 'BEGIN',
@@ -121,8 +123,26 @@ def t_error(t):
 lexer = lex.lex()
 
 # Leer archivo de prueba.
-prueba = open("Exito1.txt", "r")
-entrada = prueba.read()
+x = int(input(''' Que archivo desea leer?
+    1.- Exito1
+    2.- Exito2
+    5.- Exito5
+'''))
+if x == 1:
+    prueba = open('Exito1.txt', "r")
+    archivo = 'Exito1.txt'
+    entrada = prueba.read()
+elif x == 2:
+    prueba = open('Exito2.txt', "r")
+    archivo = 'Exito2.txt'
+    entrada = prueba.read()
+elif x == 5:
+    prueba = open('Exito5.txt', "r")
+    archivo = 'Exito5.txt'
+    entrada = prueba.read()
+else:
+    print("ERROR")
+    sys.exit()
 
 # Entrada del lexer.
 lexer.input(entrada)

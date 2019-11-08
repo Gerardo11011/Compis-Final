@@ -4,24 +4,23 @@
 import ply.yacc as yacc
 import sys
 import memoria as memo
+from lex import archivo
 # Obtener la lista de tokens del lexer.
 from lex import tokens
 # import vars_table as master
 import tabla_master as master
 import quadruples as quad
 # Leer archivo de prueba.
-prueba = open("Exito1.txt", "r")
+prueba = open(archivo, "r")
 entrada = prueba.read()
-
-
 idTemporal = None
 
 
 # Declaración de funciones.
 def p_programa(p):
     '''
-    programa : BEGIN globalfunc vars modulo2 programa2 funcfalse MAIN mainfunc LKEY vars programa3 RKEY END
-             | BEGIN globalfunc vars modulo2 MAIN mainfunc LKEY vars programa3 RKEY END
+    programa : BEGIN globalfunc vars programa3 programa2 funcfalse MAIN mainfunc LKEY vars programa3 RKEY END
+             | BEGIN globalfunc vars programa3 MAIN mainfunc LKEY vars programa3 RKEY END
              | BEGIN programa2 funcfalse MAIN mainfunc LKEY vars programa3 RKEY END
              | BEGIN MAIN mainfunc LKEY vars programa3 RKEY END
     '''
@@ -60,7 +59,7 @@ def p_funcfalse(p):
 
 def p_modulo(p):
     '''
-    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY vars modulo2 modulo3 RKEY
+    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY vars programa3 modulo3 RKEY
     '''
 
 
@@ -100,15 +99,6 @@ def p_modulo1Repe(p):
     '''
     modulo1Repe : COMMA modulo1Aux
                | empty
-    '''
-
-
-
-# Modulo que declara el pedazo bloque
-def p_modulo2(p):
-    '''
-    modulo2 : bloque
-            | bloque modulo2
     '''
 
 
@@ -343,9 +333,15 @@ def p_var_cte(p):
     if len(p) == 2:
         master.miValor = p[1]
     if master.esParam:
-        temp = master.getValor(p[1], "main")
-        master.updateIdInFunc(master.arrParam[-1], master.miParamFunc, temp)
-        del(master.arrParam[-1])
+        if master.esMain:
+            temp = master.getValor(p[1], "main")
+            master.updateIdInFunc(master.arrParam[-1], master.miParamFunc, temp)
+            del(master.arrParam[-1])
+        if master.esFuncion:
+            print(master.miIdFunciones)
+            temp = master.getValor(p[1], master.miIdFunciones)
+            master.updateIdInFunc(master.arrParam[-1], master.miParamFunc, temp)
+            del(master.arrParam[-1])
         #master.updateIdInFunc(aux, master.miParamFunc, temp)
 
 
@@ -367,8 +363,8 @@ def p_push_cte(p):
 
 def p_condicion(p):
     '''
-        condicion : IF LPAREN logico RPAREN ifelse1 LKEY modulo2 RKEY ifelse2
-               | IF LPAREN logico RPAREN ifelse1 LKEY modulo2 RKEY ELSE ifelse3 LKEY modulo2 RKEY ifelse2
+        condicion : IF LPAREN logico RPAREN ifelse1 LKEY programa3 RKEY ifelse2
+               | IF LPAREN logico RPAREN ifelse1 LKEY programa3 RKEY ELSE ifelse3 LKEY programa3 RKEY ifelse2
     '''
 
 
@@ -419,7 +415,7 @@ def p_array1(p):
 
 def p_loop(p):
     '''
-    loop : LOOP loop1 LPAREN logico RPAREN loop2 LKEY modulo2 RKEY loop3
+    loop : LOOP loop1 LPAREN logico RPAREN loop2 LKEY programa3 RKEY loop3
     '''
 
 
@@ -457,6 +453,7 @@ def p_funcion1(p):
     '''
     funcion1 : exp
              | exp COMMA funcion1
+             | empty
     '''
 
 
