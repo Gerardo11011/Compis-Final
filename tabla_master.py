@@ -132,8 +132,8 @@ def show():
     for keys in simbolos:
         print("ID FUNCION:", keys, " TYPE DATA:", simbolos[keys].type_data)
         for id in simbolos[keys].value:
-            print("ID:", id)
-            print("VALOR:", simbolos[keys].value[id].value, " TYPE DATA:", simbolos[keys].value[id].type_data, " MEMORIA:", simbolos[keys].value[id].direccion)
+            print("id:", id)
+            print("valor:", simbolos[keys].value[id].value, " type data:", simbolos[keys].value[id].type_data, " MEMORIA:", simbolos[keys].value[id].direccion)
         print("")
 
 def returnValue(id, id_funcion):

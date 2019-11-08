@@ -12,8 +12,8 @@ func int judasOSCAR(float p, int r){
   float l;
   h = 3;
   l = 6.21;
-  r = 999;
-  return h;
+  r = 3;
+  return 4;
 }
 
 func float SIMONA(){
@@ -21,19 +21,19 @@ func float SIMONA(){
   int q;
   int temp;
   h = 3.1416;
-  if (h > 3){
+  if (h > 3.0){
     h = 4.0;
   }
 }
 
-func float oscar(){
+func int oscar(){
   string e;
   int h;
   int temp;
   h = 432;
   e = "Judas ambos";
   temp = h * 3;
-  return temp;
+  return 983;
 }
 
 

@@ -68,6 +68,7 @@ def p_seen_ID(p):
     seen_ID :
     '''
     master.miIdFunciones = p[-1]
+    p[0] = p[-1]
 
 
 def p_declararFunc(p):
@@ -108,6 +109,9 @@ def p_modulo3(p):
             | empty
     '''
     master.returnValor = master.returnValue(master.returnValor, master.miIdFunciones)
+    memo.memory_dir = memo.insertLocal(p[-10])
+    master.insertIdToFunc("return", p[-10], p[-8], memo.memory_dir)
+    master.updateIdInFunc("return", p[-8], master.returnValor)
     #print("VALOR DE RETURN:", master.returnValor, "TYPE:", type(master.returnValor))
 # ########################### ACABA FUNCIONES  ##############################
 
@@ -166,6 +170,7 @@ def p_tipo(p):
          | BOOL
     '''
     master.miTipo = p[1]
+    p[0] = p[1]
 
 
 
@@ -482,6 +487,16 @@ result = parser.parse(entrada)
 print(result)
 
 
+print("")
+print("CUADRUPLOS")
+print("")
 quad.show()
+print("")
+print("")
+print("VARS TABLE")
+print("")
 master.show()
+print("")
+print("MEMORIA")
+print("")
 memo.show()
