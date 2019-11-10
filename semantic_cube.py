@@ -58,7 +58,7 @@ def semantic(left, right, operator):
         if(right == 'bool'):
             if(operator == '=' or operator == '==' or operator == '<>'):
                 return 'bool'
-            elif(operator == '&&' or operator == '||'):
+            elif(operator == 'and' or operator == 'or'):
                 return 'bool'
             else:
                 return 'error'

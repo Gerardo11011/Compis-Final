@@ -61,6 +61,7 @@ def p_modulo(p):
     '''
     modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY vars programa3 modulo3 RKEY
     '''
+    master.esFuncion = False
 
 
 def p_seen_ID(p):
@@ -84,6 +85,7 @@ def p_modulo1(p):
     modulo1 : modulo1Aux
             | empty
     '''
+    master.insert(master.miIdFunciones, master.miTipo)
 
 # Modulo que declara los parametros de la funcion
 def p_modulo1Aux(p):
@@ -128,10 +130,13 @@ def p_mainfunc(p):
     master.funciones.append("main")
 
 
-def p_programa3(p):
+# ############################ CIERRA VARIABLES MAIN #########################
+
+
+def p_vars(p):
     '''
-    programa3 : bloque
-              | bloque programa3
+    vars : tipo vars1 SEMICOLON
+         | tipo vars1 SEMICOLON vars
     '''
 
 
@@ -256,8 +261,6 @@ def p_relop(p):
              | LTE
              | DOUBLEEQUAL
              | NE
-             | AND
-             | OR
     '''
     quad.pushPoper(p[1])
 
