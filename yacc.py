@@ -19,10 +19,10 @@ idTemporal = None
 # Declaración de funciones.
 def p_programa(p):
     '''
-    programa : BEGIN globalfunc vars programa3 programa2 funcfalse MAIN mainfunc LKEY vars programa3 RKEY END
-             | BEGIN globalfunc vars programa3 MAIN mainfunc LKEY vars programa3 RKEY END
-             | BEGIN programa2 funcfalse MAIN mainfunc LKEY vars programa3 RKEY END
-             | BEGIN MAIN mainfunc LKEY vars programa3 RKEY END
+    programa : BEGIN globalfunc vars programa3 programa2 funcfalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
+             | BEGIN globalfunc vars programa3 MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
+             | BEGIN programa2 funcfalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
+             | BEGIN MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
     '''
 
 
@@ -59,8 +59,20 @@ def p_funcfalse(p):
 
 def p_modulo(p):
     '''
-    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY vars programa3 modulo3 RKEY
+    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY vars insertarParam programa3 modulo3 RKEY
     '''
+
+
+def p_insertarParam(p):
+    '''
+    insertarParam :
+    '''
+    if master.esMain:
+        master.insertIdToFunc("Cuadruplos", "int", "main", None)
+        master.updateIdInFunc("Cuadruplos", "main", len(quad.Quad))
+    else:
+        master.insertIdToFunc("Cuadruplos", "int", p[-7], None)
+        master.updateIdInFunc("Cuadruplos", p[-7], len(quad.Quad))
 
 
 def p_seen_ID(p):
@@ -109,9 +121,9 @@ def p_modulo3(p):
             | empty
     '''
     master.returnValor = master.returnValue(master.returnValor, master.miIdFunciones)
-    memo.memory_dir = memo.insertLocal(p[-10])
-    master.insertIdToFunc("return", p[-10], p[-8], memo.memory_dir)
-    master.updateIdInFunc("return", p[-8], master.returnValor)
+    memo.memory_dir = memo.insertLocal(p[-11])
+    master.insertIdToFunc("return", p[-11], p[-9], None)
+    master.updateIdInFunc("return", p[-9], master.returnValor)
     #print("VALOR DE RETURN:", master.returnValor, "TYPE:", type(master.returnValor))
 # ########################### ACABA FUNCIONES  ##############################
 
@@ -143,6 +155,7 @@ def p_vars(p):
     vars : tipo vars1 SEMICOLON
          | tipo vars1 SEMICOLON vars
     '''
+
 
 
 def p_vars1(p):

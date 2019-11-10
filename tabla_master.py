@@ -65,7 +65,6 @@ def itFoundLocal(id, id_funcion):
 
 
 # Funcion que valida que el valor ingresado y el tipo de la variable sean iguales
-# Funcion que valida que el valor ingresado y el tipo de la variable sean iguales
 def validate(dato, id, id_funcion):
     temp = str(type(dato))
     aux = None
