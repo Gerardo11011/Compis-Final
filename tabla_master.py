@@ -22,6 +22,7 @@ prueba = None
 returnValor = None
 miParamFunc = None
 esParam = False
+miFuncType = None
 
 
 # Funcion que inicializa la tabla con funciones, global, y main

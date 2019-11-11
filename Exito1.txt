@@ -50,7 +50,6 @@ main {
   pedro = "prueba de que pedro funciona";
   a = a * b + a;
   hector = "prueba de que hector funciona";
-  oscar();
   SIMONA();
 
 }
