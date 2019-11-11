@@ -13,7 +13,7 @@ func int judasOSCAR(float p, int r){
   h = 3;
   l = 6.21;
   r = 3;
-  return 4;
+  return 999;
 }
 
 func float SIMONA(){
@@ -50,8 +50,6 @@ main {
   pedro = "prueba de que pedro funciona";
   a = a * b + a;
   hector = "prueba de que hector funciona";
-  judasOSCAR(h, b);
-  oscar();
   SIMONA();
 
 }

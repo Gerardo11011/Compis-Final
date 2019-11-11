@@ -22,6 +22,7 @@ prueba = None
 returnValor = None
 miParamFunc = None
 esParam = False
+miFuncType = None
 
 
 # Funcion que inicializa la tabla con funciones, global, y main
@@ -64,7 +65,6 @@ def itFoundLocal(id, id_funcion):
     return aux
 
 
-# Funcion que valida que el valor ingresado y el tipo de la variable sean iguales
 # Funcion que valida que el valor ingresado y el tipo de la variable sean iguales
 def validate(dato, id, id_funcion):
     temp = str(type(dato))

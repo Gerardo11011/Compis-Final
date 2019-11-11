@@ -81,6 +81,7 @@ def p_seen_ID(p):
     '''
     master.miIdFunciones = p[-1]
     p[0] = p[-1]
+    master.miFuncType = p[-2]
 
 
 def p_declararFunc(p):
@@ -117,13 +118,21 @@ def p_modulo1Repe(p):
 
 def p_modulo3(p):
     '''
-    modulo3 : RETURN exp SEMICOLON
+    modulo3 : RETURN exp SEMICOLON insertReturn
             | empty
     '''
+
+
+def p_insertReturn(p):
+    '''
+    insertReturn :
+    '''
+
     master.returnValor = master.returnValue(master.returnValor, master.miIdFunciones)
-    memo.memory_dir = memo.insertLocal(p[-11])
-    master.insertIdToFunc("return", p[-11], p[-9], None)
-    master.updateIdInFunc("return", p[-9], master.returnValor)
+
+    memo.memory_dir = memo.insertLocal(master.miFuncType)
+    master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, None)
+    master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
     #print("VALOR DE RETURN:", master.returnValor, "TYPE:", type(master.returnValor))
 # ########################### ACABA FUNCIONES  ##############################
 
