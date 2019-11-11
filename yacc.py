@@ -129,6 +129,7 @@ def p_insertReturn(p):
     '''
 
     master.returnValor = master.returnValue(master.returnValor, master.miIdFunciones)
+
     memo.memory_dir = memo.insertLocal(master.miFuncType)
     master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, None)
     master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
