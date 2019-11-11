@@ -1,50 +1,56 @@
 begin
 
 int j;
+int erw;
 float t;
 t = 213.321;
 j = 3;
+erw = 3213;
 
-func int judas(){
+func int judasOSCAR(float p, int r){
   int h;
-  int l;
+  float l;
   h = 3;
-  l = 6;
+  l = 6.21;
+  r = 3;
+  return 999;
 }
 
-func float simon(){
+func float SIMONA(){
   float h;
   int q;
+  int temp;
   h = 3.1416;
-  q = 342;
+  if (h > 3.0){
+    h = 4.0;
+  }
 }
 
-func float oscar(){
+func int oscar(){
   string e;
   int h;
+  int temp;
   h = 432;
   e = "Judas ambos";
+  temp = h * 3;
+  return 983;
 }
 
 
 main {
   int a, b;
   float h, d;
-  string pedro;
-  int r;
-
+  string pedro, hector;
+  int r, contador;
+  contador = 0;
   a = 2;
   b = 4;
   h = 3.5;
   d = 7.8;
   pedro = "prueba de que pedro funciona";
-  if(a - b > b + a * d or h <= d) {
-    a = a * b + a;
-  }
-  else {
-    b = a + b;
-  }
-  d = 7.3;
-}
+  a = a * b + a;
+  hector = "prueba de que hector funciona";
+  SIMONA();
 
+}
 end

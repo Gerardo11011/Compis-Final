@@ -25,7 +25,7 @@ class quadruple(object):
         self.result = result
 
 
-# Funciones operadores
+# Funciones para producir representación intermedia para operadores
 def pushID(id, funcion):
     encontro = False
     for keys in simbolos:

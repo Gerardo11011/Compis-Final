@@ -2,19 +2,27 @@
 # Gerardo Ponce     A00818934
 import sys
 import estructuras as tabla
+import memoria as memo
 
 # Tabla de simbolos y arreglo con id de funciones
 simbolos = {}
 funciones = []
+arrParam = []
 
 # Declaración de variables globales
 miTipo = None
+miTipoAux = None
 miID = None
 miValor = None
 miIdFunciones = None
 esFuncion = False
 esMain = False
 esGlobal = False
+prueba = None
+returnValor = None
+miParamFunc = None
+esParam = False
+miFuncType = None
 
 
 # Funcion que inicializa la tabla con funciones, global, y main
@@ -82,11 +90,11 @@ def validate(dato, id, id_funcion):
 
 
 # Funcion que inserta las variables en su respectiva tabla local
-def insertIdToFunc(id, type_data, id_funcion):
+def insertIdToFunc(id, type_data, id_funcion, direccion):
     if len(simbolos[id_funcion].value) >= 1 and not itFoundGlobalVar(id) and not itFoundLocal(id, id_funcion):
-        simbolos[id_funcion].value[id] = tabla.tabla_local(type_data, None)
+        simbolos[id_funcion].value[id] = tabla.tabla_local(type_data, None, direccion)
     if len(simbolos[id_funcion].value) == 0 and not itFoundGlobalVar(id):
-        simbolos[id_funcion].value[id] = tabla.tabla_local(type_data, None)
+        simbolos[id_funcion].value[id] = tabla.tabla_local(type_data, None, direccion)
 
 
 # Funcion que actualiza el valor de una variable
@@ -95,11 +103,42 @@ def updateIdInFunc(id, id_funcion, valor):
         simbolos[id_funcion].value[id].value = valor
 
 
+# Funcion que actualiza el valor de una variable
+def getDireccion(id, id_funcion):
+    dir = simbolos[id_funcion].value[id].direccion
+    return dir
+
+
+def getType(id, id_funcion):
+    type = simbolos[id_funcion].value[id].type_data
+    return type
+
+
+def getValor(id, id_funcion):
+    valor = simbolos[id_funcion].value[id].value
+    return valor
+
+
+def getidParam(id_funcion):
+    temp = []
+    for id in simbolos[id_funcion].value:
+        if simbolos[id_funcion].value[id].direccion == 'Param':
+            simbolos[id_funcion].value[id].direccion = None
+            temp.append(id)
+    return temp
+
 # Funcion que imprime la tabla master
 def show():
     for keys in simbolos:
         print("ID FUNCION:", keys, " TYPE DATA:", simbolos[keys].type_data)
         for id in simbolos[keys].value:
-            print("ID:", id)
-            print("VALOR:", simbolos[keys].value[id].value, " TYPE DATA:", simbolos[keys].value[id].type_data)
+            print("id:", id)
+            print("valor:", simbolos[keys].value[id].value, " type data:", simbolos[keys].value[id].type_data, " MEMORIA:", simbolos[keys].value[id].direccion)
         print("")
+
+def returnValue(id, id_funcion):
+    if id in simbolos[id_funcion].value.keys():
+        temp = simbolos[id_funcion].value[id].value
+        return temp
+    else:
+        return id

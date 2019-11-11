@@ -1,15 +1,26 @@
 begin
-  int a;
-  float b;
-  char nombre;
 
-  a = 10;
-  b = 5.35;
-  nombre = "Ponce";
+main {
+  int a, b, d, c;
+  a = 4;
+  b = 5;
+  c = 2;
+  d = 1;
+  if(a + b > d) {
+    if(a < b) {
+      a = 0;
+      b = b + d;
+      output(a + b * 2);
+    }
+    else {
+      c = a + b;
+    }
+  }
+  else {
+    a = b + c;
+  }
+  input(b);
+  d = b + a * c;
+}
 
-  loop(a > b) then
-    b = b + 1;
-  ;
-
-  output(nombre);
 end

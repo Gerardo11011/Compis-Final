@@ -3,28 +3,26 @@
 
 import ply.yacc as yacc
 import sys
-import pprint
-
+import memoria as memo
+from lex import archivo
 # Obtener la lista de tokens del lexer.
 from lex import tokens
 # import vars_table as master
 import tabla_master as master
 import quadruples as quad
 # Leer archivo de prueba.
-prueba = open("Exito5.txt", "r")
+prueba = open(archivo, "r")
 entrada = prueba.read()
-
-
 idTemporal = None
 
 
 # Declaración de funciones.
 def p_programa(p):
     '''
-    programa : BEGIN globalfunc vars modulo2 programa2 funcfalse MAIN mainfunc LKEY vars programa3 RKEY END
-             | BEGIN globalfunc vars modulo2 MAIN mainfunc LKEY vars programa3 RKEY END
-             | BEGIN programa2 funcfalse MAIN mainfunc LKEY vars programa3 RKEY END
-             | BEGIN MAIN mainfunc LKEY vars programa3 RKEY END
+    programa : BEGIN globalfunc vars programa3 programa2 funcfalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
+             | BEGIN globalfunc vars programa3 MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
+             | BEGIN programa2 funcfalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
+             | BEGIN MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
     '''
 
 
@@ -37,6 +35,7 @@ def p_globalfunc(p):
     master.funciones.append("global")
 
 
+# Funcion que declarar cuantas funciones puede haber
 def p_programa2(p):
     '''
     programa2 : functrue modulo
@@ -60,8 +59,20 @@ def p_funcfalse(p):
 
 def p_modulo(p):
     '''
-    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY vars modulo2 modulo3
+    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY vars insertarParam programa3 modulo3 RKEY
     '''
+
+
+def p_insertarParam(p):
+    '''
+    insertarParam :
+    '''
+    if master.esMain:
+        master.insertIdToFunc("Cuadruplos", "int", "main", None)
+        master.updateIdInFunc("Cuadruplos", "main", len(quad.Quad))
+    else:
+        master.insertIdToFunc("Cuadruplos", "int", p[-7], None)
+        master.updateIdInFunc("Cuadruplos", p[-7], len(quad.Quad))
 
 
 def p_seen_ID(p):
@@ -69,7 +80,8 @@ def p_seen_ID(p):
     seen_ID :
     '''
     master.miIdFunciones = p[-1]
-    master.funciones.append(p[-1])
+    p[0] = p[-1]
+    master.miFuncType = p[-2]
 
 
 def p_declararFunc(p):
@@ -79,31 +91,55 @@ def p_declararFunc(p):
     master.insert(master.miIdFunciones, master.miTipo)
 
 
+# Modulo que declara los parametros de la funcion
 def p_modulo1(p):
     '''
-    modulo1 : tipo ID
-            | tipo ID COMMA modulo1
+    modulo1 : modulo1Aux
             | empty
     '''
 
-
-def p_modulo2(p):
+# Modulo que declara los parametros de la funcion
+def p_modulo1Aux(p):
     '''
-    modulo2 : bloque
-            | bloque modulo2
+    modulo1Aux : INT ID modulo1Repe
+               | FLOAT ID modulo1Repe
+               | STRING ID modulo1Repe
+               | BOOL ID modulo1Repe
+    '''
+    master.insertIdToFunc(p[2], p[1], master.miIdFunciones, "Param")
+
+
+def p_modulo1Repe(p):
+    '''
+    modulo1Repe : COMMA modulo1Aux
+               | empty
     '''
 
 
 def p_modulo3(p):
     '''
-    modulo3 : RETURN exp SEMICOLON RKEY
-            | RKEY
+    modulo3 : RETURN exp SEMICOLON insertReturn
+            | empty
     '''
 
+
+def p_insertReturn(p):
+    '''
+    insertReturn :
+    '''
+
+    master.returnValor = master.returnValue(master.returnValor, master.miIdFunciones)
+
+    memo.memory_dir = memo.insertLocal(master.miFuncType)
+    master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, None)
+    master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
+    #print("VALOR DE RETURN:", master.returnValor, "TYPE:", type(master.returnValor))
 # ########################### ACABA FUNCIONES  ##############################
 
 
 # ############################ INICIA VARIABLES MAIN #########################
+
+
 def p_mainfunc(p):
     '''
     mainfunc :
@@ -120,7 +156,7 @@ def p_programa3(p):
     '''
 
 
-# ############################ CIERRA VARIABLES MAIN #########################
+############################# CIERRA VARIABLES MAIN #########################
 
 
 def p_vars(p):
@@ -130,17 +166,22 @@ def p_vars(p):
     '''
 
 
+
 def p_vars1(p):
     '''
     vars1 : ID
           | ID COMMA vars1
     '''
+
     if master.esFuncion:
-        master.insertIdToFunc(p[1], master.miTipo, master.miIdFunciones)
+        master.insertIdToFunc(p[1], master.miTipo, master.miIdFunciones, None)
     elif master.esMain:
-        master.insertIdToFunc(p[1], master.miTipo, "main")
+        memo.memory_dir = memo.insertLocal(master.miTipo)
+        master.insertIdToFunc(p[1], master.miTipo, "main", memo.memory_dir)
     else:
-        master.insertIdToFunc(p[1], master.miTipo, "global")
+        memo.memory_dir = memo.insertGlobal(master.miTipo)
+        master.insertIdToFunc(p[1], master.miTipo, "global", memo.memory_dir)
+
 
 
 def p_tipo(p):
@@ -151,6 +192,8 @@ def p_tipo(p):
          | BOOL
     '''
     master.miTipo = p[1]
+    p[0] = p[1]
+
 
 
 def p_bloque(p):
@@ -166,24 +209,29 @@ def p_bloque(p):
 
 def p_asignacion(p):
     '''
-    asignacion : ID push_id EQUAL push_poper logico pop_assign SEMICOLON
+      asignacion : ID push_id EQUAL push_poper logico pop_assign SEMICOLON
                | ID push_id EQUAL push_poper array pop_assign SEMICOLON
                | ID push_id EQUAL push_poper funcion pop_assign SEMICOLON
-               | ID push_id LCORCH exp RCORCH EQUAL push_poper logico pop_assign SEMICOLON
+               | ID push_id LCORCH exp RCORCH EQUAL push_poper expresion pop_assign SEMICOLON
     '''
 
 
 def p_pop_assign(p):
     "pop_assign :"
     master.miValor = quad.popAssign()
-    print(master.miValor)
-    print(type(master.miValor))
+    # print(master.miValor)
     if master.esFuncion:
         master.updateIdInFunc(p[-5], master.miIdFunciones, master.miValor)
     elif master.esMain:
         master.updateIdInFunc(p[-5], "main", master.miValor)
+        dir = master.getDireccion(p[-5], "main")
+        type = master.getType(p[-5], "main")
+        memo.updateLocal(master.miValor, dir, type)
     else:
         master.updateIdInFunc(p[-5], "global", master.miValor)
+        dir = master.getDireccion(p[-5], "global")
+        type = master.getType(p[-5], "global")
+        memo.updateGlobal(master.miValor, dir, type)
 
 
 def p_logico(p):
@@ -203,6 +251,7 @@ def p_logico1(p):
     logico1 : AND push_poper logico
             | OR push_poper logico
     '''
+
 
 
 def p_expresion(p):
@@ -229,6 +278,8 @@ def p_relop(p):
              | LTE
              | DOUBLEEQUAL
              | NE
+             | AND
+             | OR
     '''
     quad.pushPoper(p[1])
 
@@ -304,8 +355,22 @@ def p_var_cte(p):
             | FALSE push_cte
     '''
     # master.miValor = p[1]
+    master.returnValor = p[1]
+    #print(p[1])
     if len(p) == 2:
         master.miValor = p[1]
+    if master.esParam:
+        if master.esMain:
+            temp = master.getValor(p[1], "main")
+            master.updateIdInFunc(master.arrParam[-1], master.miParamFunc, temp)
+            del(master.arrParam[-1])
+        if master.esFuncion:
+            print(master.miIdFunciones)
+            temp = master.getValor(p[1], master.miIdFunciones)
+            master.updateIdInFunc(master.arrParam[-1], master.miParamFunc, temp)
+            del(master.arrParam[-1])
+        #master.updateIdInFunc(aux, master.miParamFunc, temp)
+
 
 
 def p_push_id(p):
@@ -325,8 +390,8 @@ def p_push_cte(p):
 
 def p_condicion(p):
     '''
-    condicion : IF LPAREN logico RPAREN ifelse1 LKEY modulo2 RKEY ifelse2
-              | IF LPAREN logico RPAREN ifelse1 LKEY modulo2 RKEY ELSE ifelse3 LKEY modulo2 RKEY ifelse2
+        condicion : IF LPAREN logico RPAREN ifelse1 LKEY programa3 RKEY ifelse2
+               | IF LPAREN logico RPAREN ifelse1 LKEY programa3 RKEY ELSE ifelse3 LKEY programa3 RKEY ifelse2
     '''
 
 
@@ -377,7 +442,7 @@ def p_array1(p):
 
 def p_loop(p):
     '''
-    loop : LOOP loop1 LPAREN logico RPAREN loop2 LKEY modulo2 RKEY loop3
+    loop : LOOP loop1 LPAREN logico RPAREN loop2 LKEY programa3 RKEY loop3
     '''
 
 
@@ -398,16 +463,32 @@ def p_loop3(p):
 
 def p_funcion(p):
     '''
-    funcion : ID LPAREN funcion1 RPAREN SEMICOLON
+    funcion : ID getParamId LPAREN funcion1 RPAREN paramFalse SEMICOLON
     '''
+    memo.insertToLocalFunc(p[1])
 
+
+def p_getParamId(p):
+    '''
+    getParamId :
+    '''
+    master.miParamFunc = p[-1]
+    master.esParam = True
+    master.arrParam = master.getidParam(p[-1])
 
 def p_funcion1(p):
     '''
     funcion1 : exp
              | exp COMMA funcion1
+             | empty
     '''
 
+
+def p_paramFalse(p):
+    '''
+    paramFalse :
+    '''
+    master.esParam = False
 
 def p_empty(p):
     'empty :'
@@ -421,14 +502,23 @@ def p_error(p):
     sys.exit()
 
 
-# onstruir el parser.
+# construir el parser.
 print("Parsing . . . \n")
 parser = yacc.yacc()
 result = parser.parse(entrada)
 print(result)
 
 
+print("")
+print("CUADRUPLOS")
+print("")
 quad.show()
+print("")
+print("")
+print("VARS TABLE")
+print("")
 master.show()
-# pprint.pprint(master.simbolos)
-# funciones.imp()
+print("")
+print("MEMORIA")
+print("")
+memo.show()

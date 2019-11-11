@@ -1,22 +1,27 @@
 begin
 
 main {
-  float a, b, c, d, e, f, g, h, j, k, l;
-  bool prueba;
-  a = 0.0;
-  b = 1.0;
-  c = 2.0;
-  d = 2.0;
-  e = 3.0;
-  f = 4.0;
-  g = 5.0;
-  h = 6.0;
-  j = 7.0;
-  k = 8.0;
-  l = 9.0;
-
-  prueba = ((a * b - c * d) > c + d * e / f) and (g * h - j > l - a) and b + c > d * f;
-
+  int a, b, c, d;
+  a = 4;
+  b = 5;
+  c = 2;
+  d = 1;
+  loop(a + b * c < d) {
+    if(a + b < c) {
+      a = b + c;
+      loop(a > b + c) {
+        a = a - 1;
+      }
+    }
+    else {
+      loop(b > c + d) {
+        a = b + c * d;
+        b = a - d;
+      }
+    }
+  }
+  a = b * c;
+  c = 0;
 }
 
 end
