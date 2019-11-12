@@ -19,8 +19,8 @@ idTemporal = None
 # Declaración de funciones.
 def p_programa(p):
     '''
-    programa : BEGIN globalfunc vars programa3 programa2 funcfalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
-             | BEGIN globalfunc vars programa3 MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
+    programa : BEGIN globalfunc vars programa3 globalFuncFalse programa2 funcfalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
+             | BEGIN globalfunc vars programa3 globalFuncFalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
              | BEGIN programa2 funcfalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
              | BEGIN MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
     '''
@@ -33,6 +33,14 @@ def p_globalfunc(p):
     '''
     master.insert("global", None)
     master.funciones.append("global")
+    master.esGlobal = True
+
+
+def p_globalFuncFalse(p):
+    '''
+    globalFuncFalse :
+    '''
+    master.esGlobal = False
 
 
 # Funcion que declarar cuantas funciones puede haber
@@ -371,9 +379,10 @@ def p_push_id(p):
 
 def p_push_cte(p):
     "push_cte :"
-    temp = memo.getTipo(p[-1])
-    memo.memory_dir = memo.insertLocalTemp(temp)
-    memo.updateLocal(p[-1], memo.memory_dir, temp)
+    if not master.esGlobal:
+        temp = memo.getTipo(p[-1])
+        memo.memory_dir = memo.insertLocalTemp(temp)
+        memo.updateLocal(p[-1], memo.memory_dir, temp)
     quad.pushCte(p[-1])
 
 
@@ -463,8 +472,12 @@ def p_getParamId(p):
     getParamId :
     '''
     master.miParamFunc = p[-1]
-    master.esParam = True
-    master.arrParam = master.getidParam(p[-1])
+    if master.miParamFunc in master.simbolos.keys():
+        master.esParam = True
+        master.arrParam = master.getidParam(p[-1])
+    else:
+        print("Funcion no declarada.")
+        sys.exit()
 
 
 def p_funcion1(p):
