@@ -35,7 +35,6 @@ def pushID(id, funcion):
                 for var in simbolos[keys].value:
                     if id == var:
                         encontro = True
-                        print(tabla.getDireccion(id, funcion), id)
                         PilaO.append(tabla.getDireccion(id, funcion))
                         PTypes.append(simbolos[keys].value[var].type_data)
                         AVAIL.append(simbolos[keys].value[var].value)
@@ -70,17 +69,17 @@ def popAssign():
     POperSize = len(POper)
     if POperSize > 0:
         if POper[POperSize-1] == '=':
-            right_operand = PilaO.pop()
+            PilaO.pop()
             right_type = PTypes.pop()
             right_value = AVAIL.pop()
-            PilaO.pop()
+            left_operand = PilaO.pop()
             left_type = PTypes.pop()
             AVAIL.pop()
             operator = POper.pop()
             result_type = semantic(left_type, right_type, operator)
             if(result_type != 'error'):
                 result = right_value
-                quadr = quadruple(len(Quad), operator, right_operand, None, result)
+                quadr = quadruple(len(Quad), operator, result, None, left_operand)
                 Quad.append(quadr)
             else:
                 print("ERROR: Type mismatch.")
