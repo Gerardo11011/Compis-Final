@@ -459,12 +459,10 @@ def p_loop3(p):
     quad.loopTres()
 
 
-
 def p_funcion(p):
     '''
     funcion : ID getParamId LPAREN funcion1 RPAREN paramFalse SEMICOLON
     '''
-    # memo.insertToLocalFunc(p[1])
 
 
 def p_getParamId(p):
@@ -498,9 +496,9 @@ def p_paramFalse(p):
 def p_empty(p):
     'empty :'
     pass
+
+
 # Regla de error para errores de sintaxis.
-
-
 def p_error(p):
     print(p)
     print("Error de sintaxis en linea '%s'" % p.lexpos)
