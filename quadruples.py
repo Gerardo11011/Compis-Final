@@ -15,6 +15,8 @@ Quad = []
 AVAIL = []
 PJumps = []
 
+k = 0
+
 
 # Clase Cuadruplo
 class quadruple(object):
@@ -271,7 +273,6 @@ def loopTres():
     quadr = quadruple(len(Quad), "goto", None, None, regresa)
     Quad.append(quadr)
     fill(end, len(Quad))
-
 
 
 def show():
