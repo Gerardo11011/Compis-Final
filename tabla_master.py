@@ -129,6 +129,7 @@ def getidParam(id_funcion):
             temp.append(id)
     return temp
 
+
 # Funcion que imprime la tabla master
 def show():
     for keys in simbolos:
@@ -137,6 +138,7 @@ def show():
             print("id:", id)
             print("valor:", simbolos[keys].value[id].value, " type data:", simbolos[keys].value[id].type_data, " MEMORIA:", simbolos[keys].value[id].direccion)
         print("")
+
 
 def returnValue(id, id_funcion):
     if id in simbolos[id_funcion].value.keys():
