@@ -3,6 +3,7 @@
 
 import sys
 
+import tabla_master as tabla
 from tabla_master import simbolos
 from semantic_cube import semantic
 
@@ -34,7 +35,7 @@ def pushID(id, funcion):
                 for var in simbolos[keys].value:
                     if id == var:
                         encontro = True
-                        PilaO.append(id)
+                        PilaO.append(tabla.getDireccion(id, funcion))
                         PTypes.append(simbolos[keys].value[var].type_data)
                         AVAIL.append(simbolos[keys].value[var].value)
     if encontro is False:
@@ -45,6 +46,8 @@ def pushID(id, funcion):
 def pushCte(cte):
     PilaO.append(cte)
     tipo = str(type(cte))
+    if cte == 'true' or cte == 'false':
+        PTypes.append('bool')
     if tipo == "<class 'float'>":
         PTypes.append('float')
     if tipo == "<class 'int'>":
@@ -66,17 +69,17 @@ def popAssign():
     POperSize = len(POper)
     if POperSize > 0:
         if POper[POperSize-1] == '=':
-            right_operand = PilaO.pop()
+            PilaO.pop()
             right_type = PTypes.pop()
             right_value = AVAIL.pop()
-            PilaO.pop()
+            left_operand = PilaO.pop()
             left_type = PTypes.pop()
             AVAIL.pop()
             operator = POper.pop()
             result_type = semantic(left_type, right_type, operator)
             if(result_type != 'error'):
                 result = right_value
-                quadr = quadruple(len(Quad), operator, right_operand, None, result)
+                quadr = quadruple(len(Quad), operator, result, None, left_operand)
                 Quad.append(quadr)
             else:
                 print("ERROR: Type mismatch.")

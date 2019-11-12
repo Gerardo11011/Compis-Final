@@ -98,6 +98,7 @@ def p_modulo1(p):
             | empty
     '''
 
+
 # Modulo que declara los parametros de la funcion
 def p_modulo1Aux(p):
     '''
@@ -128,9 +129,7 @@ def p_insertReturn(p):
     '''
     insertReturn :
     '''
-
     master.returnValor = master.returnValue(master.returnValor, master.miIdFunciones)
-
     memo.memory_dir = memo.insertLocal(master.miFuncType)
     master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, memo.memory_dir)
     master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
@@ -140,8 +139,6 @@ def p_insertReturn(p):
 
 
 # ############################ INICIA VARIABLES MAIN #########################
-
-
 def p_mainfunc(p):
     '''
     mainfunc :
@@ -158,7 +155,7 @@ def p_programa3(p):
     '''
 
 
-############################# CIERRA VARIABLES MAIN #########################
+# ############################ CIERRA VARIABLES MAIN #########################
 
 
 def p_vars(p):
@@ -166,7 +163,6 @@ def p_vars(p):
     vars : tipo vars1 SEMICOLON
          | tipo vars1 SEMICOLON vars
     '''
-
 
 
 def p_vars1(p):
@@ -186,7 +182,6 @@ def p_vars1(p):
         master.insertIdToFunc(p[1], master.miTipo, "global", memo.memory_dir)
 
 
-
 def p_tipo(p):
     '''
     tipo : INT
@@ -196,7 +191,6 @@ def p_tipo(p):
     '''
     master.miTipo = p[1]
     p[0] = p[1]
-
 
 
 def p_bloque(p):
@@ -259,17 +253,10 @@ def p_logico1(p):
     '''
 
 
-
 def p_expresion(p):
     '''expresion : exp
                  | exp relop exp pop_relop
     '''
-
-
-# def p_expresion1(p):
-#     '''expresion1 : relop exp
-#                   | empty
-#     '''
 
 
 def p_pop_relop(p):
@@ -335,10 +322,6 @@ def p_push_poper(p):
 
 def p_pop_poper(p):
     "pop_poper :"
-    # quad.popTerm()
-    # quad.popFact()
-    # quad.popRelop()
-    # quad.popLog()
     quad.popPoper()
 
 
@@ -360,9 +343,7 @@ def p_var_cte(p):
             | TRUE push_cte getVarCTE
             | FALSE push_cte getVarCTE
     '''
-    # master.miValor = p[1]
     master.returnValor = p[1]
-    #print(p[1])
     if len(p) == 2:
         master.miValor = p[1]
     if master.esParam:
@@ -374,10 +355,7 @@ def p_var_cte(p):
             temp = master.getValor(p[1], master.miIdFunciones)
             master.updateIdInFunc(master.arrParam[-1], master.miParamFunc, temp)
             del(master.arrParam[-1])
-
-
-
-        #master.updateIdInFunc(aux, master.miParamFunc, temp)
+        # master.updateIdInFunc(aux, master.miParamFunc, temp)
 
 def p_getVarCTE(p):
     '''
@@ -386,7 +364,6 @@ def p_getVarCTE(p):
     temp = memo.getTipo(p[-2])
     memo.memory_dir = memo.insertLocalTemp(temp)
     memo.updateLocal(p[-2], memo.memory_dir, temp)
-
 
 def p_push_id(p):
     "push_id :"
@@ -492,6 +469,7 @@ def p_getParamId(p):
     master.esParam = True
     master.arrParam = master.getidParam(p[-1])
 
+
 def p_funcion1(p):
     '''
     funcion1 : exp
@@ -505,6 +483,7 @@ def p_paramFalse(p):
     paramFalse :
     '''
     master.esParam = False
+
 
 def p_empty(p):
     'empty :'
