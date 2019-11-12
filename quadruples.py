@@ -3,6 +3,7 @@
 
 import sys
 
+import tabla_master as tabla
 from tabla_master import simbolos
 from semantic_cube import semantic
 
@@ -34,7 +35,8 @@ def pushID(id, funcion):
                 for var in simbolos[keys].value:
                     if id == var:
                         encontro = True
-                        PilaO.append(id)
+                        print(tabla.getDireccion(id, funcion), id)
+                        PilaO.append(tabla.getDireccion(id, funcion))
                         PTypes.append(simbolos[keys].value[var].type_data)
                         AVAIL.append(simbolos[keys].value[var].value)
     if encontro is False:
@@ -45,6 +47,8 @@ def pushID(id, funcion):
 def pushCte(cte):
     PilaO.append(cte)
     tipo = str(type(cte))
+    if cte == 'true' or cte == 'false':
+        PTypes.append('bool')
     if tipo == "<class 'float'>":
         PTypes.append('float')
     if tipo == "<class 'int'>":

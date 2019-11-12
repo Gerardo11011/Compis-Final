@@ -76,6 +76,8 @@ def validate(dato, id, id_funcion):
     if not encontro:
         print('ERROR: ID no declarado:', id)
         sys.exit()
+    if dato == 'true' or dato == 'false':
+        temp = "<class 'bool'>"
     if temp == "<class 'float'>" and aux == 'float':
         return True
     if temp == "<class 'int'>" and aux == 'int':
