@@ -169,6 +169,9 @@ def show():
 def getTipo(cte):
     tipo = str(type(cte))
     temp = None
+    if cte == 'true' or cte == 'false':
+        temp = 'bool'
+        return temp
     if tipo == "<class 'float'>":
         temp = 'float'
         return temp
@@ -176,5 +179,5 @@ def getTipo(cte):
         temp = 'int'
         return temp
     if tipo == "<class 'str'>":
-        temp = 'bool'
+        temp = 'string'
         return temp
