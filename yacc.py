@@ -69,6 +69,14 @@ def p_modulo(p):
     '''
     modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY vars insertarParam programa3 modulo3 RKEY
     '''
+    memo.reiniciarDireccionesFunc()
+    master.contadorParam = 0
+    memo.showCteMemo(p[3])
+    # print(memo.memoIntUsada, memo.getValor(memo.memoIntUsada))
+    # print(memo.memoFloatUsada, memo.getValor(memo.memoFloatUsada))
+    # print(memo.memoStringUsada, memo.getValor(memo.memoStringUsada))
+    # print(memo.memoBoolUsada), memo.getValor(memo.memoBoolUsada)
+    memo.limpiarDireUsadas()
 
 
 def p_insertarParam(p):
@@ -105,6 +113,8 @@ def p_modulo1(p):
     modulo1 : modulo1Aux
             | empty
     '''
+    master.insertIdToFunc("PARAMCANTI", "int", master.miIdFunciones, None)
+    master.updateIdInFunc("PARAMCANTI", master.miIdFunciones, master.contadorParam)
 
 
 # Modulo que declara los parametros de la funcion
@@ -115,8 +125,9 @@ def p_modulo1Aux(p):
                | STRING ID modulo1Repe
                | BOOL ID modulo1Repe
     '''
-    memo.memory_dir = memo.insertLocal(p[1])
-    master.insertIdToFunc(p[2], p[1], master.miIdFunciones, memo.memory_dir, True)
+    # memo.memory_dir = memo.insertLocal(p[1])
+    temp = memo.getVirtualDicLocal(p[1])
+    master.insertIdToFunc(p[2], p[1], master.miIdFunciones, temp, True)
 
 
 def p_modulo1Repe(p):
@@ -124,6 +135,7 @@ def p_modulo1Repe(p):
     modulo1Repe : COMMA modulo1Aux
                | empty
     '''
+    master.contadorParam += 1
 
 
 def p_modulo3(p):
@@ -138,13 +150,12 @@ def p_insertReturn(p):
     insertReturn :
     '''
     master.returnValor = master.returnValue(master.returnValor, master.miIdFunciones)
-    memo.memory_dir = memo.insertLocal(master.miFuncType)
-    master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, memo.memory_dir)
+    # memo.memory_dir = memo.insertLocal(master.miFuncType)
+    temp = memo.getVirtualDicLocal(master.miFuncType)
+    master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, temp)
     master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
-
-    memo.updateLocal(master.returnValor, memo.memory_dir, master.miFuncType)
+    # memo.updateLocal(master.returnValor, memo.memory_dir, master.miFuncType)
     #print("VALOR DE RETURN:", master.returnValor, "TYPE:", type(master.returnValor))
-
 # ########################### ACABA FUNCIONES  ##############################
 
 
@@ -182,14 +193,18 @@ def p_vars1(p):
     '''
 
     if master.esFuncion:
-        memo.memory_dir = memo.insertLocal(master.miTipo)
-        master.insertIdToFunc(p[1], master.miTipo, master.miIdFunciones, memo.memory_dir)
+        # memo.memory_dir = memo.insertLocal(master.miTipo)
+        temp = memo.getVirtualDicLocal(master.miTipo)
+        master.insertIdToFunc(p[1], master.miTipo, master.miIdFunciones, temp)
     elif master.esMain:
-        memo.memory_dir = memo.insertLocal(master.miTipo)
-        master.insertIdToFunc(p[1], master.miTipo, "main", memo.memory_dir)
+        # memo.memory_dir = memo.insertLocal(master.miTipo)
+        temp = memo.getVirtualDicMain(master.miTipo)
+        master.insertIdToFunc(p[1], master.miTipo, "main", temp)
     else:
-        memo.memory_dir = memo.insertGlobal(master.miTipo)
-        master.insertIdToFunc(p[1], master.miTipo, "global", memo.memory_dir)
+        # memo.memory_dir = memo.insertGlobal(master.miTipo)
+        temp = memo.getVirtualDicGlobal(master.miTipo)
+        master.insertIdToFunc(p[1], master.miTipo, "global", temp)
+        memo.insertGlobalInToMemory(master.miTipo, temp)
 
 
 def p_tipo(p):
@@ -229,19 +244,20 @@ def p_pop_assign(p):
     # print(master.miValor)
     if master.esFuncion:
         master.updateIdInFunc(p[-5], master.miIdFunciones, master.miValor)
-        dir = master.getDireccion(p[-5], master.miIdFunciones)
+        # dir = master.getDireccion(p[-5], master.miIdFunciones)
         type = master.getType(p[-5], master.miIdFunciones)
-        memo.updateLocal(master.miValor, dir, type)
+        # memo.updateLocal(master.miValor, dir, type)
     elif master.esMain:
         master.updateIdInFunc(p[-5], "main", master.miValor)
         dir = master.getDireccion(p[-5], "main")
         type = master.getType(p[-5], "main")
-        memo.updateLocal(master.miValor, dir, type)
+        memo.updateLocalInMemory(master.miValor, dir, type)
     else:
         master.updateIdInFunc(p[-5], "global", master.miValor)
         dir = master.getDireccion(p[-5], "global")
         type = master.getType(p[-5], "global")
-        memo.updateGlobal(master.miValor, dir, type)
+        memo.updateGlobalInMemory(master.miValor, dir, type)
+        # memo.updateGlobal(master.miValor, dir, type)
 
 
 def p_logico(p):
@@ -356,15 +372,21 @@ def p_var_cte(p):
     master.returnValor = p[1]
     if len(p) == 2:
         master.miValor = p[1]
+
+    # if para pasar los valores a los parametros de la funcion llamada desde el main
     if master.esParam:
         if master.esMain:
+            # print("ENTRA", len(master.arrParam), p[1])
             temp = master.getValor(p[1], "main")
             master.updateIdInFunc(master.arrParam[-1], master.miParamFunc, temp)
             del(master.arrParam[-1])
-        if master.esFuncion:
+        # No me acuerdo por que lo puse
+        '''if master.esFuncion:
             temp = master.getValor(p[1], master.miIdFunciones)
             master.updateIdInFunc(master.arrParam[-1], master.miParamFunc, temp)
-            del(master.arrParam[-1])
+            del(master.arrParam[-1])'''
+
+        # master.updateIdInFunc(aux, master.miParamFunc, temp)
 
 
 def p_push_id(p):
@@ -379,12 +401,18 @@ def p_push_id(p):
 
 def p_push_cte(p):
     "push_cte :"
+    temp = None
     if not master.esGlobal:
-        temp = memo.getTipo(p[-1])
-        memo.memory_dir = memo.insertLocalTemp(temp)
-        memo.updateLocal(p[-1], memo.memory_dir, temp)
+        tipo = memo.getTipo(p[-1])
+        dir = memo.getVirtualCte(tipo)
+        temp = dir
+        memo.updateLocalInMemory(p[-1], dir, tipo)
+        memo.guardarDireUsada(p[-1], dir)
+    #    temp = memo.getTipo(p[-1])
+        # memo.memory_dir = memo.insertLocalTemp(temp)
+        # memo.updateLocal(p[-1], memo.memory_dir, temp)
     quad.pushCte(p[-1])
-
+    # quad.pushCte(temp)
 
 def p_condicion(p):
     '''
@@ -463,7 +491,12 @@ def p_funcion(p):
     '''
     funcion : ID getParamId LPAREN funcion1 RPAREN paramFalse SEMICOLON
     '''
-
+    # memo.insertToLocalFunc(p[1])
+    # print(master.contadorDatosPasados, master.simbolos[p[1]].value["PARAMCANTI"].value)
+    if master.contadorDatosPasados != master.simbolos[p[1]].value["PARAMCANTI"].value:
+        print("Faltan parametros para pasar en la funcion", p[1], "en el main")
+        sys.exit()
+    master.contadorDatosPasados = 0
 
 def p_getParamId(p):
     '''
@@ -473,8 +506,9 @@ def p_getParamId(p):
     if master.miParamFunc in master.simbolos.keys():
         master.esParam = True
         master.arrParam = master.getidParam(p[-1])
+        # print(len(master.arrParam))
     else:
-        print("Funcion no declarada.")
+        print("Funcion no declarada")
         sys.exit()
 
 
@@ -484,6 +518,7 @@ def p_funcion1(p):
              | exp COMMA funcion1
              | empty
     '''
+    master.contadorDatosPasados += 1
 
 
 def p_paramFalse(p):
