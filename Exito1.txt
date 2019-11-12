@@ -24,6 +24,7 @@ func float SIMONA(){
   if (h > 3.0){
     h = 4.0;
   }
+  return 832.999;
 }
 
 func int oscar(){
@@ -33,7 +34,6 @@ func int oscar(){
   h = 432;
   e = "Judas ambos";
   temp = h * 3;
-  return 983;
 }
 
 
@@ -51,6 +51,7 @@ main {
   a = a * b + a;
   hector = "prueba de que hector funciona";
   SIMONA();
+  judasOSCAR(h, a);
 
 }
 end

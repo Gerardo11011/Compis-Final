@@ -19,8 +19,8 @@ idTemporal = None
 # Declaración de funciones.
 def p_programa(p):
     '''
-    programa : BEGIN globalfunc vars programa3 programa2 funcfalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
-             | BEGIN globalfunc vars programa3 MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
+    programa : BEGIN globalfunc vars programa3 globalFuncFalse programa2 funcfalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
+             | BEGIN globalfunc vars programa3 globalFuncFalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
              | BEGIN programa2 funcfalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
              | BEGIN MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
     '''
@@ -33,6 +33,14 @@ def p_globalfunc(p):
     '''
     master.insert("global", None)
     master.funciones.append("global")
+    master.esGlobal = True
+
+
+def p_globalFuncFalse(p):
+    '''
+    globalFuncFalse :
+    '''
+    master.esGlobal = False
 
 
 # Funcion que declarar cuantas funciones puede haber
@@ -98,6 +106,7 @@ def p_modulo1(p):
             | empty
     '''
 
+
 # Modulo que declara los parametros de la funcion
 def p_modulo1Aux(p):
     '''
@@ -106,7 +115,8 @@ def p_modulo1Aux(p):
                | STRING ID modulo1Repe
                | BOOL ID modulo1Repe
     '''
-    master.insertIdToFunc(p[2], p[1], master.miIdFunciones, "Param")
+    memo.memory_dir = memo.insertLocal(p[1])
+    master.insertIdToFunc(p[2], p[1], master.miIdFunciones, memo.memory_dir, True)
 
 
 def p_modulo1Repe(p):
@@ -127,19 +137,18 @@ def p_insertReturn(p):
     '''
     insertReturn :
     '''
-
     master.returnValor = master.returnValue(master.returnValor, master.miIdFunciones)
-
     memo.memory_dir = memo.insertLocal(master.miFuncType)
-    master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, None)
+    master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, memo.memory_dir)
     master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
+
+    memo.updateLocal(master.returnValor, memo.memory_dir, master.miFuncType)
     #print("VALOR DE RETURN:", master.returnValor, "TYPE:", type(master.returnValor))
+
 # ########################### ACABA FUNCIONES  ##############################
 
 
 # ############################ INICIA VARIABLES MAIN #########################
-
-
 def p_mainfunc(p):
     '''
     mainfunc :
@@ -156,7 +165,7 @@ def p_programa3(p):
     '''
 
 
-############################# CIERRA VARIABLES MAIN #########################
+# ############################ CIERRA VARIABLES MAIN #########################
 
 
 def p_vars(p):
@@ -166,7 +175,6 @@ def p_vars(p):
     '''
 
 
-
 def p_vars1(p):
     '''
     vars1 : ID
@@ -174,14 +182,14 @@ def p_vars1(p):
     '''
 
     if master.esFuncion:
-        master.insertIdToFunc(p[1], master.miTipo, master.miIdFunciones, None)
+        memo.memory_dir = memo.insertLocal(master.miTipo)
+        master.insertIdToFunc(p[1], master.miTipo, master.miIdFunciones, memo.memory_dir)
     elif master.esMain:
         memo.memory_dir = memo.insertLocal(master.miTipo)
         master.insertIdToFunc(p[1], master.miTipo, "main", memo.memory_dir)
     else:
         memo.memory_dir = memo.insertGlobal(master.miTipo)
         master.insertIdToFunc(p[1], master.miTipo, "global", memo.memory_dir)
-
 
 
 def p_tipo(p):
@@ -193,7 +201,6 @@ def p_tipo(p):
     '''
     master.miTipo = p[1]
     p[0] = p[1]
-
 
 
 def p_bloque(p):
@@ -222,6 +229,9 @@ def p_pop_assign(p):
     # print(master.miValor)
     if master.esFuncion:
         master.updateIdInFunc(p[-5], master.miIdFunciones, master.miValor)
+        dir = master.getDireccion(p[-5], master.miIdFunciones)
+        type = master.getType(p[-5], master.miIdFunciones)
+        memo.updateLocal(master.miValor, dir, type)
     elif master.esMain:
         master.updateIdInFunc(p[-5], "main", master.miValor)
         dir = master.getDireccion(p[-5], "main")
@@ -253,17 +263,10 @@ def p_logico1(p):
     '''
 
 
-
 def p_expresion(p):
     '''expresion : exp
                  | exp relop exp pop_relop
     '''
-
-
-# def p_expresion1(p):
-#     '''expresion1 : relop exp
-#                   | empty
-#     '''
 
 
 def p_pop_relop(p):
@@ -329,10 +332,6 @@ def p_push_poper(p):
 
 def p_pop_poper(p):
     "pop_poper :"
-    # quad.popTerm()
-    # quad.popFact()
-    # quad.popRelop()
-    # quad.popLog()
     quad.popPoper()
 
 
@@ -354,9 +353,7 @@ def p_var_cte(p):
             | TRUE push_cte
             | FALSE push_cte
     '''
-    # master.miValor = p[1]
     master.returnValor = p[1]
-    #print(p[1])
     if len(p) == 2:
         master.miValor = p[1]
     if master.esParam:
@@ -365,12 +362,9 @@ def p_var_cte(p):
             master.updateIdInFunc(master.arrParam[-1], master.miParamFunc, temp)
             del(master.arrParam[-1])
         if master.esFuncion:
-            print(master.miIdFunciones)
             temp = master.getValor(p[1], master.miIdFunciones)
             master.updateIdInFunc(master.arrParam[-1], master.miParamFunc, temp)
             del(master.arrParam[-1])
-        #master.updateIdInFunc(aux, master.miParamFunc, temp)
-
 
 
 def p_push_id(p):
@@ -385,6 +379,10 @@ def p_push_id(p):
 
 def p_push_cte(p):
     "push_cte :"
+    if not master.esGlobal:
+        temp = memo.getTipo(p[-1])
+        memo.memory_dir = memo.insertLocalTemp(temp)
+        memo.updateLocal(p[-1], memo.memory_dir, temp)
     quad.pushCte(p[-1])
 
 
@@ -461,11 +459,12 @@ def p_loop3(p):
     quad.loopTres()
 
 
+
 def p_funcion(p):
     '''
     funcion : ID getParamId LPAREN funcion1 RPAREN paramFalse SEMICOLON
     '''
-    memo.insertToLocalFunc(p[1])
+    # memo.insertToLocalFunc(p[1])
 
 
 def p_getParamId(p):
@@ -473,8 +472,13 @@ def p_getParamId(p):
     getParamId :
     '''
     master.miParamFunc = p[-1]
-    master.esParam = True
-    master.arrParam = master.getidParam(p[-1])
+    if master.miParamFunc in master.simbolos.keys():
+        master.esParam = True
+        master.arrParam = master.getidParam(p[-1])
+    else:
+        print("Funcion no declarada.")
+        sys.exit()
+
 
 def p_funcion1(p):
     '''
@@ -489,6 +493,7 @@ def p_paramFalse(p):
     paramFalse :
     '''
     master.esParam = False
+
 
 def p_empty(p):
     'empty :'
