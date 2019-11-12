@@ -90,11 +90,11 @@ def validate(dato, id, id_funcion):
 
 
 # Funcion que inserta las variables en su respectiva tabla local
-def insertIdToFunc(id, type_data, id_funcion, direccion):
+def insertIdToFunc(id, type_data, id_funcion, direccion, param=None):
     if len(simbolos[id_funcion].value) >= 1 and not itFoundGlobalVar(id) and not itFoundLocal(id, id_funcion):
-        simbolos[id_funcion].value[id] = tabla.tabla_local(type_data, None, direccion)
+        simbolos[id_funcion].value[id] = tabla.tabla_local(type_data, None, direccion, param)
     if len(simbolos[id_funcion].value) == 0 and not itFoundGlobalVar(id):
-        simbolos[id_funcion].value[id] = tabla.tabla_local(type_data, None, direccion)
+        simbolos[id_funcion].value[id] = tabla.tabla_local(type_data, None, direccion, param)
 
 
 # Funcion que actualiza el valor de una variable
@@ -122,8 +122,8 @@ def getValor(id, id_funcion):
 def getidParam(id_funcion):
     temp = []
     for id in simbolos[id_funcion].value:
-        if simbolos[id_funcion].value[id].direccion == 'Param':
-            simbolos[id_funcion].value[id].direccion = None
+        if simbolos[id_funcion].value[id].param:
+            # simbolos[id_funcion].value[id].direccion = None
             temp.append(id)
     return temp
 
