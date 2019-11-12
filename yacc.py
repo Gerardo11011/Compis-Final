@@ -339,11 +339,11 @@ def p_factor(p):
 def p_var_cte(p):
     '''
     var_cte : ID push_id
-            | CTE_I push_cte getVarCTE
-            | CTE_F push_cte getVarCTE
-            | CTE_S push_cte getVarCTE
-            | TRUE push_cte getVarCTE
-            | FALSE push_cte getVarCTE
+            | CTE_I push_cte
+            | CTE_F push_cte
+            | CTE_S push_cte
+            | TRUE push_cte
+            | FALSE push_cte
     '''
     master.returnValor = p[1]
     if len(p) == 2:
@@ -357,17 +357,6 @@ def p_var_cte(p):
             temp = master.getValor(p[1], master.miIdFunciones)
             master.updateIdInFunc(master.arrParam[-1], master.miParamFunc, temp)
             del(master.arrParam[-1])
-        #master.updateIdInFunc(aux, master.miParamFunc, temp)
-
-
-def p_getVarCTE(p):
-    '''
-    getVarCTE :
-    '''
-    temp = memo.getTipo(p[-2])
-    memo.memory_dir = memo.insertLocalTemp(temp)
-    memo.updateLocal(p[-2], memo.memory_dir, temp)
-
 
 
 def p_push_id(p):
@@ -382,6 +371,9 @@ def p_push_id(p):
 
 def p_push_cte(p):
     "push_cte :"
+    temp = memo.getTipo(p[-1])
+    memo.memory_dir = memo.insertLocalTemp(temp)
+    memo.updateLocal(p[-1], memo.memory_dir, temp)
     quad.pushCte(p[-1])
 
 
