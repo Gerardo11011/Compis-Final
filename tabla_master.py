@@ -23,6 +23,8 @@ returnValor = None
 miParamFunc = None
 esParam = False
 miFuncType = None
+contadorParam = 0
+contadorDatosPasados = 0
 
 
 # Funcion que inicializa la tabla con funciones, global, y main
@@ -69,11 +71,16 @@ def itFoundLocal(id, id_funcion):
 def validate(dato, id, id_funcion):
     temp = str(type(dato))
     aux = None
-    encontro = False
+    encontroLocal = False
+    encontroGlobal = False
     if id in simbolos[id_funcion].value:
         aux = simbolos[id_funcion].value[id].type_data
-        encontro = True
-    if not encontro:
+        encontroLocal = True
+    if "global" in simbolos.keys():
+        if id in simbolos["global"].value:
+            aux = simbolos["global"].value[id].type_data
+            encontroGlobal = True
+    if not encontroLocal and not encontroGlobal:
         print('ERROR: ID no declarado:', id)
         sys.exit()
     if dato == 'true' or dato == 'false':
