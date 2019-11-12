@@ -16,7 +16,7 @@ func int judasOSCAR(float p, int r){
   return 999;
 }
 
-func float SIMONA(){
+func float SIMONA(int r, float p){
   float h;
   int q;
   int temp;
@@ -41,7 +41,7 @@ main {
   int a, b;
   float h, d;
   string pedro, hector;
-  int r, contador;
+  int contador;
   contador = 0;
   a = 2;
   b = 4;
@@ -50,8 +50,7 @@ main {
   pedro = "prueba de que pedro funciona";
   a = a * b + a;
   hector = "prueba de que hector funciona";
-  SIMONA();
-  judasOSCAR(h, a);
+  SIMONA(b, h);
 
 }
 end
