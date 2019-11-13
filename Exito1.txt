@@ -31,6 +31,8 @@ func int oscar(){
   string e;
   int h;
   int temp;
+  bool p;
+  p = false;
   h = 432;
   e = "Judas ambos";
   temp = h * 3;
