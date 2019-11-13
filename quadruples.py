@@ -45,8 +45,8 @@ def pushID(id, funcion):
         sys.exit()
 
 
-def pushCte(cte):
-    PilaO.append(cte)
+def pushCte(cte, dir, tipo):
+    PilaO.append(dir)
     tipo = str(type(cte))
     if cte == 'true' or cte == 'false':
         tipo = "<class 'bool'>"

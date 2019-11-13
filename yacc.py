@@ -410,7 +410,9 @@ def p_push_cte(p):
         # memo.guardarDireUsada(p[-1], dir)
     # memo.memory_dir = memo.insertLocalTemp(temp)
     # memo.updateLoc1al(p[-1], memo.memory_dir, temp)
-    quad.pushCte(p[-1], dir, tipo)
+    direccion = memo.getDireCte(p[-1])
+    print(direccion)
+    quad.pushCte(p[-1], direccion, tipo)
     # quad.pushCte(temp)
 
 
