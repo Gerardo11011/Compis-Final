@@ -40,6 +40,7 @@ def p_globalFuncFalse(p):
     '''
     globalFuncFalse :
     '''
+    memo.reiniciarDireccionesFunc()
     master.esGlobal = False
 
 
@@ -401,18 +402,17 @@ def p_push_id(p):
 
 def p_push_cte(p):
     "push_cte :"
-    temp = None
-    if not master.esGlobal:
-        tipo = memo.getTipo(p[-1])
-        dir = memo.getVirtualCte(tipo)
-        temp = dir
-        memo.updateLocalInMemory(p[-1], dir, tipo)
-        memo.guardarDireUsada(p[-1], dir)
+    # temp = None
+    tipo = memo.getTipo(p[-1])
+    dir = memo.getVirtualCte(tipo)
+    # temp = dir
+    memo.updateLocalInMemory(p[-1], dir, tipo)
+    memo.guardarDireUsada(p[-1], dir)
     #    temp = memo.getTipo(p[-1])
-        # memo.memory_dir = memo.insertLocalTemp(temp)
-        # memo.updateLocal(p[-1], memo.memory_dir, temp)
-    quad.pushCte(p[-1])
-    # quad.pushCte(temp)
+    # memo.memory_dir = memo.insertLocalTemp(temp)
+    # memo.updateLocal(p[-1], memo.memory_dir, temp)
+    quad.pushCte(p[-1], dir, tipo)
+
 
 def p_condicion(p):
     '''

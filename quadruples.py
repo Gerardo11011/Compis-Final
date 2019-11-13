@@ -45,17 +45,9 @@ def pushID(id, funcion):
         sys.exit()
 
 
-def pushCte(cte):
-    PilaO.append(cte)
-    tipo = str(type(cte))
-    if cte == 'true' or cte == 'false':
-        PTypes.append('bool')
-    if tipo == "<class 'float'>":
-        PTypes.append('float')
-    if tipo == "<class 'int'>":
-        PTypes.append('int')
-    if tipo == "<class 'str'>":
-        PTypes.append('string')
+def pushCte(cte, dir, tipo):
+    PilaO.append(dir)
+    PTypes.append(tipo)
     AVAIL.append(cte)
 
 
