@@ -25,6 +25,12 @@ class memoria(object):
         self.string = {}
         self.booleanos = {}
 
+    def reiniciar(self):
+        self.integers.clear()
+        self.float.clear()
+        self.string.clear()
+        self.booleanos.clear()
+
 # VARIABLES GLOBALES SERAN DEL 0-99 EN CADA DICCIONARIO
 # INTEGERS VAN A SER DE 3000-3099
 # FLOAT VAN A SER DE 3100-3199
