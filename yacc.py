@@ -41,9 +41,8 @@ def p_globalFuncFalse(p):
     globalFuncFalse :
     '''
     master.esGlobal = False
-    memo.showCteMemo("global")
-    memo.reiniciarDireccionesFunc()
-    memo.limpiarDireUsadas()
+    # memo.reiniciarDireccionesFunc()
+    # memo.limpiarDireUsadas()
 
 
 # Funcion que declarar cuantas funciones puede haber
@@ -74,14 +73,12 @@ def p_modulo(p):
     '''
 
     master.contadorParam = 0
-    memo.showCteMemo(p[3])
     memo.reiniciarDireccionesFunc()
     memo.limpiarDireUsadas()
     # print(memo.memoIntUsada, memo.getValor(memo.memoIntUsada))
     # print(memo.memoFloatUsada, memo.getValor(memo.memoFloatUsada))
     # print(memo.memoStringUsada, memo.getValor(memo.memoStringUsada))
     # print(memo.memoBoolUsada), memo.getValor(memo.memoBoolUsada)
-
 
 
 def p_insertarParam(p):
@@ -377,7 +374,6 @@ def p_var_cte(p):
     master.returnValor = p[1]
     if len(p) == 2:
         master.miValor = p[1]
-
     # if para pasar los valores a los parametros de la funcion llamada desde el main
     if master.esParam:
         if master.esMain:
@@ -407,14 +403,15 @@ def p_push_id(p):
 def p_push_cte(p):
     "push_cte :"
     tipo = memo.getTipo(p[-1])
-    dir = memo.getVirtualCte(tipo)
-    print("imprime:", p[-1])
-    memo.updateLocalInMemory(p[-1], dir, tipo)
-    memo.guardarDireUsada(p[-1], dir)
+    if not memo.verificarValorCte(p[-1]):
+        dir = memo.getVirtualCte(tipo)
+        memo.updateCteInMemory(p[-1], dir, tipo)
+        # memo.guardarDireUsada(p[-1], dir)
     # memo.memory_dir = memo.insertLocalTemp(temp)
     # memo.updateLoc1al(p[-1], memo.memory_dir, temp)
     quad.pushCte(p[-1])
     # quad.pushCte(temp)
+
 
 def p_condicion(p):
     '''
@@ -489,7 +486,6 @@ def p_loop3(p):
     quad.loopTres()
 
 
-
 def p_funcion(p):
     '''
     funcion : ID getParamId LPAREN funcion1 RPAREN paramFalse SEMICOLON
@@ -500,6 +496,7 @@ def p_funcion(p):
         print("Faltan parametros para pasar en la funcion", p[1], "en el main")
         sys.exit()
     master.contadorDatosPasados = 0
+
 
 def p_getParamId(p):
     '''
@@ -548,8 +545,8 @@ print("Parsing . . . \n")
 parser = yacc.yacc()
 result = parser.parse(entrada)
 print(result)
-
-
+print("CONSTANTES")
+memo.showCteMemo()
 print("")
 print("CUADRUPLOS")
 print("")

@@ -47,13 +47,15 @@ def pushCte(cte):
     PilaO.append(cte)
     tipo = str(type(cte))
     if cte == 'true' or cte == 'false':
-        PTypes.append('bool')
+        tipo = "<class 'bool'>"
     if tipo == "<class 'float'>":
         PTypes.append('float')
     if tipo == "<class 'int'>":
         PTypes.append('int')
     if tipo == "<class 'str'>":
         PTypes.append('string')
+    if tipo == "<class 'bool'>":
+        PTypes.append('bool')
     AVAIL.append(cte)
 
 
