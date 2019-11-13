@@ -272,7 +272,10 @@ def p_logico(p):
 
 def p_pop_log(p):
     "pop_log :"
-    quad.popLog()
+    if master.esMain:
+        quad.popLog(True)
+    elif master.esFuncion:
+        quad.popLog(False)
 
 
 def p_logico1(p):
@@ -290,7 +293,10 @@ def p_expresion(p):
 
 def p_pop_relop(p):
     "pop_relop :"
-    quad.popRelop()
+    if master.esMain:
+        quad.popRelop(True)
+    elif master.esFuncion:
+        quad.popRelop(False)
 
 
 def p_relop(p):
@@ -315,7 +321,10 @@ def p_exp(p):
 
 def p_pop_term(p):
     "pop_term :"
-    quad.popTerm()
+    if master.esMain:
+        quad.popTerm(True)
+    elif master.esFuncion:
+        quad.popTerm(False)
 
 
 def p_exp1(p):
@@ -334,7 +343,10 @@ def p_termino(p):
 
 def p_pop_fact(p):
     "pop_fact :"
-    quad.popFact()
+    if master.esMain:
+        quad.popFact(True)
+    elif master.esFuncion:
+        quad.popFact(False)
 
 
 def p_termino1(p):
