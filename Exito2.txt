@@ -2,10 +2,15 @@ begin
 
 main {
   int a, b, d, c;
+  bool p;
   a = 4;
   b = 4;
   c = 4;
   d = 13;
+  p = true;
+  if(p == true) {
+    b = c + d;
+  }
 }
 
 end
