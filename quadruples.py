@@ -73,7 +73,7 @@ def popAssign():
     POperSize = len(POper)
     if POperSize > 0:
         if POper[POperSize-1] == '=':
-            PilaO.pop()
+            right_operand = PilaO.pop()
             right_type = PTypes.pop()
             right_value = AVAIL.pop()
             left_operand = PilaO.pop()
@@ -83,7 +83,7 @@ def popAssign():
             result_type = semantic(left_type, right_type, operator)
             if(result_type != 'error'):
                 result = right_value
-                quadr = quadruple(len(Quad), operator, result, None, left_operand)
+                quadr = quadruple(len(Quad), operator, right_operand, None, left_operand)
                 Quad.append(quadr)
             else:
                 print("ERROR: Type mismatch.")

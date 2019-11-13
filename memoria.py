@@ -69,6 +69,18 @@ def getVirtualTemp(tipo):
     return temp
 
 
+# Funcion que actualiza el valor de una direccion temporal
+def updateTempInMemory(valor, direccion, tipo):
+    if tipo == "int":
+        memoria_temp.integers[direccion] = valor
+    if tipo == "float":
+        memoria_temp.float[direccion] = valor
+    if tipo == "string":
+        memoria_temp.string[direccion] = valor
+    if tipo == "bool":
+        memoria_temp.booleanos[direccion] = valor
+
+
 def reiniciarTemporales():
     global memoTempInt
     global memoTempFloat
