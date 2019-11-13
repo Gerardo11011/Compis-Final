@@ -45,6 +45,11 @@ memoMainFloat = 8100
 memoMainString = 8200
 memoMainBool = 8300
 
+# Direccion temporal del main
+tempMainInt = 85000
+tempMainFloat = 86000
+tempMainString = 87000
+tempMainBool = 88000
 
 # para insertar los valores a cualquier direccion local es a traves del metodo updateLocalInMemory
 # por lo que se tiene que pasar a la funcion la direccion indicada
@@ -69,6 +74,26 @@ def getVirtualTemp(tipo):
     return temp
 
 
+def getVirtualMainTemp(tipo):
+    global tempMainInt
+    global tempMainInt
+    global tempMainString
+    global tempMainBool
+    if tipo == 'int':
+        temp = tempMainInt
+        tempMainInt += 1
+    elif tipo == 'float':
+        temp = tempMainInt
+        tempMainInt += 1
+    elif tipo == 'string':
+        temp = tempMainString
+        tempMainString += 1
+    elif tipo == 'bool':
+        temp = tempMainBool
+        tempMainBool += 1
+    return temp
+
+
 def reiniciarTemporales():
     global memoTempInt
     global memoTempFloat
@@ -78,6 +103,7 @@ def reiniciarTemporales():
     memoTempFloat = 43100
     memoTempString = 43200
     memoTempBool = 43300
+    memoria_temp.reiniciar()
 
 
 def reiniciarDireccionesFunc():
@@ -206,7 +232,7 @@ def getVirtualCte(miTipo):
     global memoCteInt
     global memoCteFloat
     global memoCteString
-    global memoFuncBool
+    global memoCteBool
     if miTipo == 'int':
         temp = memoCteInt
         memoCteInt += 1
@@ -217,8 +243,8 @@ def getVirtualCte(miTipo):
         temp = memoCteString
         memoCteString += 1
     elif miTipo == 'bool':
-        temp = memoFuncBool
-        memoFuncBool += 1
+        temp = memoCteBool
+        memoCteBool += 1
     return temp
 
 
@@ -245,6 +271,29 @@ def updateGlobalInMemory(valor, direccion, tipo):
     if tipo == "bool":
         memoria_global.booleanos[direccion] = valor
 
+
+# Funcion que actualiza el valor de una direccion temporal
+def updateTempInMemory(valor, direccion, tipo):
+    if tipo == "int":
+        memoria_temp.integers[direccion] = valor
+    if tipo == "float":
+        memoria_temp.float[direccion] = valor
+    if tipo == "string":
+        memoria_temp.string[direccion] = valor
+    if tipo == "bool":
+        memoria_temp.booleanos[direccion] = valor
+
+
+# Funcion que actualiza el valor de una direccion temporal del main
+def updateMainTempInMemory(valor, direccion, tipo):
+    if tipo == "int":
+        memoria_global.integers[direccion] = valor
+    if tipo == "float":
+        memoria_global.float[direccion] = valor
+    if tipo == "string":
+        memoria_global.string[direccion] = valor
+    if tipo == "bool":
+        memoria_global.booleanos[direccion] = valor
 
 # Funcion que inserta una direccion de memoria local en la memoria
 def insertLocalInMemory(tipo, memoria):
