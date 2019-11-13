@@ -67,6 +67,18 @@ def getVirtualTemp(tipo):
         memoTempBool += 1
     return temp
 
+
+def reiniciarCTE():
+    global memoCteInt
+    global memoCteFloat
+    global memoCteString
+    global memoCteBool
+    memoCteInt = 20000
+    memoCteFloat = 21000
+    memoCteString = 22000
+    memoCteBool = 23000
+
+
 def reiniciarDireccionesFunc():
     global memoFuncInt
     global memoFuncFloat
@@ -76,17 +88,17 @@ def reiniciarDireccionesFunc():
     global memoCteFloat
     global memoCteString
     global memoCteBool
-    memoFuncInt = 9000
-    memoFuncFloat = 9100
-    memoFuncString = 9200
-    memoFuncBool = 9300
     memoCteInt = 20000
     memoCteFloat = 21000
     memoCteString = 22000
     memoCteBool = 23000
+    memoFuncInt = 9000
+    memoFuncFloat = 9100
+    memoFuncString = 9200
+    memoFuncBool = 9300
 
 
-# Funcion que obtiene el tipo de un cte
+# Funcion que obtiene elipo de un cte
 def getTipo(cte):
     tipo = str(type(cte))
     temp = None
@@ -245,13 +257,14 @@ def limpiarDireUsadas():
     global memoStringUsada
     global memoBoolUsada
     for i in range(len(memoIntUsada)):
-        del memoria_local.integers[memoIntUsada[i]]
+        memoria_local.integers.pop(memoIntUsada[i], None)
+        # del memoria_local.integers[memoIntUsada[i]]
     for i in range(len(memoFloatUsada)):
-        del memoria_local.float[memoFloatUsada[i]]
+        memoria_local.float.pop(memoFloatUsada[i], None)
     for i in range(len(memoStringUsada)):
-        del memoria_local.string[memoStringUsada[i]]
+        memoria_local.string.pop(memoStringUsada[i], None)
     for i in range(len(memoBoolUsada)):
-        del memoria_local.booleanos[memoBoolUsada[i]]
+        memoria_local.booleanos.pop(memoBoolUsada[i], None)
     memoIntUsada.clear()
     memoFloatUsada.clear()
     memoStringUsada.clear()
