@@ -51,9 +51,9 @@ tempMainFloat = 86000
 tempMainString = 87000
 tempMainBool = 88000
 
-# para insertar los valores a cualquier direccion local es a traves del metodo updateLocalInMemory
-# por lo que se tiene que pasar a la funcion la direccion indicada
 
+# Para insertar los valores a cualquier direccion local es a traves del metodo
+# updateLocalInMemor por lo que se tiene que pasar a la funcion la direccion indicada
 def getVirtualTemp(tipo):
     global memoTempInt
     global memoTempFloat
