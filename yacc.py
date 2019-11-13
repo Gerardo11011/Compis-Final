@@ -41,6 +41,9 @@ def p_globalFuncFalse(p):
     globalFuncFalse :
     '''
     master.esGlobal = False
+    memo.showCteMemo("global")
+    memo.reiniciarDireccionesFunc()
+    memo.limpiarDireUsadas()
 
 
 # Funcion que declarar cuantas funciones puede haber
@@ -69,14 +72,16 @@ def p_modulo(p):
     '''
     modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY vars insertarParam programa3 modulo3 RKEY
     '''
-    memo.reiniciarDireccionesFunc()
+
     master.contadorParam = 0
     memo.showCteMemo(p[3])
+    memo.reiniciarDireccionesFunc()
+    memo.limpiarDireUsadas()
     # print(memo.memoIntUsada, memo.getValor(memo.memoIntUsada))
     # print(memo.memoFloatUsada, memo.getValor(memo.memoFloatUsada))
     # print(memo.memoStringUsada, memo.getValor(memo.memoStringUsada))
     # print(memo.memoBoolUsada), memo.getValor(memo.memoBoolUsada)
-    memo.limpiarDireUsadas()
+
 
 
 def p_insertarParam(p):
@@ -401,16 +406,13 @@ def p_push_id(p):
 
 def p_push_cte(p):
     "push_cte :"
-    temp = None
-    if not master.esGlobal:
-        tipo = memo.getTipo(p[-1])
-        dir = memo.getVirtualCte(tipo)
-        temp = dir
-        memo.updateLocalInMemory(p[-1], dir, tipo)
-        memo.guardarDireUsada(p[-1], dir)
-    #    temp = memo.getTipo(p[-1])
-        # memo.memory_dir = memo.insertLocalTemp(temp)
-        # memo.updateLocal(p[-1], memo.memory_dir, temp)
+    tipo = memo.getTipo(p[-1])
+    dir = memo.getVirtualCte(tipo)
+    print("imprime:", p[-1])
+    memo.updateLocalInMemory(p[-1], dir, tipo)
+    memo.guardarDireUsada(p[-1], dir)
+    # memo.memory_dir = memo.insertLocalTemp(temp)
+    # memo.updateLoc1al(p[-1], memo.memory_dir, temp)
     quad.pushCte(p[-1])
     # quad.pushCte(temp)
 
