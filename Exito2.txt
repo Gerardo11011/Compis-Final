@@ -3,9 +3,9 @@ begin
 main {
   int a, b, d, c;
   a = 4;
-  b = 5;
-  c = 2;
-  d = 1;
+  b = 4;
+  c = 4;
+  d = 13;
 }
 
 end
