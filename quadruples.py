@@ -6,6 +6,7 @@ import sys
 import tabla_master as tabla
 from tabla_master import simbolos
 from semantic_cube import semantic
+import memoria as memo
 
 # Declaración de pilas
 POper = []
@@ -14,6 +15,8 @@ PTypes = []
 Quad = []
 AVAIL = []
 PJumps = []
+
+k = 0
 
 
 # Clase Cuadruplo
@@ -71,7 +74,7 @@ def popAssign():
     POperSize = len(POper)
     if POperSize > 0:
         if POper[POperSize-1] == '=':
-            PilaO.pop()
+            right_operand = PilaO.pop()
             right_type = PTypes.pop()
             right_value = AVAIL.pop()
             left_operand = PilaO.pop()
@@ -81,7 +84,7 @@ def popAssign():
             result_type = semantic(left_type, right_type, operator)
             if(result_type != 'error'):
                 result = right_value
-                quadr = quadruple(len(Quad), operator, result, None, left_operand)
+                quadr = quadruple(len(Quad), operator, right_operand, None, left_operand)
                 Quad.append(quadr)
             else:
                 print("ERROR: Type mismatch.")
@@ -89,7 +92,7 @@ def popAssign():
     return result
 
 
-def popTerm():
+def popTerm(main):
     POperSize = len(POper)
     if POperSize > 0:
         if POper[POperSize-1] == '+' or POper[POperSize-1] == '-':
@@ -106,9 +109,15 @@ def popTerm():
                     result = left_value + right_value
                 else:
                     result = left_value - right_value
-                quadr = quadruple(len(Quad), operator, left_operand, right_operand, result)
+                if main:
+                    dir = memo.getVirtualMainTemp(result_type)
+                    memo.updateMainTempInMemory(result, dir, result_type)
+                else:
+                    dir = memo.getVirtualTemp(result_type)
+                    memo.updateTempInMemory(result, dir, result_type)
+                quadr = quadruple(len(Quad), operator, left_operand, right_operand, dir)
                 Quad.append(quadr)
-                PilaO.append(result)
+                PilaO.append(dir)
                 AVAIL.append(result)
                 PTypes.append(result_type)
             else:
@@ -116,7 +125,7 @@ def popTerm():
                 sys.exit()
 
 
-def popFact():
+def popFact(main):
     POperSize = len(POper)
     if POperSize > 0:
         if POper[POperSize-1] == '*' or POper[POperSize-1] == '/':
@@ -133,9 +142,15 @@ def popFact():
                     result = left_value * right_value
                 else:
                     result = left_value / right_value
-                quadr = quadruple(len(Quad), operator, left_operand, right_operand, result)
+                if main:
+                    dir = memo.getVirtualMainTemp(result_type)
+                    memo.updateMainTempInMemory(result, dir, result_type)
+                else:
+                    dir = memo.getVirtualTemp(result_type)
+                    memo.updateTempInMemory(result, dir, result_type)
+                quadr = quadruple(len(Quad), operator, left_operand, right_operand, dir)
                 Quad.append(quadr)
-                PilaO.append(result)
+                PilaO.append(dir)
                 AVAIL.append(result)
                 PTypes.append(result_type)
             else:
@@ -143,7 +158,7 @@ def popFact():
                 sys.exit()
 
 
-def popRelop():
+def popRelop(main):
     POperSize = len(POper)
     if POperSize > 0:
         if(POper[POperSize-1] == '>' or POper[POperSize-1] == '>='
@@ -170,9 +185,15 @@ def popRelop():
                     result = left_value == right_value
                 elif(operator == '<>'):
                     result = left_value != right_value
-                quadr = quadruple(len(Quad), operator, left_operand, right_operand, result)
+                if main:
+                    dir = memo.getVirtualMainTemp(result_type)
+                    memo.updateMainTempInMemory(result, dir, result_type)
+                else:
+                    dir = memo.getVirtualTemp(result_type)
+                    memo.updateTempInMemory(result, dir, result_type)
+                quadr = quadruple(len(Quad), operator, left_operand, right_operand, dir)
                 Quad.append(quadr)
-                PilaO.append(result)
+                PilaO.append(dir)
                 AVAIL.append(result)
                 PTypes.append(result_type)
             else:
@@ -180,7 +201,7 @@ def popRelop():
                 sys.exit()
 
 
-def popLog():
+def popLog(main):
     POperSize = len(POper)
     if POperSize > 0:
         if POper[POperSize-1] == 'and' or POper[POperSize-1] == 'or':
@@ -197,9 +218,15 @@ def popLog():
                     result = left_value and right_value
                 else:
                     result = left_value or right_value
-                quadr = quadruple(len(Quad), operator, left_operand, right_operand, result)
+                if main:
+                    dir = memo.getVirtualMainTemp(result_type)
+                    memo.updateMainTempInMemory(result, dir, result_type)
+                else:
+                    dir = memo.getVirtualTemp(result_type)
+                    memo.updateTempInMemory(result, dir, result_type)
+                quadr = quadruple(len(Quad), operator, left_operand, right_operand, dir)
                 Quad.append(quadr)
-                PilaO.append(result)
+                PilaO.append(dir)
                 AVAIL.append(result)
                 PTypes.append(result_type)
             else:
@@ -273,7 +300,6 @@ def loopTres():
     quadr = quadruple(len(Quad), "goto", None, None, regresa)
     Quad.append(quadr)
     fill(end, len(Quad))
-
 
 
 def show():
