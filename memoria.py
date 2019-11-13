@@ -206,7 +206,7 @@ def getVirtualCte(miTipo):
     global memoCteInt
     global memoCteFloat
     global memoCteString
-    global memoFuncBool
+    global memoCteBool
     if miTipo == 'int':
         temp = memoCteInt
         memoCteInt += 1
@@ -217,8 +217,8 @@ def getVirtualCte(miTipo):
         temp = memoCteString
         memoCteString += 1
     elif miTipo == 'bool':
-        temp = memoFuncBool
-        memoFuncBool += 1
+        temp = memoCteBool
+        memoCteBool += 1
     return temp
 
 
