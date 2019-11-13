@@ -40,6 +40,7 @@ def p_globalFuncFalse(p):
     '''
     globalFuncFalse :
     '''
+    memo.reiniciarDireccionesFunc()
     master.esGlobal = False
     # memo.reiniciarDireccionesFunc()
     # memo.limpiarDireUsadas()
@@ -532,9 +533,9 @@ def p_paramFalse(p):
 def p_empty(p):
     'empty :'
     pass
+
+
 # Regla de error para errores de sintaxis.
-
-
 def p_error(p):
     print(p)
     print("Error de sintaxis en linea '%s'" % p.lexpos)
