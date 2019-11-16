@@ -16,7 +16,7 @@ Quad = []
 AVAIL = []
 PJumps = []
 
-k = 0
+paramCont = 0
 
 
 # Clase Cuadruplo
@@ -27,6 +27,12 @@ class quadruple(object):
         self.left_operand = left_operand
         self.right_operand = right_operand
         self.result = result
+
+
+# Funciones para producir representación inetermedia para Main
+def gotoMain():
+    quadr = quadruple(len(Quad), 'goto', None, None, None)
+    Quad.append(quadr)
 
 
 # Funciones para producir representación intermedia para operadores
@@ -307,6 +313,34 @@ def loopTres():
     quadr = quadruple(len(Quad), "goto", None, None, regresa)
     Quad.append(quadr)
     fill(end, len(Quad))
+
+
+# Funciones para producir representación intermedia para Módulos
+def moduloDos(id):
+    quadr = quadruple(len(Quad), 'era', None, None, id)
+    Quad.append(quadr)
+    global paramCont
+    paramCont = 1
+
+
+def moduloTres():
+    argument = PilaO.pop()
+    PTypes.pop()
+    valor = AVAIL.pop()
+    num = str(paramCont)
+    quadr = quadruple(len(Quad), 'param', argument, None, 'param'+num)
+    Quad.append(quadr)
+    return valor
+
+
+def moduloCuatro():
+    global paramCont
+    paramCont = paramCont + 1
+
+
+def moduloSeis(id, addr):
+    quadr = quadruple(len(Quad), 'gosub', id, None, addr)
+    Quad.append(quadr)
 
 
 def show():
