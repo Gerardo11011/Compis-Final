@@ -54,6 +54,16 @@ tempMainBool = 88000
 
 # Para insertar los valores a cualquier direccion local es a traves del metodo
 # updateLocalInMemor por lo que se tiene que pasar a la funcion la direccion indicada
+def insertarFuncInMemoryExe(id_funcion):
+    for id in master.simbolos[id_funcion].value:
+        if id != "PARAMCANTI":
+            tipo = master.simbolos[id_funcion].value[id].type_data
+            direccion = master.simbolos[id_funcion].value[id].direccion
+            insertLocalInMemory(tipo, direccion)
+            valor = master.simbolos[id_funcion].value[id].value
+            updateLocalInMemory(valor, direccion, tipo)
+
+
 def getVirtualTemp(tipo):
     global memoTempInt
     global memoTempFloat
@@ -76,15 +86,15 @@ def getVirtualTemp(tipo):
 
 def getVirtualMainTemp(tipo):
     global tempMainInt
-    global tempMainInt
+    global tempMainFloat
     global tempMainString
     global tempMainBool
     if tipo == 'int':
         temp = tempMainInt
         tempMainInt += 1
     elif tipo == 'float':
-        temp = tempMainInt
-        tempMainInt += 1
+        temp = tempMainFloat
+        tempMainFloat += 1
     elif tipo == 'string':
         temp = tempMainString
         tempMainString += 1
