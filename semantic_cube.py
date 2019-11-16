@@ -45,7 +45,7 @@ def semantic(left, right, operator):
 
     elif(left == 'string'):
         if(right == 'string'):
-            if(operator == '='):
+            if(operator == '=' or operator == '+'):
                 return 'string'
             elif(operator == '==' or operator == '<>'):
                 return 'bool'

@@ -54,6 +54,8 @@ main {
   a = a * b + a;
   hector = "prueba de que hector funciona";
 
+  hector = hector + pedro;
+
   SIMONA(4*1, h+h);
 
 }
