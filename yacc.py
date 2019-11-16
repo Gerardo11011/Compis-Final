@@ -19,11 +19,16 @@ idTemporal = None
 # Declaración de funciones.
 def p_programa(p):
     '''
-    programa : BEGIN globalfunc vars programa3 globalFuncFalse programa2 funcfalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
-             | BEGIN globalfunc vars programa3 globalFuncFalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
-             | BEGIN programa2 funcfalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
-             | BEGIN MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
+    programa : BEGIN gotoMain globalfunc vars programa3 globalFuncFalse programa2 funcfalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
+             | BEGIN gotoMain globalfunc vars programa3 globalFuncFalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
+             | BEGIN gotoMain programa2 funcfalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
+             | BEGIN gotoMain MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
     '''
+
+
+def p_gotoMain(p):
+    "gotoMain :"
+    quad.gotoMain()
 
 
 # ############################# INICIAN FUNCIONES F ##########################
@@ -89,6 +94,7 @@ def p_insertarParam(p):
     if master.esMain:
         master.insertIdToFunc("Cuadruplos", "int", "main", None)
         master.updateIdInFunc("Cuadruplos", "main", len(quad.Quad))
+        quad.fill(0, len(quad.Quad))
     else:
         master.insertIdToFunc("Cuadruplos", "int", p[-7], None)
         master.updateIdInFunc("Cuadruplos", p[-7], len(quad.Quad))
@@ -180,8 +186,6 @@ def p_programa3(p):
 
 
 # ############################ CIERRA VARIABLES MAIN #########################
-
-
 def p_vars(p):
     '''
     vars : tipo vars1 SEMICOLON
@@ -387,20 +391,6 @@ def p_var_cte(p):
     master.returnValor = p[1]
     if len(p) == 2:
         master.miValor = p[1]
-    # if para pasar los valores a los parametros de la funcion llamada desde el main
-    if master.esParam:
-        if master.esMain:
-            # print("ENTRA", len(master.arrParam), p[1])
-            temp = master.getValor(p[1], "main")
-            master.updateIdInFunc(master.arrParam[-1], master.miParamFunc, temp)
-            del(master.arrParam[-1])
-        # No me acuerdo por que lo puse
-        '''if master.esFuncion:
-            temp = master.getValor(p[1], master.miIdFunciones)
-            master.updateIdInFunc(master.arrParam[-1], master.miParamFunc, temp)
-            del(master.arrParam[-1])'''
-
-        # master.updateIdInFunc(aux, master.miParamFunc, temp)
 
 
 def p_push_id(p):
@@ -411,6 +401,7 @@ def p_push_id(p):
         quad.pushID(p[-1], 'main')
     else:
         quad.pushID(p[-1], 'global')
+    # if para pasar los valores a los parametros de la funcion llamada desde el main
 
 
 def p_push_cte(p):
@@ -502,13 +493,14 @@ def p_loop3(p):
 
 def p_funcion(p):
     '''
-    funcion : ID getParamId LPAREN funcion1 RPAREN paramFalse SEMICOLON
+    funcion : ID getParamId LPAREN funcionDos funcion1 RPAREN paramFalse funcionSeis SEMICOLON
     '''
     # memo.insertToLocalFunc(p[1])
     # print(master.contadorDatosPasados, master.simbolos[p[1]].value["PARAMCANTI"].value)
-    if master.contadorDatosPasados != master.simbolos[p[1]].value["PARAMCANTI"].value:
-        print("Faltan parametros para pasar en la funcion", p[1], "en el main")
+    if master.contadorDatosPasados < master.simbolos[master.miParamFunc].value["PARAMCANTI"].value:
+        print("Faltan parametros en la funcion", master.miParamFunc, "en el main")
         sys.exit()
+    memo.insertarFuncInMemoryExe(p[1])
     master.contadorDatosPasados = 0
 
 
@@ -522,17 +514,41 @@ def p_getParamId(p):
         master.arrParam = master.getidParam(p[-1])
         # print(len(master.arrParam))
     else:
-        print("Funcion no declarada")
+        print("ERROR: Función no declarada.")
         sys.exit()
+
+
+def p_funcionDos(p):
+    "funcionDos :"
+    quad.moduloDos(p[-3])
 
 
 def p_funcion1(p):
     '''
-    funcion1 : exp
-             | exp COMMA funcion1
+    funcion1 : exp funcionTres
+             | exp funcionTres COMMA funcionCuatro funcion1
              | empty
     '''
-    master.contadorDatosPasados += 1
+
+
+def p_funcionTres(p):
+    "funcionTres :"
+    valor = quad.moduloTres()
+    if master.esParam:
+        if master.esMain:
+            master.contadorDatosPasados += 1
+            print(master.contadorDatosPasados)
+            # print("ENTRA", len(master.arrParam), p[1])
+            if master.contadorDatosPasados > master.simbolos[master.miParamFunc].value["PARAMCANTI"].value:
+                print("Sobran parametros en la funcion", master.miParamFunc, "en el main.")
+                sys.exit()
+            master.updateIdInFunc(master.arrParam[-1], master.miParamFunc, valor)
+            del(master.arrParam[-1])
+
+
+def p_funcionCuatro(p):
+    "funcionCuatro :"
+    quad.moduloCuatro()
 
 
 def p_paramFalse(p):
@@ -540,6 +556,12 @@ def p_paramFalse(p):
     paramFalse :
     '''
     master.esParam = False
+
+
+def p_funcionSeis(p):
+    "funcionSeis :"
+    quadNo = master.simbolos[p[-7]].value['Cuadruplos'].value
+    quad.moduloSeis(p[-7], quadNo)
 
 
 def p_empty(p):
