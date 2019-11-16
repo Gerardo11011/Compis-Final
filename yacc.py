@@ -75,7 +75,7 @@ def p_funcfalse(p):
 
 def p_modulo(p):
     '''
-    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY vars insertarParam programa3 modulo3 RKEY
+    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY vars insertarQuad programa3 modulo3 RKEY
     '''
 
     master.contadorParam = 0
@@ -87,9 +87,9 @@ def p_modulo(p):
     # print(memo.memoBoolUsada), memo.getValor(memo.memoBoolUsada)
 
 
-def p_insertarParam(p):
+def p_insertarQuad(p):
     '''
-    insertarParam :
+    insertarQuad :
     '''
     if master.esMain:
         master.insertIdToFunc("Cuadruplos", "int", "main", None)
@@ -411,6 +411,15 @@ def p_push_cte(p):
         dir = memo.getVirtualCte(tipo)
         memo.updateCteInMemory(p[-1], dir, tipo)
         # memo.guardarDireUsada(p[-1], dir)
+    '''if master.esParam:
+        if master.esMain:
+            master.contadorDatosPasados += 1
+            # print("ENTRA", len(master.arrParam), p[1])
+            if master.contadorDatosPasados > master.simbolos[master.miParamFunc].value["PARAMCANTI"].value:
+                print("Sobran parametros en la funcion", master.miParamFunc, "en el main")
+                sys.exit()
+            master.updateIdInFunc(master.arrParam[-1], master.miParamFunc, p[-1])
+            del(master.arrParam[-1])'''
     # memo.memory_dir = memo.insertLocalTemp(temp)
     # memo.updateLoc1al(p[-1], memo.memory_dir, temp)
     direccion = memo.getDireCte(p[-1])
@@ -508,6 +517,8 @@ def p_getParamId(p):
     '''
     getParamId :
     '''
+    # codigo que valida que la funcion se encuentre en la vars TABLE
+    # Y que tambien obtiene los id de la funcion de la vars table
     master.miParamFunc = p[-1]
     if master.miParamFunc in master.simbolos.keys():
         master.esParam = True

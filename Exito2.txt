@@ -7,9 +7,12 @@ main {
   b = 4;
   c = 4;
   d = 13;
-  p = true;
+  p = false;
   if(p == true) {
     b = c + d;
+  }
+  else{
+  b = d + d;
   }
 }
 

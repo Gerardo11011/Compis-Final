@@ -11,6 +11,8 @@ func float SIMONA(int r, float p){
   float h;
   int q;
   int temp;
+  int pruedadada;
+  pruedadada = 3;
   h = 3.1416;
   q = 2 + j;
   if (h > 3.0){
@@ -46,7 +48,7 @@ main {
   string pedro, hector;
   int contador;
   contador = 0;
-  a = 2;
+  a = j;
   b = 4;
   h = 3.5;
   d = 7.8;
