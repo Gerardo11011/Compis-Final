@@ -19,8 +19,8 @@ idTemporal = None
 # Declaración de funciones.
 def p_programa(p):
     '''
-    programa : BEGIN gotoMain globalfunc vars programa3 globalFuncFalse programa2 funcfalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
-             | BEGIN gotoMain globalfunc vars programa3 globalFuncFalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
+    programa : BEGIN gotoMain globalfunc vars globalFuncFalse programa2 funcfalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
+             | BEGIN gotoMain globalfunc vars globalFuncFalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
              | BEGIN gotoMain programa2 funcfalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
              | BEGIN gotoMain MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
     '''
@@ -75,7 +75,7 @@ def p_funcfalse(p):
 
 def p_modulo(p):
     '''
-    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY vars insertarParam programa3 modulo3 RKEY
+    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY varsFunc insertarParam bloqFunc modulo3 RKEY
     '''
     master.contadorParam = 0
     memo.reiniciarDireccionesFunc()
@@ -84,6 +84,20 @@ def p_modulo(p):
     # print(memo.memoFloatUsada, memo.getValor(memo.memoFloatUsada))
     # print(memo.memoStringUsada, memo.getValor(memo.memoStringUsada))
     # print(memo.memoBoolUsada), memo.getValor(memo.memoBoolUsada)
+
+
+def p_varsFunc(p):
+    '''
+    varsFunc : vars
+             | empty
+    '''
+
+
+def p_bloqFunc(p):
+    '''
+    bloqFunc : programa3
+             | empty
+    '''
 
 
 def p_insertarParam(p):
@@ -136,6 +150,17 @@ def p_modulo1Aux(p):
     # memo.memory_dir = memo.insertLocal(p[1])
     temp = memo.getVirtualDicLocal(p[1])
     master.insertIdToFunc(p[2], p[1], master.miIdFunciones, temp, True)
+    print("variable:", p[2], "tipo:", p[1])
+    if p[1] == 'int':
+        master.updateIdInFunc(p[2], master.miIdFunciones, 0)
+    elif p[1] == 'float':
+        master.updateIdInFunc(p[2], master.miIdFunciones, 0.0)
+    elif p[1] == 'string':
+        master.updateIdInFunc(p[2], master.miIdFunciones, "")
+    elif p[1] == 'bool':
+        print("ENTRA A BOOL", master.returnValor)
+        master.updateIdInFunc(p[2], master.miIdFunciones, 'false')
+
 
 
 def p_modulo1Repe(p):
@@ -157,11 +182,18 @@ def p_insertReturn(p):
     '''
     insertReturn :
     '''
-    master.returnValor = master.returnValue(master.returnValor, master.miIdFunciones)
-    # memo.memory_dir = memo.insertLocal(master.miFuncType)
-    temp = memo.getVirtualDicLocal(master.miFuncType)
-    master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, temp)
-    master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
+    print("VALOR DE RETURN", master.returnValor)
+    if master.returnValor != "false" or master.returnValor != 'true':
+        master.returnValor = master.returnValue(master.returnValor, master.miIdFunciones)
+        # memo.memory_dir = memo.insertLocal(master.miFuncType)
+        temp = memo.getVirtualDicLocal(master.miFuncType)
+        master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, temp)
+        master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
+    else:
+        temp = memo.getVirtualDicLocal(master.miFuncType)
+        master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, temp)
+        master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
+
     # memo.updateLocal(master.returnValor, memo.memory_dir, master.miFuncType)
     #print("VALOR DE RETURN:", master.returnValor, "TYPE:", type(master.returnValor))
 # ########################### ACABA FUNCIONES  ##############################
@@ -210,6 +242,14 @@ def p_vars1(p):
         temp = memo.getVirtualDicGlobal(master.miTipo)
         master.insertIdToFunc(p[1], master.miTipo, "global", temp)
         memo.insertGlobalInToMemory(master.miTipo, temp)
+        if master.miTipo == 'int':
+            master.updateIdInFunc(p[1], "global", 0)
+        elif master.miTipo == 'float':
+            master.updateIdInFunc(p[1], "global", 0.0)
+        elif master.miTipo == 'string':
+            master.updateIdInFunc(p[1], "global", "")
+        elif master.miTipo == 'bool':
+            master.updateIdInFunc(p[1], "global", 'false')
 
 
 def p_tipo(p):
