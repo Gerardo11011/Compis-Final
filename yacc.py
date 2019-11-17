@@ -543,7 +543,7 @@ def p_funcionTres(p):
             master.contadorDatosPasados += 1
             # print("ENTRA", len(master.arrParam), p[1])
             if master.contadorDatosPasados > master.simbolos[master.miParamFunc].value["PARAMCANTI"].value:
-                print("Sobran parametros en la funcion", master.miParamFunc, "en el main.")
+                print("Sobran parametros en la funcion", master.miParamFunc, ".")
                 sys.exit()
             master.updateIdInFunc(master.arrParam[-1], master.miParamFunc, valor)
             del(master.arrParam[-1])
