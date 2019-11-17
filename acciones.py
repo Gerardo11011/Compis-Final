@@ -3,5 +3,39 @@
 
 from quadruples import Quad
 
-for i in Quad:
-    
+
+def gotoMain():
+
+
+switch = {
+    'goto' :
+    'gotof' :
+
+    'era' :
+    'param' :
+    'gosub' :
+    'endproc' :
+
+    '+' :
+    '-' :
+    '*' :
+    '/' :
+    '=' :
+
+    '>' :
+    '>=' :
+    '<' :
+    '<=' :
+    '==' :
+    '<>' :
+
+    'and' :
+    'or' :
+
+    'input' :
+    'output' :
+}
+
+def inicio(gotoMain):
+    for i in Quad:
+        if:
