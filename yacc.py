@@ -500,8 +500,8 @@ def p_funcion(p):
     if master.contadorDatosPasados < master.simbolos[master.miParamFunc].value["PARAMCANTI"].value and master.esMain:
         print("Faltan parametros en la funcion", master.miParamFunc, "en el MAIN")
         sys.exit()
-    master.contadorDatosPasados = 0
     memo.insertarFuncInMemoryExe(p[1])
+    master.contadorDatosPasados = 0
 
 
 def p_getParamId(p):
