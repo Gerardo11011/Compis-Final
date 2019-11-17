@@ -156,3 +156,9 @@ def returnValue(id, id_funcion):
         return temp
     else:
         return id
+
+def isVarGlobal(id):
+    if id in simbolos["global"].value:
+        return True
+    else:
+        return False
