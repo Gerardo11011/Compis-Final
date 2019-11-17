@@ -44,7 +44,7 @@ func int oscar(){
 
 
 main {
-  int a, b;
+  int a, b, c;
   float h, d;
   string pedro, hector;
   int contador;
@@ -56,6 +56,8 @@ main {
   pedro = "prueba de que pedro funciona";
   a = a * b + a;
   hector = "prueba de que hector funciona";
+
+  a = c + b;
 
   hector = hector + pedro;
 
