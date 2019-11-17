@@ -93,6 +93,9 @@ def validate(dato, id, id_funcion):
         return True
     if temp == "<class 'bool'>" and aux == 'bool':
         return True
+    if temp == None:
+        print(id, "No tiene valor asignado")
+        sys.exit()
     else:
         print("ERROR: Dato no válido. validate", dato, id, id_funcion)
         sys.exit()

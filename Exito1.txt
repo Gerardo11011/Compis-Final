@@ -3,9 +3,8 @@ begin
 int j;
 int erw;
 float t;
-t = 213.321;
-j = 3;
-erw = 3213;
+string pe;
+bool judassimon;
 
 func float SIMONA(int r, float p){
   float h;
@@ -18,20 +17,17 @@ func float SIMONA(int r, float p){
   if (h > 3.0){
     h = 4.0;
   }
-  SIMONA(q, h);
+  return p;
 }
 
 func int judasOSCAR(float p, int r){
   int h;
   float l;
-  h = 3;
   l = 6.21;
-  r = 3;
-  judasOSCAR(l, h);
-  return 999;
+  return r;
 }
 
-func int oscar(){
+func int oscar(int b){
   string e;
   int h;
   int temp;
@@ -40,6 +36,14 @@ func int oscar(){
   h = 432;
   e = "Judas ambos";
   temp = h * 3;
+}
+
+func bool prueba(bool testeoBool){
+  return testeoBool;
+}
+
+func string StriPrue(string cadena){
+  return cadena;
 }
 
 
@@ -56,8 +60,6 @@ main {
   pedro = "prueba de que pedro funciona";
   a = a * b + a;
   hector = "prueba de que hector funciona";
-
-  a = c + b;
 
   hector = hector + pedro;
 
