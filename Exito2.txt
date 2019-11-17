@@ -7,7 +7,7 @@ main {
   b = 4;
   c = 4;
   d = 13;
-  p = false;
+  p = true;
   if(p == true) {
     b = c + d;
   }

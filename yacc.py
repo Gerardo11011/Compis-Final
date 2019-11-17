@@ -75,9 +75,8 @@ def p_funcfalse(p):
 
 def p_modulo(p):
     '''
-    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY vars insertarQuad programa3 modulo3 RKEY
+    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY vars insertarParam programa3 modulo3 RKEY
     '''
-
     master.contadorParam = 0
     memo.reiniciarDireccionesFunc()
     memo.limpiarDireUsadas()
@@ -87,9 +86,9 @@ def p_modulo(p):
     # print(memo.memoBoolUsada), memo.getValor(memo.memoBoolUsada)
 
 
-def p_insertarQuad(p):
+def p_insertarParam(p):
     '''
-    insertarQuad :
+    insertarParam :
     '''
     if master.esMain:
         master.insertIdToFunc("Cuadruplos", "int", "main", None)
@@ -198,7 +197,6 @@ def p_vars1(p):
     vars1 : ID
           | ID COMMA vars1
     '''
-
     if master.esFuncion:
         # memo.memory_dir = memo.insertLocal(master.miTipo)
         temp = memo.getVirtualDicLocal(master.miTipo)
@@ -411,15 +409,6 @@ def p_push_cte(p):
         dir = memo.getVirtualCte(tipo)
         memo.updateCteInMemory(p[-1], dir, tipo)
         # memo.guardarDireUsada(p[-1], dir)
-    '''if master.esParam:
-        if master.esMain:
-            master.contadorDatosPasados += 1
-            # print("ENTRA", len(master.arrParam), p[1])
-            if master.contadorDatosPasados > master.simbolos[master.miParamFunc].value["PARAMCANTI"].value:
-                print("Sobran parametros en la funcion", master.miParamFunc, "en el main")
-                sys.exit()
-            master.updateIdInFunc(master.arrParam[-1], master.miParamFunc, p[-1])
-            del(master.arrParam[-1])'''
     # memo.memory_dir = memo.insertLocalTemp(temp)
     # memo.updateLoc1al(p[-1], memo.memory_dir, temp)
     direccion = memo.getDireCte(p[-1])
@@ -504,22 +493,23 @@ def p_funcion(p):
     '''
     funcion : ID getParamId LPAREN funcionDos funcion1 RPAREN paramFalse funcionSeis SEMICOLON
     '''
-    # memo.insertToLocalFunc(p[1])
-    # print(master.contadorDatosPasados, master.simbolos[p[1]].value["PARAMCANTI"].value)
-    if master.contadorDatosPasados < master.simbolos[master.miParamFunc].value["PARAMCANTI"].value:
-        print("Faltan parametros en la funcion", master.miParamFunc, "en el main")
+    # Condiciones que verifican si la recursividad cumple con los requisitos y desde donde es lllamada la funcion
+    if master.contadorDatosPasados < master.simbolos[master.miParamFunc].value["PARAMCANTI"].value and master.esFuncion:
+        print("Faltan parametros en la funcion", master.miParamFunc, "En el ", master.miIdFunciones)
         sys.exit()
-    memo.insertarFuncInMemoryExe(p[1])
+    if master.contadorDatosPasados < master.simbolos[master.miParamFunc].value["PARAMCANTI"].value and master.esMain:
+        print("Faltan parametros en la funcion", master.miParamFunc, "en el MAIN")
+        sys.exit()
     master.contadorDatosPasados = 0
+    memo.insertarFuncInMemoryExe(p[1])
 
 
 def p_getParamId(p):
     '''
     getParamId :
     '''
-    # codigo que valida que la funcion se encuentre en la vars TABLE
-    # Y que tambien obtiene los id de la funcion de la vars table
     master.miParamFunc = p[-1]
+
     if master.miParamFunc in master.simbolos.keys():
         master.esParam = True
         master.arrParam = master.getidParam(p[-1])
@@ -527,6 +517,7 @@ def p_getParamId(p):
     else:
         print("ERROR: Función no declarada.")
         sys.exit()
+    p[0] = p[-1]
 
 
 def p_funcionDos(p):
@@ -545,16 +536,25 @@ def p_funcion1(p):
 def p_funcionTres(p):
     "funcionTres :"
     valor = quad.moduloTres()
+
     if master.esParam:
+        # IF para checar si la llamada a funcion es dentro del main o de una funcion
         if master.esMain:
             master.contadorDatosPasados += 1
-            print(master.contadorDatosPasados)
             # print("ENTRA", len(master.arrParam), p[1])
             if master.contadorDatosPasados > master.simbolos[master.miParamFunc].value["PARAMCANTI"].value:
                 print("Sobran parametros en la funcion", master.miParamFunc, "en el main.")
                 sys.exit()
             master.updateIdInFunc(master.arrParam[-1], master.miParamFunc, valor)
             del(master.arrParam[-1])
+        if master.esFuncion:
+            master.contadorDatosPasados += 1
+            if master.contadorDatosPasados > master.simbolos[master.miParamFunc].value["PARAMCANTI"].value:
+                print("Sobran parametros en la funcion", master.miParamFunc, "en", master.miIdFunciones)
+                sys.exit()
+            master.updateIdInFunc(master.arrParam[-1], master.miIdFunciones, valor)
+            del(master.arrParam[-1])
+
 
 
 def p_funcionCuatro(p):
@@ -583,7 +583,7 @@ def p_empty(p):
 # Regla de error para errores de sintaxis.
 def p_error(p):
     print(p)
-    print("Error de sintaxis en linea '%s'" % p.lexpos)
+    print("Error de sintaxis en linea '%s'" % p.value)
     sys.exit()
 
 
