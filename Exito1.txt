@@ -33,6 +33,7 @@ func int oscar(int b){
   int temp;
   bool p;
   p = false;
+  erw = 23;
   h = 432;
   e = "Judas ambos";
   temp = h * 3;
@@ -53,8 +54,10 @@ main {
   string pedro, hector;
   int contador;
   contador = 0;
+  j = 3;
   a = j;
-  b = 4;
+  erw = 999;
+  b = j;
   h = 3.5;
   d = 7.8;
   pedro = "prueba de que pedro funciona";
