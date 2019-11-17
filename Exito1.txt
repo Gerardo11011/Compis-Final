@@ -3,9 +3,6 @@ begin
 int j;
 int erw;
 float t;
-t = 213.321;
-j = 3;
-erw = 3213;
 
 func float SIMONA(int r, float p){
   float h;
@@ -24,11 +21,9 @@ func float SIMONA(int r, float p){
 func int judasOSCAR(float p, int r){
   int h;
   float l;
-  h = 3;
   l = 6.21;
-  r = 3;
   judasOSCAR(l, h);
-  return 999;
+  return r;
 }
 
 func int oscar(){
@@ -56,8 +51,6 @@ main {
   pedro = "prueba de que pedro funciona";
   a = a * b + a;
   hector = "prueba de que hector funciona";
-
-  a = c + b;
 
   hector = hector + pedro;
 

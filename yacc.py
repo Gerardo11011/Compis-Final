@@ -19,8 +19,8 @@ idTemporal = None
 # Declaración de funciones.
 def p_programa(p):
     '''
-    programa : BEGIN gotoMain globalfunc vars programa3 globalFuncFalse programa2 funcfalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
-             | BEGIN gotoMain globalfunc vars programa3 globalFuncFalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
+    programa : BEGIN gotoMain globalfunc vars globalFuncFalse programa2 funcfalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
+             | BEGIN gotoMain globalfunc vars globalFuncFalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
              | BEGIN gotoMain programa2 funcfalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
              | BEGIN gotoMain MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
     '''
@@ -237,9 +237,9 @@ def p_bloque(p):
 def p_asignacion(p):
     '''
       asignacion : ID push_id EQUAL push_poper logico pop_assign SEMICOLON
-               | ID push_id EQUAL push_poper array pop_assign SEMICOLON
-               | ID push_id EQUAL push_poper funcion pop_assign SEMICOLON
-               | ID push_id LCORCH exp RCORCH EQUAL push_poper expresion pop_assign SEMICOLON
+                 | ID push_id EQUAL push_poper array pop_assign SEMICOLON
+                 | ID push_id EQUAL push_poper funcion pop_assign SEMICOLON
+                 | ID push_id LCORCH exp RCORCH EQUAL push_poper expresion pop_assign SEMICOLON
     '''
 
 
