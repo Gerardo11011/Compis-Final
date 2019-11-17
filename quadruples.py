@@ -96,9 +96,13 @@ def popAssign():
             operator = POper.pop()
             result_type = semantic(left_type, right_type, operator)
             if(result_type != 'error'):
-                result = right_value
-                quadr = quadruple(len(Quad), operator, right_operand, None, left_operand)
-                Quad.append(quadr)
+                if right_value is not None:
+                    result = right_value
+                    quadr = quadruple(len(Quad), operator, right_operand, None, left_operand)
+                    Quad.append(quadr)
+                else:
+                    print("ERROR: Variable sin valor asignado.")
+                    sys.exit()
             else:
                 print("ERROR: Type mismatch.")
                 sys.exit()
@@ -118,21 +122,25 @@ def popTerm(main):
             operator = POper.pop()
             result_type = semantic(left_type, right_type, operator)
             if(result_type != 'error'):
-                if(operator == '+'):
-                    result = left_value + right_value
+                if left_value is not None and right_value is not None:
+                    if(operator == '+'):
+                        result = left_value + right_value
+                    else:
+                        result = left_value - right_value
+                    if main:
+                        dir = memo.getVirtualMainTemp(result_type)
+                        memo.updateMainTempInMemory(result, dir, result_type)
+                    else:
+                        dir = memo.getVirtualTemp(result_type)
+                        memo.updateTempInMemory(result, dir, result_type)
+                    quadr = quadruple(len(Quad), operator, left_operand, right_operand, dir)
+                    Quad.append(quadr)
+                    PilaO.append(dir)
+                    AVAIL.append(result)
+                    PTypes.append(result_type)
                 else:
-                    result = left_value - right_value
-                if main:
-                    dir = memo.getVirtualMainTemp(result_type)
-                    memo.updateMainTempInMemory(result, dir, result_type)
-                else:
-                    dir = memo.getVirtualTemp(result_type)
-                    memo.updateTempInMemory(result, dir, result_type)
-                quadr = quadruple(len(Quad), operator, left_operand, right_operand, dir)
-                Quad.append(quadr)
-                PilaO.append(dir)
-                AVAIL.append(result)
-                PTypes.append(result_type)
+                    print("ERROR: Variable sin valor asignado.")
+                    sys.exit()
             else:
                 print("ERROR: Type mismatch.")
                 sys.exit()
@@ -151,21 +159,25 @@ def popFact(main):
             operator = POper.pop()
             result_type = semantic(left_type, right_type, operator)
             if(result_type != 'error'):
-                if(operator == '*'):
-                    result = left_value * right_value
+                if left_value is not None and right_value is not None:
+                    if(operator == '*'):
+                        result = left_value * right_value
+                    else:
+                        result = left_value / right_value
+                    if main:
+                        dir = memo.getVirtualMainTemp(result_type)
+                        memo.updateMainTempInMemory(result, dir, result_type)
+                    else:
+                        dir = memo.getVirtualTemp(result_type)
+                        memo.updateTempInMemory(result, dir, result_type)
+                    quadr = quadruple(len(Quad), operator, left_operand, right_operand, dir)
+                    Quad.append(quadr)
+                    PilaO.append(dir)
+                    AVAIL.append(result)
+                    PTypes.append(result_type)
                 else:
-                    result = left_value / right_value
-                if main:
-                    dir = memo.getVirtualMainTemp(result_type)
-                    memo.updateMainTempInMemory(result, dir, result_type)
-                else:
-                    dir = memo.getVirtualTemp(result_type)
-                    memo.updateTempInMemory(result, dir, result_type)
-                quadr = quadruple(len(Quad), operator, left_operand, right_operand, dir)
-                Quad.append(quadr)
-                PilaO.append(dir)
-                AVAIL.append(result)
-                PTypes.append(result_type)
+                    print("ERROR: Variable sin valor asignado.")
+                    sys.exit()
             else:
                 print("ERROR: Type mismatch.")
                 sys.exit()
@@ -186,29 +198,33 @@ def popRelop(main):
             operator = POper.pop()
             result_type = semantic(left_type, right_type, operator)
             if(result_type != 'error'):
-                if(operator == '>'):
-                    result = left_value > right_value
-                elif(operator == '>='):
-                    result = left_value >= right_value
-                elif(operator == '<'):
-                    result = left_value < right_value
-                elif(operator == '<='):
-                    result = left_value <= right_value
-                elif(operator == '=='):
-                    result = left_value == right_value
-                elif(operator == '<>'):
-                    result = left_value != right_value
-                if main:
-                    dir = memo.getVirtualMainTemp(result_type)
-                    memo.updateMainTempInMemory(result, dir, result_type)
+                if left_value is not None and right_value is not None:
+                    if(operator == '>'):
+                        result = left_value > right_value
+                    elif(operator == '>='):
+                        result = left_value >= right_value
+                    elif(operator == '<'):
+                        result = left_value < right_value
+                    elif(operator == '<='):
+                        result = left_value <= right_value
+                    elif(operator == '=='):
+                        result = left_value == right_value
+                    elif(operator == '<>'):
+                        result = left_value != right_value
+                    if main:
+                        dir = memo.getVirtualMainTemp(result_type)
+                        memo.updateMainTempInMemory(result, dir, result_type)
+                    else:
+                        dir = memo.getVirtualTemp(result_type)
+                        memo.updateTempInMemory(result, dir, result_type)
+                    quadr = quadruple(len(Quad), operator, left_operand, right_operand, dir)
+                    Quad.append(quadr)
+                    PilaO.append(dir)
+                    AVAIL.append(result)
+                    PTypes.append(result_type)
                 else:
-                    dir = memo.getVirtualTemp(result_type)
-                    memo.updateTempInMemory(result, dir, result_type)
-                quadr = quadruple(len(Quad), operator, left_operand, right_operand, dir)
-                Quad.append(quadr)
-                PilaO.append(dir)
-                AVAIL.append(result)
-                PTypes.append(result_type)
+                    print("ERROR: Variable sin valor asignado.")
+                    sys.exit()
             else:
                 print("ERROR: Type mismatch.")
                 sys.exit()
@@ -227,21 +243,25 @@ def popLog(main):
             operator = POper.pop()
             result_type = semantic(left_type, right_type, operator)
             if(result_type != 'error'):
-                if(operator == 'and'):
-                    result = left_value and right_value
+                if left_value is not None and right_value is not None:
+                    if(operator == 'and'):
+                        result = left_value and right_value
+                    else:
+                        result = left_value or right_value
+                    if main:
+                        dir = memo.getVirtualMainTemp(result_type)
+                        memo.updateMainTempInMemory(result, dir, result_type)
+                    else:
+                        dir = memo.getVirtualTemp(result_type)
+                        memo.updateTempInMemory(result, dir, result_type)
+                    quadr = quadruple(len(Quad), operator, left_operand, right_operand, dir)
+                    Quad.append(quadr)
+                    PilaO.append(dir)
+                    AVAIL.append(result)
+                    PTypes.append(result_type)
                 else:
-                    result = left_value or right_value
-                if main:
-                    dir = memo.getVirtualMainTemp(result_type)
-                    memo.updateMainTempInMemory(result, dir, result_type)
-                else:
-                    dir = memo.getVirtualTemp(result_type)
-                    memo.updateTempInMemory(result, dir, result_type)
-                quadr = quadruple(len(Quad), operator, left_operand, right_operand, dir)
-                Quad.append(quadr)
-                PilaO.append(dir)
-                AVAIL.append(result)
-                PTypes.append(result_type)
+                    print("ERROR: Variable sin valor asignado.")
+                    sys.exit()
             else:
                 print("ERROR: Type mismatch.")
                 sys.exit()
