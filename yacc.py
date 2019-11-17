@@ -494,10 +494,10 @@ def p_funcion(p):
     funcion : ID getParamId LPAREN funcionDos funcion1 RPAREN paramFalse funcionSeis SEMICOLON
     '''
     # Condiciones que verifican si la recursividad cumple con los requisitos y desde donde es lllamada la funcion
-    if master.contadorDatosPasados < master.simbolos[master.miParamFunc].value["PARAMCANTI"].value and master.esFuncion:
+    if master.contadorDatosPasados < master.simbolos[p[2]].value["PARAMCANTI"].value and master.esFuncion:
         print("Faltan parametros en la funcion", master.miParamFunc, "En el ", master.miIdFunciones)
         sys.exit()
-    if master.contadorDatosPasados < master.simbolos[master.miParamFunc].value["PARAMCANTI"].value and master.esMain:
+    if master.contadorDatosPasados < master.simbolos[p[2]].value["PARAMCANTI"].value and master.esMain:
         print("Faltan parametros en la funcion", master.miParamFunc, "en el MAIN")
         sys.exit()
     memo.insertarFuncInMemoryExe(p[1])
