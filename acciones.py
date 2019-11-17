@@ -36,4 +36,4 @@ switch = {
 
 def inicio():
     for i in range(Quad[0].result, len(Quad)):
-        switch.get(Quad[i].operator)
+        print(switch.get(Quad[i].operator), i)

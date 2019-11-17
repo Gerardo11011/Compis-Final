@@ -12,6 +12,7 @@ import tabla_master as master
 import quadruples as quad
 import acciones as accion
 
+
 # Leer archivo de prueba.
 prueba = open(archivo, "r")
 entrada = prueba.read()
@@ -77,7 +78,7 @@ def p_funcfalse(p):
 
 def p_modulo(p):
     '''
-    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY vars insertarParam programa3 modulo3 RKEY
+    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY varsFunc insertarParam bloqFunc modulo3 RKEY
     '''
     master.contadorParam = 0
     memo.reiniciarDireccionesFunc()
@@ -86,6 +87,20 @@ def p_modulo(p):
     # print(memo.memoFloatUsada, memo.getValor(memo.memoFloatUsada))
     # print(memo.memoStringUsada, memo.getValor(memo.memoStringUsada))
     # print(memo.memoBoolUsada), memo.getValor(memo.memoBoolUsada)
+
+
+def p_varsFunc(p):
+    '''
+    varsFunc : vars
+             | empty
+    '''
+
+
+def p_bloqFunc(p):
+    '''
+    bloqFunc : programa3
+             | empty
+    '''
 
 
 def p_insertarParam(p):
@@ -138,6 +153,17 @@ def p_modulo1Aux(p):
     # memo.memory_dir = memo.insertLocal(p[1])
     temp = memo.getVirtualDicLocal(p[1])
     master.insertIdToFunc(p[2], p[1], master.miIdFunciones, temp, True)
+    print("variable:", p[2], "tipo:", p[1])
+    if p[1] == 'int':
+        master.updateIdInFunc(p[2], master.miIdFunciones, 0)
+    elif p[1] == 'float':
+        master.updateIdInFunc(p[2], master.miIdFunciones, 0.0)
+    elif p[1] == 'string':
+        master.updateIdInFunc(p[2], master.miIdFunciones, "")
+    elif p[1] == 'bool':
+        print("ENTRA A BOOL", master.returnValor)
+        master.updateIdInFunc(p[2], master.miIdFunciones, 'false')
+
 
 
 def p_modulo1Repe(p):
@@ -159,11 +185,18 @@ def p_insertReturn(p):
     '''
     insertReturn :
     '''
-    master.returnValor = master.returnValue(master.returnValor, master.miIdFunciones)
-    # memo.memory_dir = memo.insertLocal(master.miFuncType)
-    temp = memo.getVirtualDicLocal(master.miFuncType)
-    master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, temp)
-    master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
+    print("VALOR DE RETURN", master.returnValor)
+    if master.returnValor != "false" or master.returnValor != 'true':
+        master.returnValor = master.returnValue(master.returnValor, master.miIdFunciones)
+        # memo.memory_dir = memo.insertLocal(master.miFuncType)
+        temp = memo.getVirtualDicLocal(master.miFuncType)
+        master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, temp)
+        master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
+    else:
+        temp = memo.getVirtualDicLocal(master.miFuncType)
+        master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, temp)
+        master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
+
     # memo.updateLocal(master.returnValor, memo.memory_dir, master.miFuncType)
     #print("VALOR DE RETURN:", master.returnValor, "TYPE:", type(master.returnValor))
 # ########################### ACABA FUNCIONES  ##############################
@@ -212,6 +245,14 @@ def p_vars1(p):
         temp = memo.getVirtualDicGlobal(master.miTipo)
         master.insertIdToFunc(p[1], master.miTipo, "global", temp)
         memo.insertGlobalInToMemory(master.miTipo, temp)
+        if master.miTipo == 'int':
+            master.updateIdInFunc(p[1], "global", 0)
+        elif master.miTipo == 'float':
+            master.updateIdInFunc(p[1], "global", 0.0)
+        elif master.miTipo == 'string':
+            master.updateIdInFunc(p[1], "global", "")
+        elif master.miTipo == 'bool':
+            master.updateIdInFunc(p[1], "global", 'false')
 
 
 def p_tipo(p):
@@ -495,10 +536,10 @@ def p_funcion(p):
     funcion : ID getParamId LPAREN funcionDos funcion1 RPAREN paramFalse funcionSeis SEMICOLON
     '''
     # Condiciones que verifican si la recursividad cumple con los requisitos y desde donde es lllamada la funcion
-    if master.contadorDatosPasados < master.simbolos[master.miParamFunc].value["PARAMCANTI"].value and master.esFuncion:
+    if master.contadorDatosPasados < master.simbolos[p[2]].value["PARAMCANTI"].value and master.esFuncion:
         print("Faltan parametros en la funcion", master.miParamFunc, "En el ", master.miIdFunciones)
         sys.exit()
-    if master.contadorDatosPasados < master.simbolos[master.miParamFunc].value["PARAMCANTI"].value and master.esMain:
+    if master.contadorDatosPasados < master.simbolos[p[2]].value["PARAMCANTI"].value and master.esMain:
         print("Faltan parametros en la funcion", master.miParamFunc, "en el MAIN")
         sys.exit()
     memo.insertarFuncInMemoryExe(p[1])
