@@ -249,7 +249,12 @@ def p_pop_assign(p):
     "pop_assign :"
     master.miValor = quad.popAssign()
     # print(master.miValor)
-    if master.esFuncion:
+    if master.isVarGlobal(p[-5]):
+        master.updateIdInFunc(p[-5], "global", master.miValor)
+        dir = master.getDireccion(p[-5], "global")
+        type = master.getType(p[-5], "global")
+        memo.updateGlobalInMemory(master.miValor, dir, type)
+    elif master.esFuncion:
         master.updateIdInFunc(p[-5], master.miIdFunciones, master.miValor)
         # dir = master.getDireccion(p[-5], master.miIdFunciones)
         type = master.getType(p[-5], master.miIdFunciones)
@@ -259,12 +264,6 @@ def p_pop_assign(p):
         dir = master.getDireccion(p[-5], "main")
         type = master.getType(p[-5], "main")
         memo.updateLocalInMemory(master.miValor, dir, type)
-    else:
-        master.updateIdInFunc(p[-5], "global", master.miValor)
-        dir = master.getDireccion(p[-5], "global")
-        type = master.getType(p[-5], "global")
-        memo.updateGlobalInMemory(master.miValor, dir, type)
-        # memo.updateGlobal(master.miValor, dir, type)
 
 
 def p_logico(p):
