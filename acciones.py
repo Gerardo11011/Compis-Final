@@ -4,38 +4,36 @@
 from quadruples import Quad
 
 
-def gotoMain():
-
-
 switch = {
-    'goto' :
-    'gotof' :
+    'goto' : "goto",
+    'gotof' : "gotof",
 
-    'era' :
-    'param' :
-    'gosub' :
-    'endproc' :
+    'era' : "era",
+    'param' : "param",
+    'gosub' : "gosub",
+    'endproc' : "endproc",
 
-    '+' :
-    '-' :
-    '*' :
-    '/' :
-    '=' :
+    '+' : "+",
+    '-' : "-",
+    '*' : "*",
+    '/' : "/",
+    '=' : "=",
 
-    '>' :
-    '>=' :
-    '<' :
-    '<=' :
-    '==' :
-    '<>' :
+    '>' : ">",
+    '>=' : ">=",
+    '<' : "<",
+    '<=' : "<=",
+    '==' : "==",
+    '<>' : "<>",
 
-    'and' :
-    'or' :
+    'and' : "and",
+    'or' : "or",
 
-    'input' :
-    'output' :
+    'input' : "input",
+    'output' : "output"
 }
 
-def inicio(gotoMain):
-    for i in Quad:
-        if:
+
+def inicio():
+    for i in range(Quad[0].result, len(Quad)):
+        print(switch.get(Quad[i].operator), i)

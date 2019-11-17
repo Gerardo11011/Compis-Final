@@ -49,11 +49,11 @@ func string StriPrue(string cadena){
 
 
 main {
+  int contador;
   int a, b, c;
   float h, d;
   string pedro, hector;
-  int contador;
-  contador = 0;
+  contador = 2;
   j = 3;
   a = j;
   erw = 999;
