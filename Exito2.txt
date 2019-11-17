@@ -11,6 +11,9 @@ main {
   if(p == true) {
     b = c + d;
   }
+  else{
+  b = d + d;
+  }
 }
 
 end
