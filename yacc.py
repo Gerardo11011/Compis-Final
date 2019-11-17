@@ -10,6 +10,9 @@ from lex import tokens
 # import vars_table as master
 import tabla_master as master
 import quadruples as quad
+import acciones as accion
+
+
 # Leer archivo de prueba.
 prueba = open(archivo, "r")
 entrada = prueba.read()
@@ -646,3 +649,5 @@ print("")
 print("MEMORIA")
 print("")
 memo.show()
+
+accion.inicio()
