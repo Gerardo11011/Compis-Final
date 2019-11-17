@@ -277,9 +277,9 @@ def p_bloque(p):
 def p_asignacion(p):
     '''
       asignacion : ID push_id EQUAL push_poper logico pop_assign SEMICOLON
-               | ID push_id EQUAL push_poper array pop_assign SEMICOLON
-               | ID push_id EQUAL push_poper funcion pop_assign SEMICOLON
-               | ID push_id LCORCH exp RCORCH EQUAL push_poper expresion pop_assign SEMICOLON
+                 | ID push_id EQUAL push_poper array pop_assign SEMICOLON
+                 | ID push_id EQUAL push_poper funcion pop_assign SEMICOLON
+                 | ID push_id LCORCH exp RCORCH EQUAL push_poper expresion pop_assign SEMICOLON
     '''
 
 
