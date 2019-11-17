@@ -11,12 +11,14 @@ func float SIMONA(int r, float p){
   float h;
   int q;
   int temp;
+  int pruedadada;
+  pruedadada = 3;
   h = 3.1416;
   q = 2 + j;
   if (h > 3.0){
     h = 4.0;
   }
-  return 832.999;
+  SIMONA(q, h);
 }
 
 func int judasOSCAR(float p, int r){
@@ -25,6 +27,7 @@ func int judasOSCAR(float p, int r){
   h = 3;
   l = 6.21;
   r = 3;
+  judasOSCAR(l, h);
   return 999;
 }
 
@@ -46,7 +49,7 @@ main {
   string pedro, hector;
   int contador;
   contador = 0;
-  a = 2;
+  a = j;
   b = 4;
   h = 3.5;
   d = 7.8;
@@ -56,7 +59,8 @@ main {
 
   hector = hector + pedro;
 
-  SIMONA(4*1, h+h);
+  SIMONA(4*1, h*h);
+  judasOSCAR(d, b);
 
 }
 end

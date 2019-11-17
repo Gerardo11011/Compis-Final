@@ -177,7 +177,6 @@ def getValor(direccion, tipo):
         temp = memoria_local.string.get(direccion)
     elif tipo == 'bool':
         temp = memoria_local.booleanos.get(direccion)
-
     return temp
 
 
@@ -255,6 +254,27 @@ def getVirtualCte(miTipo):
     elif miTipo == 'bool':
         temp = memoCteBool
         memoCteBool += 1
+    return temp
+
+
+# Funcion que asigna las direcciones en el main
+def getVirtualDicMain(miTipo):
+    global memoMainInt
+    global memoMainFloat
+    global memoMainString
+    global memoMainBool
+    if miTipo == 'int':
+        temp = memoMainInt
+        memoMainInt += 1
+    elif miTipo == 'float':
+        temp = memoMainFloat
+        memoMainFloat += 1
+    elif miTipo == 'string':
+        temp = memoMainString
+        memoMainString += 1
+    elif miTipo == 'bool':
+        temp = memoMainBool
+        memoMainBool += 1
     return temp
 
 
@@ -359,27 +379,6 @@ def guardarDireUsada(cte, direccion):
         memoBoolUsada.append(direccion)
 
 
-# Funcion que asigna las direcciones en el main
-def getVirtualDicMain(miTipo):
-    global memoMainInt
-    global memoMainFloat
-    global memoMainString
-    global memoMainBool
-    if miTipo == 'int':
-        temp = memoMainInt
-        memoMainInt += 1
-    elif miTipo == 'float':
-        temp = memoMainFloat
-        memoMainFloat += 1
-    elif miTipo == 'string':
-        temp = memoMainString
-        memoMainString += 1
-    elif miTipo == 'bool':
-        temp = memoMainBool
-        memoMainBool += 1
-    return temp
-
-
 # Funcion que verifica si el CTE ya se encuentra en la memoria
 def verificarValorCte(cte):
     tipo = getTipo(cte)
@@ -442,15 +441,14 @@ def show():
     pprint(memoria_local.booleanos, width=1)
 
 
-# def insertToLocalFunc(id_funcion):
-#     for id in master.simbolos[id_funcion].value:
-#         tipo = master.simbolos[id_funcion].value[id].type_data
-#         value = master.simbolos[id_funcion].value[id].value
-#         dir = insertLocal(tipo, True)
-#         # show()
-#         # print("TIPO:", tipo, "VALOR:", value, "DIR:", dir)
-#         master.simbolos[id_funcion].value[id].direccion = dir
-#         updateLocalInMemory(value, dir, tipo, True)
+def insertarFuncInMemoryExe(id_funcion):
+    for id in master.simbolos[id_funcion].value:
+        if id != "PARAMCANTI":
+            tipo = master.simbolos[id_funcion].value[id].type_data
+            direccion = master.simbolos[id_funcion].value[id].direccion
+            insertLocalInMemory(tipo, direccion)
+            valor = master.simbolos[id_funcion].value[id].value
+            updateLocalInMemory(valor, direccion, tipo)
 
 
 # Funcion que inserta y obtiene una direccion de memoria de los temporales
@@ -492,3 +490,25 @@ def showCteMemo():
     pprint(memoria_cte.string)
     print("CTE BOOL")
     pprint(memoria_cte.booleanos)
+
+
+def showTemps():
+    print("TEMPORALES FUNCIONES")
+    print("integers")
+    pprint(memoria_temp.integers, width=1)
+    print("float")
+    pprint(memoria_temp.float)
+    print("string")
+    pprint(memoria_temp.string)
+    print("booleanos")
+    pprint(memoria_temp.booleanos)
+
+    print("TEMPORALES MAIN")
+    print("integers")
+    pprint(memoria_global.integers, width=1)
+    print("float")
+    pprint(memoria_global.float)
+    print("string")
+    pprint(memoria_global.string)
+    print("booleanos")
+    pprint(memoria_global.booleanos)
