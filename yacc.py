@@ -191,7 +191,6 @@ def p_modulo1Repe(p):
 def p_modulo3(p):
     '''
     modulo3 : RETURN exp SEMICOLON insertReturn
-            | empty
     '''
 
 
@@ -199,6 +198,7 @@ def p_insertReturn(p):
     '''
     insertReturn :
     '''
+    quad.miReturn()
     if master.returnValor != "false" or master.returnValor != 'true':
         master.returnValor = master.returnValue(master.returnValor, master.miIdFunciones)
         # memo.memory_dir = memo.insertLocal(master.miFuncType)

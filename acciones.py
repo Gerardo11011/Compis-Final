@@ -7,6 +7,11 @@ import memoria as memo
 import tabla_master as master
 
 
+dir_param = []
+quadNo = None
+dirReturn = None
+
+
 # Función para obtener el tipo de un valor ingresado por el usuario.
 def get_type(input_data):
     try:
@@ -30,20 +35,48 @@ def gotof(quadr, i):
 
 
 def era(quadr, i):
+    global dir_param
+    global dirReturn
     for id in master.simbolos[quadr.result].value:
         if id != "PARAMCANTI":
             tipo = master.simbolos[quadr.result].value[id].type_data
             direccion = master.simbolos[quadr.result].value[id].direccion
+            if master.simbolos[quadr.result].value[id].param:
+                dir_param.append(direccion)
+            if id == 'return':
+                dirReturn = direccion
             memo.insertLocalInMemory(tipo, direccion)
             valor = master.simbolos[quadr.result].value[id].value
             memo.updateLocalInMemory(valor, direccion, tipo)
     return i + 1
 
 
+def param(quadr, i):
+    global dir_param
+    valor = memo.getValor(quadr.left_operand, None)
+    memo.updateLocalInMemory(valor, dir_param[-1])
+    dir_param.pop()
+    return i + 1
+
+
+def gosub(quadr, i):
+    global quadNo
+    quadNo = i
+    return quadr.result
+
+
+def miReturn(quadr, i):
+    global dirReturn
+    valor = memo.getValor(quadr.result, None)
+    memo.updateLocalInMemory(valor, dirReturn)
+    print(memo.getValor(dirReturn, None))
+    return i + 1
+
+
 def endproc(quadr, i):
     id_funcion = quadr.result
     for id in master.simbolos[id_funcion].value:
-        if id != "PARAMCANTI":
+        if id != "PARAMCANTI" and id != "Cuadruplos":
             direccion = master.simbolos[id_funcion].value[id].direccion
             tipo = memo.getTipoViaDireccion(direccion)
             if tipo == "int":
@@ -54,7 +87,7 @@ def endproc(quadr, i):
                 memo.memoria_local.string.pop(direccion)
             if tipo == "bool":
                 memo.memoria_local.booleanos.pop(direccion)
-    return i + 1
+    return quadNo + 1
 
 
 def plus(quadr, i):
@@ -164,9 +197,10 @@ def switcher(quadr, i):
         'gotof': gotof,
 
         'era': era,
-        #'param': 'param',
-        #'gosub': 'gosub',
-        #'endproc': 'endproc',
+        'param': param,
+        'endproc': endproc,
+        'gosub': gosub,
+        'return': miReturn,
 
         '+': plus,
         '-': minus,

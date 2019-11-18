@@ -32,10 +32,12 @@ func int oscar(int b){
   int temp;
   bool p;
   p = false;
+  b = 2;
   erw = 23;
   h = 432;
   e = "Judas ambos";
   temp = h * 3;
+  return b + h;
 }
 
 func bool prueba(bool testeoBool){
@@ -48,6 +50,7 @@ func string StriPrue(string cadena){
 
 
 main {
+  bool p;
   int contador;
   int a, b, c;
   float h, d;
@@ -58,6 +61,7 @@ main {
   erw = 999;
   b = j;
   h = 3.5;
+  p = true;
   d = 7.8;
   pedro = "prueba de que pedro funciona";
   a = a * b + a;
@@ -65,7 +69,13 @@ main {
 
   hector = hector + pedro;
 
-  judasOSCAR(d, b);
+  oscar(j);
 
+  if (p == true){
+    judasOSCAR(666.6, 1);
+  }
+  else{
+    judasOSCAR(777.77, 2);
+  }
 }
 end
