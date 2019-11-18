@@ -20,7 +20,9 @@ main {
     b = d + d;
   }
 
-  output(a);
+  input(d);
+
+  output(hola);
   output(b);
   output(c);
   output(d);
