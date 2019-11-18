@@ -157,8 +157,10 @@ def returnValue(id, id_funcion):
     else:
         return id
 
+
 def isVarGlobal(id):
-    if id in simbolos["global"].value:
-        return True
-    else:
+    if not simbolos["global"]:
+        print("entra")
         return False
+    elif id in simbolos["global"].value:
+        return True
