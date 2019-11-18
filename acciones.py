@@ -2,7 +2,17 @@
 # Gerardo Ponce     A00818934
 
 from quadruples import Quad
+from ast import literal_eval
 import memoria as memo
+
+
+# Función para obtener el tipo de un valor ingresado por el usuario.
+def get_type(input_data):
+    try:
+        return type(literal_eval(input_data))
+    except (ValueError, SyntaxError):
+        # A string, so return str
+        return str
 
 
 # Funciones de ejecución.
@@ -96,6 +106,23 @@ def orOp(quadr, i):
     return i + 1
 
 
+def miInput(quadr, i):
+    valor = input()
+    tipo = str(get_type(valor))
+    if tipo == "<class 'int'>":
+        valor = int(valor)
+        memo.updateLocalInMemory(valor, quadr.result)
+    elif tipo == "<class 'float'>":
+        valor = float(valor)
+        memo.updateLocalInMemory(valor, quadr.result)
+    elif tipo == "<class 'str'>":
+        valor = str(valor)
+        memo.updateLocalInMemory(valor, quadr.result)
+    elif valor == 'true' or valor == 'false':
+        memo.updateLocalInMemory(valor, quadr.result, 'bool')
+    return i + 1
+
+
 def miOutput(quadr, i):
     print(memo.getValor(quadr.result, None))
     return i + 1
@@ -128,7 +155,7 @@ def switcher(quadr, i):
         'and': andOp,
         'or': orOp,
 
-        'input': "miInput",
+        'input': miInput,
         'output': miOutput
     }
     func = switch.get(quadr.operator)
