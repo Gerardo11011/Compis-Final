@@ -8,12 +8,24 @@ main {
   c = 4;
   d = 13;
   p = true;
+
+  loop(a <> 0) {
+    a = a - 1;
+  }
+
   if(p == true) {
     b = c + d;
   }
-  else{
-  b = d + d;
+  else {
+    b = d + d;
   }
+
+  output(a);
+  output(b);
+  output(c);
+  output(d);
+  output(p);
+
 }
 
 end

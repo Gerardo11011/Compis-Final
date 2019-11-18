@@ -22,11 +22,16 @@ idTemporal = None
 # Declaración de funciones.
 def p_programa(p):
     '''
-    programa : BEGIN gotoMain globalfunc vars globalFuncFalse programa2 funcfalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
-             | BEGIN gotoMain globalfunc vars globalFuncFalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
-             | BEGIN gotoMain programa2 funcfalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
-             | BEGIN gotoMain MAIN mainfunc LKEY vars insertarParam programa3 RKEY END
+    programa : BEGIN gotoMain globalfunc vars globalFuncFalse programa2 funcfalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END endprog
+             | BEGIN gotoMain globalfunc vars globalFuncFalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END endprog
+             | BEGIN gotoMain programa2 funcfalse MAIN mainfunc LKEY vars insertarParam programa3 RKEY END endprog
+             | BEGIN gotoMain MAIN mainfunc LKEY vars insertarParam programa3 RKEY END endprog
     '''
+
+
+def p_endprog(p):
+    "endprog :"
+    quad.endprog()
 
 
 def p_gotoMain(p):
@@ -153,7 +158,6 @@ def p_modulo1Aux(p):
     # memo.memory_dir = memo.insertLocal(p[1])
     temp = memo.getVirtualDicLocal(p[1])
     master.insertIdToFunc(p[2], p[1], master.miIdFunciones, temp, True)
-    print("variable:", p[2], "tipo:", p[1])
     if p[1] == 'int':
         master.updateIdInFunc(p[2], master.miIdFunciones, 0)
     elif p[1] == 'float':
@@ -161,7 +165,6 @@ def p_modulo1Aux(p):
     elif p[1] == 'string':
         master.updateIdInFunc(p[2], master.miIdFunciones, "")
     elif p[1] == 'bool':
-        print("ENTRA A BOOL", master.returnValor)
         master.updateIdInFunc(p[2], master.miIdFunciones, 'false')
 
 
@@ -185,7 +188,6 @@ def p_insertReturn(p):
     '''
     insertReturn :
     '''
-    print("VALOR DE RETURN", master.returnValor)
     if master.returnValor != "false" or master.returnValor != 'true':
         master.returnValor = master.returnValue(master.returnValor, master.miIdFunciones)
         # memo.memory_dir = memo.insertLocal(master.miFuncType)
@@ -240,11 +242,11 @@ def p_vars1(p):
         # memo.memory_dir = memo.insertLocal(master.miTipo)
         temp = memo.getVirtualDicMain(master.miTipo)
         master.insertIdToFunc(p[1], master.miTipo, "main", temp)
-    else:
+    elif master.esGlobal:
         # memo.memory_dir = memo.insertGlobal(master.miTipo)
-        temp = memo.getVirtualDicGlobal(master.miTipo)
-        master.insertIdToFunc(p[1], master.miTipo, "global", temp)
-        memo.insertGlobalInToMemory(master.miTipo, temp)
+        dir = memo.getVirtualDicGlobal(master.miTipo)
+        master.insertIdToFunc(p[1], master.miTipo, "global", dir)
+        memo.insertLocalInMemory(master.miTipo, dir)
         if master.miTipo == 'int':
             master.updateIdInFunc(p[1], "global", 0)
         elif master.miTipo == 'float':
@@ -294,7 +296,7 @@ def p_pop_assign(p):
         master.updateIdInFunc(p[-5], "global", master.miValor)
         dir = master.getDireccion(p[-5], "global")
         type = master.getType(p[-5], "global")
-        memo.updateGlobalInMemory(master.miValor, dir, type)
+        memo.updateLocalInMemory(master.miValor, dir, type)
     elif master.esFuncion:
         master.updateIdInFunc(p[-5], master.miIdFunciones, master.miValor)
         # dir = master.getDireccion(p[-5], master.miIdFunciones)
@@ -634,8 +636,7 @@ print("Parsing . . . \n")
 parser = yacc.yacc()
 result = parser.parse(entrada)
 print(result)
-print("CONSTANTES")
-memo.showCteMemo()
+
 print("")
 print("CUADRUPLOS")
 print("")
@@ -650,4 +651,7 @@ print("MEMORIA")
 print("")
 memo.show()
 
+print("\n", "*************************************")
+print("EJECUCIÓN")
+print("*************************************", "\n")
 accion.inicio()
