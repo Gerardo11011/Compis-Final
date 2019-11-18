@@ -1,5 +1,7 @@
 begin
 
+int h;
+
 main {
   int a, b, d, c;
   bool p;
@@ -11,9 +13,16 @@ main {
   if(p == true) {
     b = c + d;
   }
-  else{
-  b = d + d;
+  else {
+    b = d + d;
   }
+
+  output(a);
+  output(b);
+  output(c);
+  output(d);
+  output(p);
+
 }
 
 end

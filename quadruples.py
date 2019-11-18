@@ -35,6 +35,11 @@ def gotoMain():
     Quad.append(quadr)
 
 
+def endprog():
+    quadr = quadruple(len(Quad), 'end', None, None, None)
+    Quad.append(quadr)
+
+
 # Funciones para producir representación intermedia para operadores
 def pushID(id, funcion):
     encontro = False
@@ -360,6 +365,11 @@ def moduloCuatro():
 
 def moduloSeis(id, addr):
     quadr = quadruple(len(Quad), 'gosub', id, None, addr)
+    Quad.append(quadr)
+
+
+def endproc():
+    quadr = quadruple(len(Quad), 'endproc', None, None, None)
     Quad.append(quadr)
 
 
