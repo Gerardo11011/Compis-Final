@@ -367,6 +367,14 @@ def moduloSeis(id, addr):
     Quad.append(quadr)
 
 
+def miReturn():
+    result = PilaO.pop()
+    PTypes.pop()
+    AVAIL.pop()
+    quadr = quadruple(len(Quad), 'return', None, None, result)
+    Quad.append(quadr)
+
+
 def endproc(id):
     quadr = quadruple(len(Quad), 'endproc', None, None, id)
     Quad.append(quadr)
