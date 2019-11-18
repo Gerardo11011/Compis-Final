@@ -319,14 +319,20 @@ def insertLocalInMemory(tipo, memoria):
 def updateLocalInMemory(valor, direccion, tipo=None):
     if tipo is None:
         tipo = getTipo(valor)
+    if valor is True:
+        memoria_local.booleanos[direccion] = 'true'
+        return
+    if valor is False:
+        memoria_local.booleanos[direccion] = 'false'
+        return
+    if tipo == "bool":
+        memoria_local.booleanos[direccion] = valor
     if tipo == "int":
         memoria_local.integers[direccion] = valor
     if tipo == "float":
         memoria_local.float[direccion] = valor
     if tipo == "string":
         memoria_local.string[direccion] = valor
-    if tipo == "bool":
-        memoria_local.booleanos[direccion] = valor
 
 
 # Funcion que actualiza el valor con una CTE de una direccion de memoria CTE
@@ -378,7 +384,6 @@ def verificarValorCte(cte):
     if tipo == 'int':
         if memoria_local.integers:
             i = cteInt
-            print(memoCteInt)
             while (i < memoCteInt):
                 if cte == memoria_local.integers[i]:
                     return True
