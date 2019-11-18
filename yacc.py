@@ -83,7 +83,8 @@ def p_funcfalse(p):
 
 def p_modulo(p):
     '''
-    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY varsFunc insertarParam bloqFunc modulo3 RKEY
+    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY varsFunc insertarParam bloqFunc modulo3 RKEY endproc
+           | FUNC VOID tipoVoid ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY varsFunc insertarParam bloqFunc modulo3 RKEY endproc
     '''
     master.contadorParam = 0
     memo.reiniciarDireccionesFunc()
@@ -92,6 +93,16 @@ def p_modulo(p):
     # print(memo.memoFloatUsada, memo.getValor(memo.memoFloatUsada))
     # print(memo.memoStringUsada, memo.getValor(memo.memoStringUsada))
     # print(memo.memoBoolUsada), memo.getValor(memo.memoBoolUsada)
+
+
+def p_tipoVoid(p):
+    "tipoVoid :"
+    master.miTipo = 'void'
+
+
+def p_endproc(p):
+    "endproc :"
+    quad.endproc(master.miIdFunciones)
 
 
 def p_varsFunc(p):
@@ -544,7 +555,7 @@ def p_funcion(p):
     if master.contadorDatosPasados < master.simbolos[p[2]].value["PARAMCANTI"].value and master.esMain:
         print("Faltan parametros en la funcion", master.miParamFunc, "en el MAIN")
         sys.exit()
-    memo.insertarFuncInMemoryExe(p[1])
+    # memo.insertarFuncInMemoryExe(p[1])
     master.contadorDatosPasados = 0
 
 

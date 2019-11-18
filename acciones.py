@@ -4,6 +4,7 @@
 from quadruples import Quad
 from ast import literal_eval
 import memoria as memo
+import tabla_master as master
 
 
 # Función para obtener el tipo de un valor ingresado por el usuario.
@@ -26,6 +27,34 @@ def gotof(quadr, i):
         return quadr.result
     else:
         return i + 1
+
+
+def era(quadr, i):
+    for id in master.simbolos[quadr.result].value:
+        if id != "PARAMCANTI":
+            tipo = master.simbolos[quadr.result].value[id].type_data
+            direccion = master.simbolos[quadr.result].value[id].direccion
+            memo.insertLocalInMemory(tipo, direccion)
+            valor = master.simbolos[quadr.result].value[id].value
+            memo.updateLocalInMemory(valor, direccion, tipo)
+    return i + 1
+
+
+def endproc(quadr, i):
+    id_funcion = quadr.result
+    for id in master.simbolos[id_funcion].value:
+        if id != "PARAMCANTI":
+            direccion = master.simbolos[id_funcion].value[id].direccion
+            tipo = memo.getTipoViaDireccion(direccion)
+            if tipo == "int":
+                memo.memoria_local.integers.pop(direccion)
+            if tipo == "float":
+                memo.memoria_local.float.pop(direccion)
+            if tipo == "string":
+                memo.memoria_local.string.pop(direccion)
+            if tipo == "bool":
+                memo.memoria_local.booleanos.pop(direccion)
+    return i + 1
 
 
 def plus(quadr, i):
@@ -134,10 +163,10 @@ def switcher(quadr, i):
         'goto': goto,
         'gotof': gotof,
 
-        'era': "era",
-        'param': "param",
-        'gosub': "gosub",
-        'endproc': "endproc",
+        'era': era,
+        'param': param,
+        'gosub': gosub,
+        'endproc': endproc,
 
         '+': plus,
         '-': minus,
@@ -168,33 +197,3 @@ def inicio():
     while Quad[i].operator != 'end':
         # print(Quad[i].num, Quad[i].operator, Quad[i].left_operand, Quad[i].right_operand, Quad[i].result, sep = '\t')
         i = switcher(Quad[i], i)
-
-
-# def inicio():
-#     while Quad[i].operator != 'end':
-#         if Quad[i].operator == '*':
-#             mult(Quad[i])
-#         if Quad[i].operator == '/':
-#             div(Quad[i])
-#         if Quad[i].operator == '+':
-#             plus(Quad[i])
-#         if Quad[i].operator == '-':
-#             minus(Quad[i])
-#         if Quad[i].operator == '>':
-#             gt(Quad[i])
-#         if Quad[i].operator == '>=':
-#             gte(Quad[i])
-#         if Quad[i].operator == '<':
-#             lt(Quad[i])
-#         if Quad[i].operator == '<=':
-#             lte(Quad[i])
-#         if Quad[i].operator == '==':
-#             equals(Quad[i])
-#         if Quad[i].operator == '<>':
-#             ne(Quad[i])
-#         if Quad[i].operator == 'and':
-#             andOp(Quad[i])
-#         if Quad[i].operator == 'or':
-#             orOp(Quad[i])
-#         if Quad[i].operator == '=':
-#             assign(Quad[i])

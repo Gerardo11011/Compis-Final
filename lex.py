@@ -26,7 +26,8 @@ reserved = {
     'true' : 'TRUE',
     'false' : 'FALSE',
     'and' : 'AND',
-    'or' : 'OR'
+    'or' : 'OR',
+    'void' : 'VOID'
 }
 
 # Lista de Tokens.

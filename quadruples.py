@@ -367,8 +367,8 @@ def moduloSeis(id, addr):
     Quad.append(quadr)
 
 
-def endproc():
-    quadr = quadruple(len(Quad), 'endproc', None, None, None)
+def endproc(id):
+    quadr = quadruple(len(Quad), 'endproc', None, None, id)
     Quad.append(quadr)
 
 
