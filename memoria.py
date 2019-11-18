@@ -169,8 +169,6 @@ def getValor(direccion, tipo=None):
     if tipo is None:
         tipo = getTipoViaDireccion(direccion)
     temp = None
-    if tipo is None:
-        tipo = getTipoViaDireccion(direccion)
     if tipo == 'int':
         temp = memoria_local.integers[direccion]
     elif tipo == 'float':
