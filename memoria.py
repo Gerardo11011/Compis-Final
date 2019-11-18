@@ -466,13 +466,13 @@ def showTemps():
 
 
 def getTipoViaDireccion(direccion):
-    if (direccion >= 20000 and direccion < 21000) or (direccion >= 9000 and direccion < 9100) or (direccion >= 20000 and direccion < 21000) or (direccion >= 5000 and direccion < 5100) or (direccion >= 85000 and direccion < 86000) or (direccion >= 43000 and direccion < 43100):
+    if (direccion >= 20000 and direccion < 21000) or (direccion >= 9000 and direccion < 9100) or (direccion >= 20000 and direccion < 21000) or (direccion >= 5000 and direccion < 5100) or (direccion >= 85000 and direccion < 86000) or (direccion >= 43000 and direccion < 43100) or (direccion >= 8000 and direccion < 8100):
         tipo = "int"
         return tipo
-    elif (direccion >= 21000 and direccion < 22000) or (direccion >= 9100 and direccion < 9200) or (direccion >= 21000 and direccion < 22000) or (direccion >= 5100 and direccion < 5200) or (direccion >= 86000 and direccion < 87000) or (direccion >= 43100 and direccion < 43200):
+    elif (direccion >= 21000 and direccion < 22000) or (direccion >= 9100 and direccion < 9200) or (direccion >= 21000 and direccion < 22000) or (direccion >= 5100 and direccion < 5200) or (direccion >= 86000 and direccion < 87000) or (direccion >= 43100 and direccion < 43200) or (direccion >= 8100 and direccion < 8200):
         tipo = "float"
         return tipo
-    elif (direccion >= 22000 and direccion < 23000) or (direccion >= 9200 and direccion < 9300) or (direccion >= 22000 and direccion < 23000) or (direccion >= 5200 and direccion < 5300) or (direccion >= 87000 and direccion < 88000) or (direccion >= 43200 and direccion < 43300):
+    elif (direccion >= 22000 and direccion < 23000) or (direccion >= 9200 and direccion < 9300) or (direccion >= 22000 and direccion < 23000) or (direccion >= 5200 and direccion < 5300) or (direccion >= 87000 and direccion < 88000) or (direccion >= 43200 and direccion < 43300) or (direccion >= 8200 and direccion < 8300):
         tipo = "string"
         return tipo
     else:

@@ -292,9 +292,7 @@ def p_pop_assign(p):
     "pop_assign :"
     master.miValor = quad.popAssign()
     # print(master.miValor)
-    a = master.isVarGlobal(p[-5])
-    print(a)
-    if a:
+    if master.isVarGlobal(p[-5]):
         master.updateIdInFunc(p[-5], "global", master.miValor)
         dir = master.getDireccion(p[-5], "global")
         type = master.getType(p[-5], "global")

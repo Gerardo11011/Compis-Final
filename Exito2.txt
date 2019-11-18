@@ -1,7 +1,5 @@
 begin
 
-int h;
-
 main {
   int a, b, d, c;
   bool p;
