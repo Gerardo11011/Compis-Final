@@ -11,7 +11,8 @@ def goto(quadr, i):
 
 
 def gotof(quadr, i):
-    if memo.getValor(quadr.left_operand, None) == 'false':
+    value = memo.getValor(quadr.left_operand, None)
+    if value == 'false' or value is False:
         return quadr.result
     else:
         return i + 1
@@ -138,6 +139,7 @@ def switcher(quadr, i):
 def inicio():
     i = 0
     while Quad[i].operator != 'end':
+        # print(Quad[i].num, Quad[i].operator, Quad[i].left_operand, Quad[i].right_operand, Quad[i].result, sep = '\t')
         i = switcher(Quad[i], i)
 
 
