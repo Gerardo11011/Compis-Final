@@ -6,22 +6,37 @@ main {
   b = 5;
   c = 2;
   d = 1;
-  loop(a + b * c < d) {
+  loop(a + b * c < 40) {
+    output("Entro el primer loop");
     if(a + b < c) {
+      output("Entro el primer if");
       a = b + c;
+      output(a);
       loop(a > b + c) {
+        output("Entro el segundo loop");
         a = a - 1;
+        output(a);
       }
     }
     else {
+      output("Entro el primer else");
       loop(b > c + d) {
+        output("Entro el tercer loop");
         a = b + c * d;
         b = a - d;
+        output(a);
+        output(b);
       }
     }
   }
   a = b * c;
   c = 0;
+
+  output(a);
+  output(b);
+  output(c);
+  output(d);
+
 }
 
 end
