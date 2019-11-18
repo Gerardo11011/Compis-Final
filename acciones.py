@@ -9,6 +9,7 @@ import tabla_master as master
 
 dir_param = []
 quadNo = None
+dirReturn = None
 
 
 # Función para obtener el tipo de un valor ingresado por el usuario.
@@ -35,12 +36,15 @@ def gotof(quadr, i):
 
 def era(quadr, i):
     global dir_param
+    global dirReturn
     for id in master.simbolos[quadr.result].value:
         if id != "PARAMCANTI":
             tipo = master.simbolos[quadr.result].value[id].type_data
             direccion = master.simbolos[quadr.result].value[id].direccion
             if master.simbolos[quadr.result].value[id].param:
                 dir_param.append(direccion)
+            if id == 'return':
+                dirReturn = direccion
             memo.insertLocalInMemory(tipo, direccion)
             valor = master.simbolos[quadr.result].value[id].value
             memo.updateLocalInMemory(valor, direccion, tipo)
@@ -59,6 +63,14 @@ def gosub(quadr, i):
     global quadNo
     quadNo = i
     return quadr.result
+
+
+def miReturn(quadr, i):
+    global dirReturn
+    valor = memo.getValor(quadr.result, None)
+    memo.updateLocalInMemory(valor, dirReturn)
+    print(memo.getValor(dirReturn, None))
+    return i + 1
 
 
 def endproc(quadr, i):
@@ -188,6 +200,7 @@ def switcher(quadr, i):
         'param': param,
         'endproc': endproc,
         'gosub': gosub,
+        'return': miReturn,
 
         '+': plus,
         '-': minus,

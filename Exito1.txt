@@ -37,7 +37,7 @@ func int oscar(int b){
   h = 432;
   e = "Judas ambos";
   temp = h * 3;
-  return h + b * 5;
+  return b + h;
 }
 
 func bool prueba(bool testeoBool){
@@ -68,6 +68,9 @@ main {
   hector = "prueba de que hector funciona";
 
   hector = hector + pedro;
+
+  oscar(j);
+
   if (p == true){
     judasOSCAR(666.6, 1);
   }

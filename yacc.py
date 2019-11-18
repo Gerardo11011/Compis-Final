@@ -198,6 +198,7 @@ def p_insertReturn(p):
     '''
     insertReturn :
     '''
+    quad.miReturn()
     if master.returnValor != "false" or master.returnValor != 'true':
         master.returnValor = master.returnValue(master.returnValor, master.miIdFunciones)
         # memo.memory_dir = memo.insertLocal(master.miFuncType)
