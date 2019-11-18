@@ -53,12 +53,11 @@ def pushID(id, funcion):
                         PTypes.append(simbolos[keys].value[var].type_data)
                         AVAIL.append(simbolos[keys].value[var].value)
     if encontro is False:
-        for miGlobal in simbolos['global'].value:
-            if id == miGlobal:
-                encontro = True
-                PilaO.append(tabla.getDireccion(id, 'global'))
-                PTypes.append(simbolos['global'].value[miGlobal].type_data)
-                AVAIL.append(simbolos['global'].value[miGlobal].value)
+        if tabla.isVarGlobal(id):
+            encontro = True
+            PilaO.append(tabla.getDireccion(id, 'global'))
+            PTypes.append(simbolos['global'].value[id].type_data)
+            AVAIL.append(simbolos['global'].value[id].value)
     if encontro is False:
         print('ERROR: Variable no declarada.', id)
         sys.exit()
