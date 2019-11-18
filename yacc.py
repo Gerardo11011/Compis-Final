@@ -191,7 +191,6 @@ def p_modulo1Repe(p):
 def p_modulo3(p):
     '''
     modulo3 : RETURN exp SEMICOLON insertReturn
-            | empty
     '''
 
 
