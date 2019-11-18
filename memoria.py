@@ -3,9 +3,7 @@ import estructuras
 from pprint import pprint
 # Diccionario de memoria
 memory_dir = None
-memoria_global = estructuras.memoria()
 memoria_local = estructuras.memoria()
-memoria_cte = estructuras.memoria()
 memoria_temp = estructuras.memoria()
 
 # contadores de direcciones de memoria
@@ -169,6 +167,22 @@ def getTipo(cte):
 # Busca el valor de una direccion asociada
 def getValor(direccion, tipo):
     temp = None
+    if tipo is None:
+        tipo = getTipoViaDireccion(direccion)
+    if tipo == 'int':
+        temp = memoria_local.integers[direccion]
+    elif tipo == 'float':
+        temp = memoria_local.float[direccion]
+    elif tipo == 'string':
+        temp = memoria_local.string[direccion]
+    elif tipo == 'bool':
+        temp = memoria_local.booleanos[direccion]
+    return temp
+
+
+# Busca el valor de una direccion asociada a un CTE
+def getValorCte(tipo, direccion):
+    temp = None
     if tipo == 'int':
         temp = memoria_local.integers.get(direccion)
     elif tipo == 'float':
@@ -177,20 +191,6 @@ def getValor(direccion, tipo):
         temp = memoria_local.string.get(direccion)
     elif tipo == 'bool':
         temp = memoria_local.booleanos.get(direccion)
-    return temp
-
-
-# Busca el valor de una direccion asociada a un CTE
-def getValorCte(tipo, direccion):
-    temp = None
-    if tipo == 'int':
-        temp = memoria_cte.integers.get(direccion)
-    elif tipo == 'float':
-        temp = memoria_cte.float.get(direccion)
-    elif tipo == 'string':
-        temp = memoria_cte.string.get(direccion)
-    elif tipo == 'bool':
-        temp = memoria_cte.booleanos.get(direccion)
     return temp
 
 
@@ -278,30 +278,6 @@ def getVirtualDicMain(miTipo):
     return temp
 
 
-# Funcion que inserta la direccion global en la memoria
-def insertGlobalInToMemory(tipo, memoria):
-    if tipo == "int":
-        memoria_global.integers[memoria] = None
-    if tipo == "float":
-        memoria_global.float[memoria] = None
-    if tipo == "string":
-        memoria_global.string[memoria] = None
-    if tipo == "bool":
-        memoria_global.booleanos[memoria] = None
-
-
-# Funcion que actualiza el valor de una direccion global
-def updateGlobalInMemory(valor, direccion, tipo):
-    if tipo == "int":
-        memoria_global.integers[direccion] = valor
-    if tipo == "float":
-        memoria_global.float[direccion] = valor
-    if tipo == "string":
-        memoria_global.string[direccion] = valor
-    if tipo == "bool":
-        memoria_global.booleanos[direccion] = valor
-
-
 # Funcion que actualiza el valor de una direccion temporal
 def updateTempInMemory(valor, direccion, tipo):
     if tipo == "int":
@@ -317,13 +293,13 @@ def updateTempInMemory(valor, direccion, tipo):
 # Funcion que actualiza el valor de una direccion temporal del main
 def updateMainTempInMemory(valor, direccion, tipo):
     if tipo == "int":
-        memoria_global.integers[direccion] = valor
+        memoria_local.integers[direccion] = valor
     if tipo == "float":
-        memoria_global.float[direccion] = valor
+        memoria_local.float[direccion] = valor
     if tipo == "string":
-        memoria_global.string[direccion] = valor
+        memoria_local.string[direccion] = valor
     if tipo == "bool":
-        memoria_global.booleanos[direccion] = valor
+        memoria_local.booleanos[direccion] = valor
 
 # Funcion que inserta una direccion de memoria local en la memoria
 def insertLocalInMemory(tipo, memoria):
@@ -338,7 +314,9 @@ def insertLocalInMemory(tipo, memoria):
 
 
 # Funcion que actualiza el valor de una direccion de memoria local
-def updateLocalInMemory(valor, direccion, tipo):
+def updateLocalInMemory(valor, direccion, tipo=None):
+    if tipo is None:
+        tipo = getTipo(valor)
     if tipo == "int":
         memoria_local.integers[direccion] = valor
     if tipo == "float":
@@ -353,13 +331,13 @@ def updateLocalInMemory(valor, direccion, tipo):
 def updateCteInMemory(valor, direccion, tipo):
     # print("valor:", valor, "direccion:", direccion, "tipo:", tipo)
     if tipo == "int":
-        memoria_cte.integers[direccion] = valor
+        memoria_local.integers[direccion] = valor
     if tipo == "float":
-        memoria_cte.float[direccion] = valor
+        memoria_local.float[direccion] = valor
     if tipo == "string":
-        memoria_cte.string[direccion] = valor
+        memoria_local.string[direccion] = valor
     if tipo == "bool":
-        memoria_cte.booleanos[direccion] = valor
+        memoria_local.booleanos[direccion] = valor
 
 
 # Funcion que guarda lass direcciones usadas por las CTE
@@ -379,40 +357,81 @@ def guardarDireUsada(cte, direccion):
         memoBoolUsada.append(direccion)
 
 
+
+'''memoCteInt = 20000
+memoCteFloat = 21000
+memoCteString = 22000
+memoCteBool = 23000'''
 # Funcion que verifica si el CTE ya se encuentra en la memoria
 def verificarValorCte(cte):
     tipo = getTipo(cte)
+    global memoCteInt
+    global memoCteFloat
+    global memoCteString
+    global memoCteBool
+    cteInt = 20000
+    cteFloat = 21000
+    cteString = 22000
+    cteBool = 23000
     if tipo == 'int':
-        if cte in memoria_cte.integers.values():
-            return True
+        if memoria_local.integers:
+            i = cteInt
+            print(memoCteInt)
+            while (i < memoCteInt):
+                if cte == memoria_local.integers[i]:
+                    return True
+                i += 1
+            return False
+        else:
+            return False
     elif tipo == 'float':
-        if cte in memoria_cte.float.values():
-            return True
+        if memoria_local.float:
+            i = cteFloat
+            while (i < memoCteFloat):
+                if cte == memoria_local.float[i]:
+                    return True
+                i += 1
+            return False
+        else:
+            return False
     elif tipo == 'string':
-        if cte in memoria_cte.string.values():
-            return True
+        if memoria_local.string:
+            i = cteString
+            while (i < memoCteString):
+                if cte == memoria_local.string[i]:
+                    return True
+                i += 1
+            return False
+        return False
     elif tipo == 'bool':
-        if cte in memoria_cte.booleanos.values():
-            return True
+        if memoria_local.booleanos:
+            i = cteBool
+            while (i < memoCteBool):
+                if cte == memoria_local.booleanos[i]:
+                    return True
+                i += 1
+            return False
+    else:
+        return False
 
 
 # Funcion que obtiene la direccion de un CTE dado
 def getDireCte(cte):
     tipo = getTipo(cte)
     if tipo == 'int':
-        for key, value in memoria_cte.integers.items():
+        for key, value in memoria_local.integers.items():
             if cte == value:
                 return key
     elif tipo == 'float':
-        for key, value in memoria_cte.float.items():
+        for key, value in memoria_local.float.items():
             if cte == value:
                 return key
     elif tipo == 'string':
-        for key, value in memoria_cte.string.items():
+        for key, value in memoria_local.string.items():
             if cte == value:
                 return key
     elif tipo == 'bool':
-        for key, value in memoria_cte.booleanos.items():
+        for key, value in memoria_local.booleanos.items():
             if cte == value:
                 return key
     return "DIRECCION INVALIDA"
@@ -422,15 +441,6 @@ def getDireCte(cte):
 
 # Funcion que imprime las memorias
 def show():
-    print("INTEGERS GLOBALS")
-    pprint(memoria_global.integers, width=1)
-    print("FLOAT GLOBALS")
-    pprint(memoria_global.float, width=1)
-    print("STRING GLOBALS")
-    pprint(memoria_global.string, width=50)
-    print("BOOL GLOBALS")
-    pprint(memoria_global.booleanos, width=1)
-
     print("INTEGERS LOCAL")
     pprint(memoria_local.integers, width=1)
     print("FLOAT LOCAL")
@@ -441,74 +451,28 @@ def show():
     pprint(memoria_local.booleanos, width=1)
 
 
-def insertarFuncInMemoryExe(id_funcion):
-    for id in master.simbolos[id_funcion].value:
-        if id != "PARAMCANTI":
-            tipo = master.simbolos[id_funcion].value[id].type_data
-            direccion = master.simbolos[id_funcion].value[id].direccion
-            insertLocalInMemory(tipo, direccion)
-            valor = master.simbolos[id_funcion].value[id].value
-            updateLocalInMemory(valor, direccion, tipo)
-
-
-# Funcion que inserta y obtiene una direccion de memoria de los temporales
-def insertLocalTemp(tipo):
-    global localTempINT
-    global localTempFLOAT
-    global localTempSTRING
-    global localTempBOOL
-    if tipo == "int":
-        memoria_cte.integers[localTempINT] = None
-        temp = localTempINT
-        localTempINT += 1
-        return temp
-    if tipo == "float":
-        memoria_cte.float[localTempFLOAT] = None
-        temp = localTempFLOAT
-        localTempFLOAT += 1
-        return temp
-    if tipo == "string":
-        memoria_cte.string[localTempSTRING] = None
-        temp = localTempSTRING
-        localTempSTRING += 1
-        return temp
-    if tipo == "bool":
-        memoria_cte.booleanos[localTempBOOL] = None
-        temp = localTempBOOL
-        localTempBOOL += 1
-        print("INTRODUJO BOOL")
-        return temp
-
-
-# Funcion que imprime las CTE en la memoria
-def showCteMemo():
-    print("CTE INTEGERS")
-    pprint(memoria_cte.integers, width=1)
-    print("CTE FLOAT")
-    pprint(memoria_cte.float)
-    print("CTE STRING")
-    pprint(memoria_cte.string)
-    print("CTE BOOL")
-    pprint(memoria_cte.booleanos)
-
-
 def showTemps():
     print("TEMPORALES FUNCIONES")
     print("integers")
     pprint(memoria_temp.integers, width=1)
     print("float")
-    pprint(memoria_temp.float)
+    pprint(memoria_temp.float, width=1)
     print("string")
     pprint(memoria_temp.string)
     print("booleanos")
     pprint(memoria_temp.booleanos)
 
-    print("TEMPORALES MAIN")
-    print("integers")
-    pprint(memoria_global.integers, width=1)
-    print("float")
-    pprint(memoria_global.float)
-    print("string")
-    pprint(memoria_global.string)
-    print("booleanos")
-    pprint(memoria_global.booleanos)
+
+def getTipoViaDireccion(direccion):
+    if (direccion >= 20000 and direccion < 21000) or (direccion >= 9000 and direccion < 9100) or (direccion >= 20000 and direccion < 21000) or (direccion >= 5000 and direccion < 5100) or (direccion >= 85000 and direccion < 86000) or (direccion >= 43000 and direccion < 43100) or (direccion >= 8000 and direccion < 8100):
+        tipo = "int"
+        return tipo
+    elif (direccion >= 21000 and direccion < 22000) or (direccion >= 9100 and direccion < 9200) or (direccion >= 21000 and direccion < 22000) or (direccion >= 5100 and direccion < 5200) or (direccion >= 86000 and direccion < 87000) or (direccion >= 43100 and direccion < 43200) or (direccion >= 8100 and direccion < 8200):
+        tipo = "float"
+        return tipo
+    elif (direccion >= 22000 and direccion < 23000) or (direccion >= 9200 and direccion < 9300) or (direccion >= 22000 and direccion < 23000) or (direccion >= 5200 and direccion < 5300) or (direccion >= 87000 and direccion < 88000) or (direccion >= 43200 and direccion < 43300) or (direccion >= 8200 and direccion < 8300):
+        tipo = "string"
+        return tipo
+    else:
+        tipo = "bool"
+        return tipo
