@@ -165,7 +165,9 @@ def getTipo(cte):
 
 
 # Busca el valor de una direccion asociada
-def getValor(direccion, tipo):
+def getValor(direccion, tipo=None):
+    if tipo is None:
+        tipo = getTipoViaDireccion(direccion)
     temp = None
     if tipo is None:
         tipo = getTipoViaDireccion(direccion)
