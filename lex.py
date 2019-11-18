@@ -126,6 +126,7 @@ lexer = lex.lex()
 x = int(input(''' Que archivo desea leer?
     1.- Exito1
     2.- Exito2
+    4.- Exito4
     5.- Exito5
 '''))
 if x == 1:
@@ -135,6 +136,10 @@ if x == 1:
 elif x == 2:
     prueba = open('Exito2.txt', "r")
     archivo = 'Exito2.txt'
+    entrada = prueba.read()
+elif x == 4:
+    prueba = open('Exito4.txt', "r")
+    archivo = 'Exito4.txt'
     entrada = prueba.read()
 elif x == 5:
     prueba = open('Exito5.txt', "r")
