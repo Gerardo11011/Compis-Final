@@ -22,7 +22,7 @@ main {
 
   input(d);
 
-  output(a);
+  output(hola);
   output(b);
   output(c);
   output(d);
