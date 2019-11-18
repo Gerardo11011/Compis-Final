@@ -20,6 +20,8 @@ main {
     b = d + d;
   }
 
+  input(d);
+
   output(a);
   output(b);
   output(c);
