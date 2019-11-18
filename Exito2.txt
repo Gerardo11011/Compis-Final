@@ -2,12 +2,13 @@ begin
 
 main {
   int a, b, d, c;
-  bool p;
+  bool p, q;
   a = 4;
   b = 4;
   c = 4;
   d = 13;
   p = true;
+  q = true;
 
   loop(a <> 0) {
     a = a - 1;
@@ -22,7 +23,7 @@ main {
 
   input(d);
 
-  output(hola);
+  output(a);
   output(b);
   output(c);
   output(d);

@@ -12,12 +12,12 @@ func float SIMONA(int r, float p){
   int temp;
   int pruedadada;
   pruedadada = 3;
-  h = 3.1416;
+  h = r;
   q = 2 + j;
   if (h > 3.0){
     h = 4.0;
   }
-  return p;
+  SIMONA(r,p);
 }
 
 func void judasOSCAR(float p, int r){
