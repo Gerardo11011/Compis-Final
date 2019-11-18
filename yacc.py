@@ -84,7 +84,7 @@ def p_funcfalse(p):
 def p_modulo(p):
     '''
     modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY varsFunc insertarParam bloqFunc modulo3 RKEY endproc
-           | FUNC VOID tipoVoid ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY varsFunc insertarParam bloqFunc modulo3 RKEY endproc
+           | FUNC VOID tipoVoid ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY varsFunc insertarParam bloqFunc RKEY endproc
     '''
     master.contadorParam = 0
     memo.reiniciarDireccionesFunc()

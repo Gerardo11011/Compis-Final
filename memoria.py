@@ -303,6 +303,7 @@ def updateMainTempInMemory(valor, direccion, tipo):
     if tipo == "bool":
         memoria_local.booleanos[direccion] = valor
 
+
 # Funcion que inserta una direccion de memoria local en la memoria
 def insertLocalInMemory(tipo, memoria):
     if tipo == "int":

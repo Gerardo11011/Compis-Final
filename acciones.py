@@ -164,9 +164,9 @@ def switcher(quadr, i):
         'gotof': gotof,
 
         'era': era,
-        'param': param,
-        'gosub': gosub,
-        'endproc': endproc,
+        #'param': 'param',
+        #'gosub': 'gosub',
+        #'endproc': 'endproc',
 
         '+': plus,
         '-': minus,
@@ -187,9 +187,11 @@ def switcher(quadr, i):
         'input': miInput,
         'output': miOutput
     }
-    func = switch.get(quadr.operator)
-    position = func(quadr, i)
-    return position
+    func = switch.get(quadr.operator, 'nel')
+    if func != 'nel':
+        position = func(quadr, i)
+        return position
+    return i + 1
 
 
 def inicio():
@@ -197,3 +199,4 @@ def inicio():
     while Quad[i].operator != 'end':
         # print(Quad[i].num, Quad[i].operator, Quad[i].left_operand, Quad[i].right_operand, Quad[i].result, sep = '\t')
         i = switcher(Quad[i], i)
+    memo.show()
