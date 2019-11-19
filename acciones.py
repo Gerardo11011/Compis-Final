@@ -185,34 +185,6 @@ def miInput(quadr, i):
     return i + 1
 
 
-def era(quadr, i):
-    id_funcion = quadr.result
-    for id in master.simbolos[id_funcion].value:
-        if id != "PARAMCANTI":
-            tipo = master.simbolos[id_funcion].value[id].type_data
-            direccion = master.simbolos[id_funcion].value[id].direccion
-            memo.insertLocalInMemory(tipo, direccion)
-            valor = master.simbolos[id_funcion].value[id].value
-            memo.updateLocalInMemory(valor, direccion, tipo)
-    return i + 1
-
-
-def deleteFuncFromMemory(quadr, i):
-    id_funcion = quadr.result
-    for id in master.simbolos[id_funcion].value:
-        if id != "PARAMCANTI":
-            direccion = master.simbolos[id_funcion].value[id].direccion
-            tipo = memo.getTipoViaDireccion(direccion)
-            if tipo == "int":
-                memo.memoria_local.integers.pop(direccion)
-            if tipo == "float":
-                memo.memoria_local.float.pop(direccion)
-            if tipo == "string":
-                memo.memoria_local.string.pop(direccion)
-            if tipo == "bool":
-                memo.memoria_local.booleanos.pop(direccion)
-
-
 def miOutput(quadr, i):
     print(memo.getValor(quadr.result, None))
     return i + 1
@@ -259,6 +231,6 @@ def switcher(quadr, i):
 def inicio():
     i = 0
     while Quad[i].operator != 'end':
-        # print(Quad[i].num, Quad[i].operator, Quad[i].left_operand, Quad[i].right_operand, Quad[i].result, sep = '\t')
+        print(Quad[i].num, Quad[i].operator, Quad[i].left_operand, Quad[i].right_operand, Quad[i].result, sep = '\t')
         i = switcher(Quad[i], i)
     memo.show()

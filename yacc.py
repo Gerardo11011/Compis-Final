@@ -198,17 +198,19 @@ def p_insertReturn(p):
     '''
     insertReturn :
     '''
-    quad.miReturn()
     if master.returnValor != "false" or master.returnValor != 'true':
         master.returnValor = master.returnValue(master.returnValor, master.miIdFunciones)
         # memo.memory_dir = memo.insertLocal(master.miFuncType)
         temp = memo.getVirtualDicLocal(master.miFuncType)
         master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, temp)
         master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
+        # print("VALOR METIENDO A GLOBAL", master.returnValor, master.miIdFunciones)
+        memo.insertReturn(master.returnValor)
     else:
         temp = memo.getVirtualDicLocal(master.miFuncType)
         master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, temp)
         master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
+        memo.insertReturn(master.returnValor)
 
     # memo.updateLocal(master.returnValor, memo.memory_dir, master.miFuncType)
     #print("VALOR DE RETURN:", master.returnValor, "TYPE:", type(master.returnValor))
