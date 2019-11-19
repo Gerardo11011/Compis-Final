@@ -56,6 +56,7 @@ main {
   float h, d;
   string pedro, hector;
   contador = 2;
+  c = 2;
   j = 3;
   a = j;
   erw = 999;
@@ -69,7 +70,7 @@ main {
 
   hector = hector + pedro;
 
-  oscar(j);
+  c = oscar(a);
 
   if (p == true){
     judasOSCAR(666.6, 1);
@@ -77,5 +78,8 @@ main {
   else{
     judasOSCAR(777.77, 2);
   }
+
+  output(c);
+
 }
 end

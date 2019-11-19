@@ -380,6 +380,24 @@ def endproc(id):
     Quad.append(quadr)
 
 
+def assignFunc(id):
+    tipoFunc = simbolos[id].type_data
+    POperSize = len(POper)
+    if POperSize > 0:
+        if POper[POperSize-1] == '=':
+            result = PilaO.pop()
+            type = PTypes.pop()
+            AVAIL.pop()
+            operator = POper.pop()
+            result_type = semantic(type, tipoFunc, operator)
+            if result_type != 'error':
+                quadr = quadruple(len(Quad), '=', 150000, None, result)
+                Quad.append(quadr)
+            else:
+                print('ERROR: Type mismatch.')
+                sys.exit()
+
+
 def show():
     for i in range(0, len(Quad)):
         print(Quad[i].num, Quad[i].operator, Quad[i].left_operand, Quad[i].right_operand, Quad[i].result, sep = '\t')
