@@ -198,20 +198,20 @@ def p_insertReturn(p):
     '''
     insertReturn :
     '''
-    quad.miReturn()
     if master.returnValor != "false" or master.returnValor != 'true':
         master.returnValor = master.returnValue(master.returnValor, master.miIdFunciones)
         # memo.memory_dir = memo.insertLocal(master.miFuncType)
         temp = memo.getVirtualDicLocal(master.miFuncType)
         master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, temp)
         master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
+        print("VALOR METIENDO A GLOBAL", master.returnValor, master.miIdFunciones)
+        memo.insertReturn(master.returnValor)
     else:
         temp = memo.getVirtualDicLocal(master.miFuncType)
         master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, temp)
         master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
-
-    # memo.updateLocal(master.returnValor, memo.memory_dir, master.miFuncType)
-    #print("VALOR DE RETURN:", master.returnValor, "TYPE:", type(master.returnValor))
+        memo.insertReturn(master.returnValor)
+    quad.miReturn()
 # ########################### ACABA FUNCIONES  ##############################
 
 
@@ -292,10 +292,10 @@ def p_bloque(p):
 
 def p_asignacion(p):
     '''
-      asignacion : ID push_id EQUAL push_poper logico pop_assign SEMICOLON
-                 | ID push_id EQUAL push_poper array pop_assign SEMICOLON
-                 | ID push_id EQUAL push_poper funcion pop_assign SEMICOLON
-                 | ID push_id LCORCH exp RCORCH EQUAL push_poper expresion pop_assign SEMICOLON
+    asignacion : ID push_id EQUAL push_poper logico pop_assign SEMICOLON
+               | ID push_id EQUAL push_poper array pop_assign SEMICOLON
+               | ID push_id EQUAL push_poper funcion pop_assignFunc
+               | ID push_id LCORCH exp RCORCH EQUAL push_poper expresion pop_assign SEMICOLON
     '''
 
 
@@ -318,6 +318,11 @@ def p_pop_assign(p):
         dir = master.getDireccion(p[-5], "main")
         type = master.getType(p[-5], "main")
         memo.updateLocalInMemory(master.miValor, dir, type)
+
+
+def p_pop_assignFunc(p):
+    "pop_assignFunc :"
+    quad.assignFunc(p[-1])
 
 
 def p_logico(p):
@@ -473,8 +478,8 @@ def p_push_cte(p):
 
 def p_condicion(p):
     '''
-        condicion : IF LPAREN logico RPAREN ifelse1 LKEY programa3 RKEY ifelse2
-               | IF LPAREN logico RPAREN ifelse1 LKEY programa3 RKEY ELSE ifelse3 LKEY programa3 RKEY ifelse2
+    condicion : IF LPAREN logico RPAREN ifelse1 LKEY programa3 RKEY ifelse2
+              | IF LPAREN logico RPAREN ifelse1 LKEY programa3 RKEY ELSE ifelse3 LKEY programa3 RKEY ifelse2
     '''
 
 
@@ -557,6 +562,7 @@ def p_funcion(p):
         sys.exit()
     # memo.insertarFuncInMemoryExe(p[1])
     master.contadorDatosPasados = 0
+    p[0] = p[1]
 
 
 def p_getParamId(p):

@@ -18,7 +18,6 @@ globalFLOAT = 5100
 globalSTRING = 5200
 globalBOOL = 5300
 
-
 # direccion de memorias temporales
 memoTempInt = 43000
 memoTempFloat = 43100
@@ -49,17 +48,19 @@ tempMainFloat = 86000
 tempMainString = 87000
 tempMainBool = 88000
 
+# Direccion del return
+memoReturn = 150000
 
 # Para insertar los valores a cualquier direccion local es a traves del metodo
 # updateLocalInMemor por lo que se tiene que pasar a la funcion la direccion indicada
-def insertarFuncInMemoryExe(id_funcion):
-    for id in master.simbolos[id_funcion].value:
-        if id != "PARAMCANTI":
-            tipo = master.simbolos[id_funcion].value[id].type_data
-            direccion = master.simbolos[id_funcion].value[id].direccion
-            insertLocalInMemory(tipo, direccion)
-            valor = master.simbolos[id_funcion].value[id].value
-            updateLocalInMemory(valor, direccion, tipo)
+# def insertarFuncInMemoryExe(id_funcion):
+#     for id in master.simbolos[id_funcion].value:
+#         if id != "PARAMCANTI":
+#             tipo = master.simbolos[id_funcion].value[id].type_data
+#             direccion = master.simbolos[id_funcion].value[id].direccion
+#             insertLocalInMemory(tipo, direccion)
+#             valor = master.simbolos[id_funcion].value[id].value
+#             updateLocalInMemory(valor, direccion, tipo)
 
 
 def getVirtualTemp(tipo):
@@ -166,9 +167,10 @@ def getTipo(cte):
 
 # Busca el valor de una direccion asociada
 def getValor(direccion, tipo=None):
-    if tipo is None:
-        tipo = getTipoViaDireccion(direccion)
     temp = None
+    if direccion == 15000:
+        temp = memoria_local.returns
+        return temp
     if tipo is None:
         tipo = getTipoViaDireccion(direccion)
     if tipo == 'int':
@@ -484,3 +486,13 @@ def getTipoViaDireccion(direccion):
     else:
         tipo = "bool"
         return tipo
+
+
+def insertReturn(valor):
+    global memoReturn
+    memoria_local.booleanos[memoReturn] = valor
+
+
+def getReturn():
+    global memoReturn
+    memoria_local.booleanos[memoReturn]
