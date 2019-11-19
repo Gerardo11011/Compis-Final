@@ -51,17 +51,6 @@ tempMainBool = 88000
 # Direccion del return
 memoReturn = 150000
 
-# Para insertar los valores a cualquier direccion local es a traves del metodo
-# updateLocalInMemor por lo que se tiene que pasar a la funcion la direccion indicada
-# def insertarFuncInMemoryExe(id_funcion):
-#     for id in master.simbolos[id_funcion].value:
-#         if id != "PARAMCANTI":
-#             tipo = master.simbolos[id_funcion].value[id].type_data
-#             direccion = master.simbolos[id_funcion].value[id].direccion
-#             insertLocalInMemory(tipo, direccion)
-#             valor = master.simbolos[id_funcion].value[id].value
-#             updateLocalInMemory(valor, direccion, tipo)
-
 
 def getVirtualTemp(tipo):
     global memoTempInt
