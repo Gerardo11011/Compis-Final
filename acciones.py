@@ -69,7 +69,7 @@ def miReturn(quadr, i):
     global dirReturn
     valor = memo.getValor(quadr.result, None)
     memo.updateLocalInMemory(valor, dirReturn)
-    print(memo.getValor(dirReturn, None))
+    memo.insertReturn(valor)
     return i + 1
 
 
