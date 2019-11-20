@@ -204,7 +204,6 @@ def p_insertReturn(p):
         temp = memo.getVirtualDicLocal(master.miFuncType)
         master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, temp)
         master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
-        print("VALOR METIENDO A GLOBAL", master.returnValor, master.miIdFunciones)
         memo.insertReturn(master.returnValor)
     else:
         temp = memo.getVirtualDicLocal(master.miFuncType)
@@ -251,21 +250,16 @@ def p_vars1(p):
         master.insertIdToFunc(p[1], master.miTipo, master.miIdFunciones, temp)
     elif master.esMain:
         # memo.memory_dir = memo.insertLocal(master.miTipo)
-        temp = memo.getVirtualDicMain(master.miTipo)
-        master.insertIdToFunc(p[1], master.miTipo, "main", temp)
+        dir = memo.getVirtualDicMain(master.miTipo)
+        master.insertIdToFunc(p[1], master.miTipo, "main", dir)
+        memo.insertLocalInMemory(master.miTipo, dir)
+        memo.inicInMemory(p[1], master.miTipo, "main")
     elif master.esGlobal:
         # memo.memory_dir = memo.insertGlobal(master.miTipo)
         dir = memo.getVirtualDicGlobal(master.miTipo)
         master.insertIdToFunc(p[1], master.miTipo, "global", dir)
         memo.insertLocalInMemory(master.miTipo, dir)
-        if master.miTipo == 'int':
-            master.updateIdInFunc(p[1], "global", 0)
-        elif master.miTipo == 'float':
-            master.updateIdInFunc(p[1], "global", 0.0)
-        elif master.miTipo == 'string':
-            master.updateIdInFunc(p[1], "global", "")
-        elif master.miTipo == 'bool':
-            master.updateIdInFunc(p[1], "global", 'false')
+        memo.inicInMemory(p[1], master.miTipo, dir)
 
 
 def p_tipo(p):
@@ -673,7 +667,7 @@ print("*************************************")
 print("EJECUCIÓN")
 print("*************************************", "\n")
 accion.inicio()
-print("")
-print("MEMORIA")
-print("")
-memo.show()
+# print("")
+# print("MEMORIA")
+# print("")
+# memo.show()

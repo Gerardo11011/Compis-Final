@@ -37,7 +37,7 @@ func int oscar(int b){
   h = 432;
   e = "Judas ambos";
   temp = h * 3;
-  return b + h;
+  return b + 76;
 }
 
 func bool prueba(bool testeoBool){
@@ -48,6 +48,22 @@ func string StriPrue(string cadena){
   return cadena;
 }
 
+
+func int fib(int num) {
+   int x, y, z, i;
+   x = 0;
+   y = 1;
+   z = 0;
+   i = 0;
+   loop (i < num) {
+      output(x);
+      z = x + y;
+      x = y;
+      y = z;
+      i = i + 1;
+   }
+   return num;
+}
 
 main {
   bool p;
@@ -66,7 +82,7 @@ main {
   d = 7.8;
   pedro = "prueba de que pedro funciona";
   a = a * b + a;
-  hector = "prueba de que hector funciona";
+  hector = "prueba de que la funcion multiple jala";
 
   hector = hector + pedro;
 
@@ -79,7 +95,9 @@ main {
     judasOSCAR(777.77, 2);
   }
 
-  output(c);
-
+  h = SIMONA(a, h);
+  output(h);
+  pedro = StriPrue(hector);
+  output(pedro);
 }
 end
