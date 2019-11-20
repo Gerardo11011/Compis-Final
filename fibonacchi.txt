@@ -1,0 +1,26 @@
+begin
+
+func int fib(int num) {
+   int x, y, z, i;
+   x = 0;
+   y = 1;
+   z = 0;
+   i = 0;
+   loop (i < num) {
+      output(x);
+      z = x + y;
+      x = y;
+      y = z;
+      i = i + 1;
+   }
+   return num;
+}
+
+main {
+   int num;
+   output("Enter the number : ");
+   input(num);
+   output("The fibonacci series : ");
+   fib(num);
+}
+end
