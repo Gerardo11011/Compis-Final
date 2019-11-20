@@ -1,26 +1,23 @@
 begin
 
-func int fib(int num) {
-   int x, y, z, i;
-   x = 0;
-   y = 1;
-   z = 0;
-   i = 0;
-   loop (i < num) {
-      output(x);
-      z = x + y;
-      x = y;
-      y = z;
-      i = i + 1;
-   }
-   return num;
+func int recursividad(int p, int q){
+  if (p < 10){
+    if (q < 10){
+      if (q == p){
+        output(p);
+      }
+    }
+    recursividad(p+1, q);
+  }
+  return p;
 }
 
 main {
-   int num;
-   output("Enter the number : ");
-   input(num);
-   output("The fibonacci series : ");
-   fib(num);
+  int p, q;
+  p = 0;
+  q = 0;
+
+  recursividad(p, q);
 }
+
 end
