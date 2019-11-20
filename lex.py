@@ -124,32 +124,37 @@ def t_error(t):
 lexer = lex.lex()
 
 # Leer archivo de prueba.
-x = int(input(''' Que archivo desea leer?
+x = (input(''' Que archivo desea leer?
     1.- Exito1
     2.- Exito2
     3.- Exito3
     4.- Exito4
     5.- Exito5
+    f.- Fibonacci
 '''))
-if x == 1:
+if x == "1":
     prueba = open('Exito1.txt', "r")
     archivo = 'Exito1.txt'
     entrada = prueba.read()
-elif x == 2:
+elif x == "2":
     prueba = open('Exito2.txt', "r")
     archivo = 'Exito2.txt'
     entrada = prueba.read()
-elif x == 3:
+elif x == "3":
     prueba = open('Exito3.txt', "r")
     archivo = 'Exito3.txt'
     entrada = prueba.read()
-elif x == 4:
+elif x == "4":
     prueba = open('Exito4.txt', "r")
     archivo = 'Exito4.txt'
     entrada = prueba.read()
-elif x == 5:
+elif x == "5":
     prueba = open('Exito5.txt', "r")
     archivo = 'Exito5.txt'
+    entrada = prueba.read()
+elif x == 'f':
+    prueba = open('fibonacchi.txt', "r")
+    archivo = 'fibonacchi.txt'
     entrada = prueba.read()
 else:
     print("ERROR")
