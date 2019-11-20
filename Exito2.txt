@@ -1,33 +1,26 @@
 begin
 
-main {
-  int a, b, d, c;
-  bool p;
-  a = 4;
-  b = 4;
-  c = 4;
-  d = 13;
-  p = true;
-
-  loop(a <> 0) {
-    a = a - 1;
-  }
-
-  if(p == true) {
-    b = c + d;
-  }
-  else {
-    b = d + d;
-  }
-
-  input(d);
-
-  output(hola);
-  output(b);
-  output(c);
-  output(d);
-  output(p);
-
+func int fib(int num) {
+   int x, y, z, i;
+   x = 0;
+   y = 1;
+   z = 0;
+   i = 0;
+   loop (i < num) {
+      output(x);
+      z = x + y;
+      x = y;
+      y = z;
+      i = i + 1;
+   }
+   return num;
 }
 
+main {
+   int num;
+   output("Enter the number : ");
+   input(num);
+   output("The fibonacci series : ");
+   fib(num);
+}
 end

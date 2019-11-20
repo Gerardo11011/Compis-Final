@@ -43,8 +43,6 @@ def era(quadr, i):
             direccion = master.simbolos[quadr.result].value[id].direccion
             if master.simbolos[quadr.result].value[id].param:
                 dir_param.append(direccion)
-            if id == 'return':
-                dirReturn = direccion
             memo.insertLocalInMemory(tipo, direccion)
             valor = master.simbolos[quadr.result].value[id].value
             memo.updateLocalInMemory(valor, direccion, tipo)
@@ -66,9 +64,7 @@ def gosub(quadr, i):
 
 
 def miReturn(quadr, i):
-    global dirReturn
     valor = memo.getValor(quadr.result, None)
-    memo.updateLocalInMemory(valor, dirReturn)
     memo.insertReturn(valor)
     return i + 1
 
@@ -233,4 +229,4 @@ def inicio():
     while Quad[i].operator != 'end':
         # print(Quad[i].num, Quad[i].operator, Quad[i].left_operand, Quad[i].right_operand, Quad[i].result, sep = '\t')
         i = switcher(Quad[i], i)
-    memo.show()
+    # memo.show()
