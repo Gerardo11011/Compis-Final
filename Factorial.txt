@@ -1,0 +1,31 @@
+begin
+
+func int factorial(int n, int c, int p) {
+  int a;
+  a = 1;
+  output(c);
+  output(p);
+  if (n <= 1) {
+    output("n es: ");
+    output(n);
+    a = 1;
+    return a * 3;
+  }
+  else {
+   a = factorial(n-1, 5*7, c * p);
+  }
+  return n * a;
+}
+
+main {
+  int n, res;
+  res = 0;
+  n = 0;
+  output("Factorial de:");
+  input(n);
+  res = factorial(n, 2,7);
+  output("Resultado:");
+  output(res);
+}
+
+end
