@@ -1,0 +1,27 @@
+begin
+
+func int factorial(int n) {
+  int a;
+  a = 1;
+  output(n);
+  if (n <= 1) {
+    a = 1;
+  }
+  else {
+   a = factorial(n-1);
+  }
+  output(a);
+  return n * a;
+}
+
+main {
+  int n, res;
+  res = 0;
+  n = 0;
+  output("Factorial de:");
+  input(n);
+  res = factorial(n);
+  output(res);
+}
+
+end
