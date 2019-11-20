@@ -51,6 +51,64 @@ tempMainBool = 88000
 # Direccion del return
 memoReturn = 150000
 
+def getDirecVectorMain(tipo, salto):
+    global memoMainInt
+    global memoMainFloat
+    global memoMainString
+    global memoMainBool
+    if tipo == 'int':
+        temp = memoMainInt
+        memoMainInt += salto
+    elif tipo == 'float':
+        temp = memoMainFloat
+        memoMainFloat += salto
+    elif tipo == 'string':
+        temp = memoMainString
+        memoMainString += salto
+    elif tipo == 'bool':
+        temp = memoMainBool
+        memoMainBool += salto
+    return temp
+
+def getDirecVectorFunc(miTipo, salto):
+    global memoFuncInt
+    global memoFuncFloat
+    global memoFuncString
+    global memoFuncBool
+    if miTipo == 'int':
+        temp = memoFuncInt
+        memoFuncInt += salto
+    elif miTipo == 'float':
+        temp = memoFuncFloat
+        memoFuncFloat += salto
+    elif miTipo == 'string':
+        temp = memoFuncString
+        memoFuncString += salto
+    elif miTipo == 'bool':
+        temp = memoFuncBool
+        memoFuncBool += salto
+    return temp
+
+
+def getDirecVecorGlobal(miTipo, salto):
+    global globalINT
+    global globalFLOAT
+    global globalSTRING
+    global globalBOOL
+    if miTipo == 'int':
+        temp = globalINT
+        globalINT += salto
+    elif miTipo == 'float':
+        temp = globalFLOAT
+        globalFLOAT += salto
+    elif miTipo == 'string':
+        temp = globalSTRING
+        globalSTRING += salto
+    elif miTipo == 'bool':
+        temp = globalBOOL
+        globalBOOL += salto
+    return temp
+
 
 def inicInMemory(id, Tipo, id_funcion):
     if Tipo == 'int':

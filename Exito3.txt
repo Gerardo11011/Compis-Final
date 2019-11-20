@@ -1,27 +1,6 @@
 begin
 
 main {
-  int a, b, d, c, e;
-  a = 1;
-  b = 1;
-  c = 2;
-  d = 1;
-  loop (a <= 10){
-    loop(b <= 10){
-      if (a == b){
-        output(a);
-        b = b + 1;
-      }
-      else{
-        b = b + 1;
-      }
-    }
-    b = 0;
-    a = a + 1;
+  int h, i,vecto[4], j, simona[2], melapela, semental;
   }
-  output("FINAL");
-  output(a);
-  output(b);
-}
-
 end

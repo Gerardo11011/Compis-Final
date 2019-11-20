@@ -25,6 +25,8 @@ esParam = False
 miFuncType = None
 contadorParam = 0
 contadorDatosPasados = 0
+esVector = None
+tamaVec = 0
 
 
 # Funcion que inicializa la tabla con funciones, global, y main
@@ -102,11 +104,11 @@ def validate(dato, id, id_funcion):
 
 
 # Funcion que inserta las variables en su respectiva tabla local
-def insertIdToFunc(id, type_data, id_funcion, direccion, param=None):
+def insertIdToFunc(id, type_data, id_funcion, direccion, param=None, dimensionda=0):
     if len(simbolos[id_funcion].value) >= 1 and not itFoundGlobalVar(id) and not itFoundLocal(id, id_funcion):
-        simbolos[id_funcion].value[id] = tabla.tabla_local(type_data, None, direccion, param)
+        simbolos[id_funcion].value[id] = tabla.tabla_local(type_data, None, direccion, param, dimensionda)
     if len(simbolos[id_funcion].value) == 0 and not itFoundGlobalVar(id):
-        simbolos[id_funcion].value[id] = tabla.tabla_local(type_data, None, direccion, param)
+        simbolos[id_funcion].value[id] = tabla.tabla_local(type_data, None, direccion, param, dimensionda)
 
 
 # Funcion que actualiza el valor de una variable
@@ -145,7 +147,7 @@ def show():
         print("ID FUNCION:", keys, " TYPE DATA:", simbolos[keys].type_data)
         for id in simbolos[keys].value:
             print("id:", id)
-            print("valor:", simbolos[keys].value[id].value, " type data:", simbolos[keys].value[id].type_data, " MEMORIA:", simbolos[keys].value[id].direccion)
+            print("valor:", simbolos[keys].value[id].value, " type data:", simbolos[keys].value[id].type_data, " MEMORIA:", simbolos[keys].value[id].direccion, "TAMA VECT", simbolos[keys].value[id].dimensionda)
         print("")
 
 
