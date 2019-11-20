@@ -22,6 +22,10 @@ main {
   }
   a = b * c;
   c = 0;
+  output(a);
+  output(b);
+  output(c);
+  output(d);
 }
 
 end
