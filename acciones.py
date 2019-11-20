@@ -13,6 +13,7 @@ dirReturn = None
 funcNo = []
 esPrimera = False
 primerQuadNo = None
+miFunc = None
 
 
 # Función para obtener el tipo de un valor ingresado por el usuario.
@@ -43,6 +44,8 @@ def era(quadr, i):
     global dirReturn
     global funcNo
     global esPrimera
+    global miFunc
+    miFunc = quadr.result
     funcNo.append(quadr.result)
     if funcNo.count(quadr.result) == 1:
         esPrimera = True
@@ -86,9 +89,26 @@ def gosub(quadr, i):
 
 
 def miReturn(quadr, i):
+    global funcNo
+    global miFunc
     valor = memo.getValor(quadr.result, None)
     memo.insertReturn(valor)
-    return i + 1
+    funcNo.remove(miFunc)
+    if funcNo.count(miFunc) <= 0:
+        for id in master.simbolos[miFunc].value:
+            if id != "PARAMCANTI" and id != "Cuadruplos":
+                direccion = master.simbolos[miFunc].value[id].direccion
+                tipo = memo.getTipoViaDireccion(direccion)
+                if tipo == "int":
+                    memo.memoria_local.integers.pop(direccion)
+                if tipo == "float":
+                    memo.memoria_local.float.pop(direccion)
+                if tipo == "string":
+                    memo.memoria_local.string.pop(direccion)
+                if tipo == "bool":
+                    memo.memoria_local.booleanos.pop(direccion)
+        return primerQuadNo + 1
+    return quadNo + 1
 
 
 def endproc(quadr, i):

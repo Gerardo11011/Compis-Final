@@ -72,7 +72,7 @@ def p_funcfalse(p):
 
 def p_modulo(p):
     '''
-    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY varsFunc insertarParam bloqFunc modulo3 RKEY endproc
+    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY varsFunc insertarParam bloqFunc RKEY endproc
            | FUNC VOID tipoVoid ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY varsFunc insertarParam bloqFunc RKEY endproc
     '''
     master.contadorParam = 0
@@ -171,17 +171,17 @@ def p_modulo3(p):
 
 def p_insertReturn(p):
     "insertReturn :"
-    if master.returnValor != "false" or master.returnValor != 'true':
-        master.returnValor = master.returnValue(master.returnValor, master.miIdFunciones)
-        temp = memo.getVirtualDicLocal(master.miFuncType)
-        master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, temp)
-        master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
-        memo.insertReturn(master.returnValor)
-    else:
-        temp = memo.getVirtualDicLocal(master.miFuncType)
-        master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, temp)
-        master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
-        memo.insertReturn(master.returnValor)
+    # if master.returnValor != "false" or master.returnValor != 'true':
+    #     master.returnValor = master.returnValue(master.returnValor, master.miIdFunciones)
+    #     temp = memo.getVirtualDicLocal(master.miFuncType)
+    #     master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, temp)
+    #     master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
+    #     memo.insertReturn(master.returnValor)
+    # else:
+    #     temp = memo.getVirtualDicLocal(master.miFuncType)
+    #     master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, temp)
+    #     master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
+    #     memo.insertReturn(master.returnValor)
     quad.miReturn()
 # ########################### ACABA FUNCIONES  ##############################
 
@@ -248,6 +248,7 @@ def p_bloque(p):
            | escritura
            | loop
            | funcion
+           | modulo3
     '''
 
 

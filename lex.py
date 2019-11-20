@@ -131,6 +131,7 @@ x = (input('''¿Qué archivo desea leer?
     4.- Exito4
     5.- Exito5
     f.- Fibonacci
+    fac.- Factorial
 '''))
 if x == "1":
     prueba = open('Exito1.txt', "r")
@@ -156,6 +157,10 @@ elif x == 'f':
     prueba = open('fibonacchi.txt', "r")
     archivo = 'fibonacchi.txt'
     entrada = prueba.read()
+elif x == 'fac':
+    prueba = open('Factorial.txt', "r")
+    archivo = 'Factorial.txt'
+    entrada = prueba.read()
 else:
     print("ERROR")
     sys.exit()
@@ -168,4 +173,4 @@ while True:
     tok = lexer.token()
     if not tok:
         break
-    # print(tok)
+    print(tok)
