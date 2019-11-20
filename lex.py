@@ -9,25 +9,25 @@ archivo = None
 
 # Lista de palabras reservadas.
 reserved = {
-    'begin' : 'BEGIN',
-    'end' : 'END',
-    'main' : 'MAIN',
-    'if' : 'IF',
-    'else' : 'ELSE',
-    'loop' : 'LOOP',
-    'func' : 'FUNC',
-    'int' : 'INT',
-    'float' : 'FLOAT',
-    'string' : 'STRING',
-    'bool' : 'BOOL',
-    'input' : 'INPUT',
-    'output' : 'OUTPUT',
-    'return' : 'RETURN',
-    'true' : 'TRUE',
-    'false' : 'FALSE',
-    'and' : 'AND',
-    'or' : 'OR',
-    'void' : 'VOID'
+    'begin': 'BEGIN',
+    'end': 'END',
+    'main': 'MAIN',
+    'if': 'IF',
+    'else': 'ELSE',
+    'loop': 'LOOP',
+    'func': 'FUNC',
+    'int': 'INT',
+    'float': 'FLOAT',
+    'string': 'STRING',
+    'bool': 'BOOL',
+    'input': 'INPUT',
+    'output': 'OUTPUT',
+    'return': 'RETURN',
+    'true': 'TRUE',
+    'false': 'FALSE',
+    'and': 'AND',
+    'or': 'OR',
+    'void': 'VOID'
 }
 
 # Lista de Tokens.
@@ -124,7 +124,7 @@ def t_error(t):
 lexer = lex.lex()
 
 # Leer archivo de prueba.
-x = (input(''' Que archivo desea leer?
+x = (input('''¿Qué archivo desea leer?
     1.- Exito1
     2.- Exito2
     3.- Exito3

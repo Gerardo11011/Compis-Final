@@ -218,7 +218,6 @@ def p_vars1(p):
         temp = memo.getVirtualDicLocal(master.miTipo)
         master.insertIdToFunc(p[1], master.miTipo, master.miIdFunciones, temp)
     elif master.esMain:
-        # memo.memory_dir = memo.insertLocal(master.miTipo)
         dir = memo.getVirtualDicMain(master.miTipo)
         master.insertIdToFunc(p[1], master.miTipo, "main", dir)
         memo.insertLocalInMemory(master.miTipo, dir)
@@ -500,7 +499,7 @@ def p_loop3(p):
 
 def p_funcion(p):
     "funcion : ID getParamId LPAREN funcionDos funcion1 RPAREN paramFalse funcionSeis SEMICOLON"
-    # Condiciones que verifican si la recursividad cumple con los requisitos y desde donde es lllamada la funcion
+    # Condiciones que verifican si la recursividad cumple con los requisitos y desde donde es llamada la funcion
     if master.contadorDatosPasados < master.simbolos[p[2]].value["PARAMCANTI"].value and master.esFuncion:
         print("Faltan parametros en la funcion", master.miParamFunc, "En el ", master.miIdFunciones)
         sys.exit()

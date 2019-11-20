@@ -411,7 +411,7 @@ def getDireCte(cte):
                 return key
     return "DIRECCION INVALIDA"
 
-################FUNCIONES ANTIGUAS################
+# ###############FUNCIONES ANTIGUAS################
 
 
 # Funcion que imprime las memorias
@@ -461,14 +461,3 @@ def insertReturn(valor):
 def getReturn():
     global memoReturn
     memoria_local.booleanos[memoReturn]
-
-
-def inicInMemory(id, Tipo, id_funcion):
-    if Tipo == 'int':
-        master.updateIdInFunc(id, id_funcion, 0)
-    elif Tipo == 'float':
-        master.updateIdInFunc(id, id_funcion, 0.0)
-    elif Tipo == 'string':
-        master.updateIdInFunc(id, id_funcion, "")
-    elif Tipo == 'bool':
-        master.updateIdInFunc(id, id_funcion, 'false')
