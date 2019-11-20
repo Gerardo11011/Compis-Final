@@ -1,23 +1,16 @@
 begin
 
-func int recursividad(int p, int q){
-  if (p < 10){
-    if (q < 10){
-      if (q == p){
-        output(p);
-      }
-    }
-    recursividad(p+1, q);
+func int factorial (int n, int acum){
+  if(n > 0){
+    output(acum);
+    acum = factorial(n-1, acum);
   }
-  return p;
+  return acum;
 }
 
-main {
-  int p, q;
-  p = 0;
-  q = 0;
-
-  recursividad(p, q);
+main{
+  int n;
+  n = 5;
+  factorial(n, 0);
 }
-
 end
