@@ -1,34 +1,16 @@
 begin
 
-func void factorial(int numero) {
-  int i;
-  float fact;
-  i = 1;
-  fact = 1.0;
-  if(numero < 0){
-    fact = 0.0;
+func int factorial (int n, int acum){
+  if(n > 0){
+    output(acum);
+    acum = factorial(n-1, acum);
   }
-  else{
-    if(numero==0) {
-    fact = 1.0;
-    }
-    else {
-      loop(i <= numero){
-      fact = fact*i;
-      i = i + 1;
-      }
-    }
-  }
-  output(fact);
+  return acum;
 }
 
-main {
-  int n,i;
-  float factorial;
-  output("Introduce un numero: ");
-  input(n);
-  output("El factorial es: ");
-  factorial(n);
+main{
+  int n;
+  n = 5;
+  factorial(n, 0);
 }
-
 end

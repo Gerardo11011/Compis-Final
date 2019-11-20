@@ -1,6 +1,7 @@
 begin
 
 int j;
+int sdas[10];
 int erw;
 float t;
 string pe;
@@ -9,6 +10,7 @@ bool judassimon;
 func float SIMONA(int r, float p){
   float h;
   int q;
+
   int temp;
   int pruedadada;
   pruedadada = 3;

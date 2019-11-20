@@ -251,7 +251,6 @@ def p_vars1(p):
     global varVector
     i = 0
     if p[1] not in varVector.keys():
-        print(varVector)
         if master.esFuncion:
             # memo.memory_dir = memo.insertLocal(master.miTipo)
             temp = memo.getVirtualDicLocal(master.miTipo)
@@ -295,6 +294,7 @@ def p_tamaVector(p):
     global varVector
     varVector[master.esVector] = p[-1]
     master.tamaVec = p[-1]
+    print("ES VECTOR", master.esVector, master.tamaVec)
 
 
 def p_variableDim(p):
