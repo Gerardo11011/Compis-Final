@@ -251,6 +251,7 @@ def p_vars1(p):
     global varVector
     i = 0
     if p[1] not in varVector.keys():
+        print("entra a no vectores")
         if master.esFuncion:
             # memo.memory_dir = memo.insertLocal(master.miTipo)
             temp = memo.getVirtualDicLocal(master.miTipo)
@@ -260,13 +261,14 @@ def p_vars1(p):
             dir = memo.getVirtualDicMain(master.miTipo)
             master.insertIdToFunc(p[1], master.miTipo, "main", dir)
             memo.insertLocalInMemory(master.miTipo, dir)
-            memo.inicInMemory(p[1], master.miTipo, "main")
+            memo.inicInMemory(p[1], master.miTipo, "main", dir)
+            print("entra a inic in memeory")
         elif master.esGlobal:
             # memo.memory_dir = memo.insertGlobal(master.miTipo)
             dir = memo.getVirtualDicGlobal(master.miTipo)
             master.insertIdToFunc(p[1], master.miTipo, "global", dir)
             memo.insertLocalInMemory(master.miTipo, dir)
-            memo.inicInMemory(p[1], master.miTipo, "global")
+            memo.inicInMemory(p[1], master.miTipo, "global", dir)
     else:
         if master.esFuncion:
             dir = memo.getDirecVectorFunc(master.miTipo, varVector[p[1]])
@@ -276,13 +278,13 @@ def p_vars1(p):
             master.insertIdToFunc(p[1], master.miTipo, "main", dir, None, varVector[p[1]])
             for i in range(varVector[p[1]]):
                 memo.insertLocalInMemory(master.miTipo, dir + i)
-                memo.inicInMemory(p[1], master.miTipo, "main")
+                memo.inicVectorInMemoryExe(dir + i, master.miTipo)
         elif master.esGlobal:
             dir = memo.getDirecVecorGlobal(master.miTipo, varVector[p[1]])
             master.insertIdToFunc(p[1], master.miTipo, "global", dir, None, varVector[p[1]])
             for i in range(varVector[p[1]]):
                 memo.insertLocalInMemory(master.miTipo, dir + i)
-                memo.inicInMemory(p[1], master.miTipo, "global")
+                memo.inicVectorInMemoryExe(dir + i, master.miTipo)
         master.esVector = False
         varVector.pop(p[1], None)
 
@@ -294,7 +296,6 @@ def p_tamaVector(p):
     global varVector
     varVector[master.esVector] = p[-1]
     master.tamaVec = p[-1]
-    print("ES VECTOR", master.esVector, master.tamaVec)
 
 
 def p_variableDim(p):
@@ -542,6 +543,13 @@ def p_lectura(p):
 def p_escritura(p):
     '''
     escritura : OUTPUT push_poper LPAREN exp RPAREN pop_io SEMICOLON
+    '''
+
+
+def p_expPrint(p):
+    '''
+    expPrint : exp
+             | exp COMMA expPrint
     '''
 
 

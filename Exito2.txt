@@ -1,16 +1,26 @@
 begin
 
-func int factorial (int n, int acum){
-  if(n > 0){
-    output(acum);
-    acum = factorial(n-1, acum);
-  }
-  return acum;
+func void factorial (int num, int fact){
+  int i;
+  i = 1;
+  output(fact);
+  loop(i < num + 1){
+    fact = fact * i;
+    i = i + 1;
+    output("VALOR ACUM FAACT");
+    output(fact);
+    }
+    output("RESULTADO FACT");
+  output(fact);
 }
 
 main{
-  int n;
-  n = 5;
-  factorial(n, 0);
+  int fact,num;
+  fact = 1;
+ output("Ingresa un numero");
+ input(num);
+ output(fact);
+ factorial(num,fact);
+
 }
 end

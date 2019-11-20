@@ -110,15 +110,30 @@ def getDirecVecorGlobal(miTipo, salto):
     return temp
 
 
-def inicInMemory(id, Tipo, id_funcion):
+def inicInMemory(id, Tipo, id_funcion, direccion=None):
     if Tipo == 'int':
         master.updateIdInFunc(id, id_funcion, 0)
+        memoria_local.integers[direccion] = 0
     elif Tipo == 'float':
         master.updateIdInFunc(id, id_funcion, 0.0)
+        memoria_local.float[direccion] = 0.0
     elif Tipo == 'string':
         master.updateIdInFunc(id, id_funcion, "")
+        memoria_local.string[direccion] = ""
     elif Tipo == 'bool':
         master.updateIdInFunc(id, id_funcion, 'false')
+        memoria_local.booleanos[direccion] = False
+
+
+def inicVectorInMemoryExe(direccion, Tipo):
+    if Tipo == 'int':
+        memoria_local.integers[direccion] = 0
+    elif Tipo == 'float':
+        memoria_local.float[direccion] = 0.0
+    elif Tipo == 'string':
+        memoria_local.string[direccion] = ""
+    elif Tipo == 'bool':
+        memoria_local.booleanos[direccion] = False
 
 
 def getVirtualTemp(tipo):
