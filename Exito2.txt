@@ -20,4 +20,11 @@ main {
   recursividad(p, q);
 }
 
+main {
+   int num;
+   output("Enter the number : ");
+   input(num);
+   output("The fibonacci series : ");
+   fib(num);
+}
 end

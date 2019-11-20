@@ -1,26 +1,27 @@
 begin
 
 main {
-  int a, b, d, c;
-  a = 4;
-  b = 5;
+  int a, b, d, c, e;
+  a = 1;
+  b = 1;
   c = 2;
   d = 1;
-  if(a + b > d) {
-    if(a < b) {
-      a = 0;
-      b = b + d;
-      output(a + b * 2);
+  loop (a <= 10){
+    loop(b <= 10){
+      if (a == b){
+        output(a);
+        b = b + 1;
+      }
+      else{
+        b = b + 1;
+      }
     }
-    else {
-      c = a + b;
-    }
+    b = 0;
+    a = a + 1;
   }
-  else {
-    a = b + c;
-  }
-  input(b);
-  d = b + a * c;
+  output("FINAL");
+  output(a);
+  output(b);
 }
 
 end
