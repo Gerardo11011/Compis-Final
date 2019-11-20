@@ -135,7 +135,6 @@ def getidParam(id_funcion):
     temp = []
     for id in simbolos[id_funcion].value:
         if simbolos[id_funcion].value[id].param:
-            # simbolos[id_funcion].value[id].direccion = None
             temp.append(id)
     return temp
 
