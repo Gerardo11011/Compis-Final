@@ -52,6 +52,17 @@ tempMainBool = 88000
 memoReturn = 150000
 
 
+def inicInMemory(id, Tipo, id_funcion):
+    if Tipo == 'int':
+        master.updateIdInFunc(id, id_funcion, 0)
+    elif Tipo == 'float':
+        master.updateIdInFunc(id, id_funcion, 0.0)
+    elif Tipo == 'string':
+        master.updateIdInFunc(id, id_funcion, "")
+    elif Tipo == 'bool':
+        master.updateIdInFunc(id, id_funcion, 'false')
+
+
 def getVirtualTemp(tipo):
     global memoTempInt
     global memoTempFloat

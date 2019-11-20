@@ -6,10 +6,13 @@ from ast import literal_eval
 import memoria as memo
 import tabla_master as master
 
-
 dir_param = []
+tipo_param = []
 quadNo = None
 dirReturn = None
+funcNo = []
+esPrimera = False
+primerQuadNo = None
 
 
 # Función para obtener el tipo de un valor ingresado por el usuario.
@@ -36,32 +39,49 @@ def gotof(quadr, i):
 
 def era(quadr, i):
     global dir_param
+    global tipo_param
     global dirReturn
+    global funcNo
+    global esPrimera
+    funcNo.append(quadr.result)
+    if funcNo.count(quadr.result) == 1:
+        esPrimera = True
     for id in master.simbolos[quadr.result].value:
-        if id != "PARAMCANTI":
+        if id != "PARAMCANTI" and id != 'Cuadruplos':
             tipo = master.simbolos[quadr.result].value[id].type_data
             direccion = master.simbolos[quadr.result].value[id].direccion
             if master.simbolos[quadr.result].value[id].param:
                 dir_param.append(direccion)
+                tipo_param.append(tipo)
             if id == 'return':
                 dirReturn = direccion
-            memo.insertLocalInMemory(tipo, direccion)
-            valor = master.simbolos[quadr.result].value[id].value
-            memo.updateLocalInMemory(valor, direccion, tipo)
+            if not master.simbolos[quadr.result].value[id].param:
+                valor = master.simbolos[quadr.result].value[id].value
+                memo.insertLocalInMemory(tipo, direccion)
+                memo.updateLocalInMemory(valor, direccion, tipo)
     return i + 1
 
 
 def param(quadr, i):
     global dir_param
+    global tipo_param
     valor = memo.getValor(quadr.left_operand, None)
+    memo.insertLocalInMemory(tipo_param[-1], dir_param[-1])
     memo.updateLocalInMemory(valor, dir_param[-1])
     dir_param.pop()
+    tipo_param.pop()
     return i + 1
 
 
 def gosub(quadr, i):
     global quadNo
-    quadNo = i
+    global esPrimera
+    global primerQuadNo
+    if esPrimera:
+        primerQuadNo = i
+    else:
+        quadNo = i
+    esPrimera = False
     return quadr.result
 
 
@@ -74,19 +94,23 @@ def miReturn(quadr, i):
 
 
 def endproc(quadr, i):
+    global funcNo
     id_funcion = quadr.result
-    for id in master.simbolos[id_funcion].value:
-        if id != "PARAMCANTI" and id != "Cuadruplos":
-            direccion = master.simbolos[id_funcion].value[id].direccion
-            tipo = memo.getTipoViaDireccion(direccion)
-            if tipo == "int":
-                memo.memoria_local.integers.pop(direccion)
-            if tipo == "float":
-                memo.memoria_local.float.pop(direccion)
-            if tipo == "string":
-                memo.memoria_local.string.pop(direccion)
-            if tipo == "bool":
-                memo.memoria_local.booleanos.pop(direccion)
+    funcNo.remove(id_funcion)
+    if funcNo.count(id_funcion) <= 0:
+        for id in master.simbolos[id_funcion].value:
+            if id != "PARAMCANTI" and id != "Cuadruplos":
+                direccion = master.simbolos[id_funcion].value[id].direccion
+                tipo = memo.getTipoViaDireccion(direccion)
+                if tipo == "int":
+                    memo.memoria_local.integers.pop(direccion)
+                if tipo == "float":
+                    memo.memoria_local.float.pop(direccion)
+                if tipo == "string":
+                    memo.memoria_local.string.pop(direccion)
+                if tipo == "bool":
+                    memo.memoria_local.booleanos.pop(direccion)
+        return primerQuadNo + 1
     return quadNo + 1
 
 

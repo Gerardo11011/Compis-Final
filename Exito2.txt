@@ -1,33 +1,23 @@
 begin
 
+func int recursividad(int p, int q){
+  if (p < 10){
+    if (q < 10){
+      if (q == p){
+        output(p);
+      }
+    }
+    recursividad(p+1, q);
+  }
+  return p;
+}
+
 main {
-  int a, b, d, c;
-  bool p;
-  a = 4;
-  b = 4;
-  c = 4;
-  d = 13;
-  p = true;
+  int p, q;
+  p = 0;
+  q = 0;
 
-  loop(a <> 0) {
-    a = a - 1;
-  }
-
-  if(p == true) {
-    b = c + d;
-  }
-  else {
-    b = d + d;
-  }
-
-  input(d);
-
-  output(hola);
-  output(b);
-  output(c);
-  output(d);
-  output(p);
-
+  recursividad(p, q);
 }
 
 end
