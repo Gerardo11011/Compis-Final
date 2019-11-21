@@ -27,6 +27,7 @@ contadorParam = 0
 contadorDatosPasados = 0
 esVector = None
 tamaVec = 0
+esVoid = False
 
 
 # Funcion que inicializa la tabla con funciones, global, y main

@@ -99,11 +99,13 @@ def p_modulo(p):
 def p_tipoVoid(p):
     "tipoVoid :"
     master.miTipo = 'void'
+    master.esVoid = True
 
 
 def p_endproc(p):
     "endproc :"
     quad.endproc(master.miIdFunciones)
+    master.esVoid = False
 
 
 def p_varsFunc(p):
@@ -193,6 +195,12 @@ def p_modulo3(p):
     '''
     modulo3 : RETURN exp SEMICOLON insertReturn
     '''
+    if master.esVoid:
+        print("ERROR: return declarado en la funcion tipo void: ", master.miIdFunciones)
+        sys.exit()
+    if master.esMain:
+        print("ERROR: el main no puede tener return")
+        sys.exit()
 
 
 def p_insertReturn(p):
@@ -226,7 +234,6 @@ def p_programa3(p):
     '''
     programa3 : bloque
               | bloque programa3
-              | empty
     '''
 
 
@@ -248,7 +255,6 @@ def p_vars1(p):
     global varVector
     i = 0
     if p[1] not in varVector.keys():
-        print("entra a no vectores")
         if master.esFuncion:
             # memo.memory_dir = memo.insertLocal(master.miTipo)
             temp = memo.getVirtualDicLocal(master.miTipo)
@@ -259,7 +265,6 @@ def p_vars1(p):
             master.insertIdToFunc(p[1], master.miTipo, "main", dir)
             memo.insertLocalInMemory(master.miTipo, dir)
             memo.inicInMemory(p[1], master.miTipo, "main", dir)
-            print("entra a inic in memeory")
         elif master.esGlobal:
             # memo.memory_dir = memo.insertGlobal(master.miTipo)
             dir = memo.getVirtualDicGlobal(master.miTipo)
@@ -718,5 +723,5 @@ print("*************************************", "\n")
 accion.inicio()
 # print("")
 # print("MEMORIA")
-# print("")
-# memo.show()
+print("")
+memo.show()
