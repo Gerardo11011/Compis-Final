@@ -51,6 +51,7 @@ tempMainBool = 88000
 # Direccion del return
 memoReturn = 150000
 
+
 def getDirecVectorMain(tipo, salto):
     global memoMainInt
     global memoMainFloat
@@ -69,6 +70,7 @@ def getDirecVectorMain(tipo, salto):
         temp = memoMainBool
         memoMainBool += salto
     return temp
+
 
 def getDirecVectorFunc(miTipo, salto):
     global memoFuncInt
@@ -207,7 +209,6 @@ def limpiarDireUsadas():
     global memoBoolUsada
     for i in range(len(memoIntUsada)):
         memoria_local.integers.pop(memoIntUsada[i], None)
-        # del memoria_local.integers[memoIntUsada[i]]
     for i in range(len(memoFloatUsada)):
         memoria_local.float.pop(memoFloatUsada[i], None)
     for i in range(len(memoStringUsada)):
@@ -413,7 +414,6 @@ def updateLocalInMemory(valor, direccion, tipo=None):
 
 # Funcion que actualiza el valor con una CTE de una direccion de memoria CTE
 def updateCteInMemory(valor, direccion, tipo):
-    # print("valor:", valor, "direccion:", direccion, "tipo:", tipo)
     if tipo == "int":
         memoria_local.integers[direccion] = valor
     if tipo == "float":
@@ -483,7 +483,6 @@ def getDireCte(cte):
             if cte == value:
                 return key
     return "DIRECCION INVALIDA"
-
 # ###############FUNCIONES ANTIGUAS################
 
 
