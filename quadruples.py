@@ -398,6 +398,12 @@ def assignFunc(id):
                 sys.exit()
 
 
+def pushFunc(funcion):
+    PilaO.append(150000)
+    PTypes.append(simbolos[funcion].type_data)
+    AVAIL.append(0)
+
+
 def show():
     for i in range(0, len(Quad)):
         print(Quad[i].num, Quad[i].operator, Quad[i].left_operand, Quad[i].right_operand, Quad[i].result, sep = '\t')

@@ -1,23 +1,26 @@
 begin
 
-func int recursividad(int p, int q){
-  if (p < 10){
-    if (q < 10){
-      if (q == p){
-        output(p);
-      }
+func void factorial (int num, int fact){
+  int i;
+  i = 1;
+  output(fact);
+  loop(i < num + 1){
+    fact = fact * i;
+    i = i + 1;
+    output("VALOR ACUM FAACT");
+    output(fact);
     }
-    recursividad(p+1, q);
-  }
-  return p;
+    output("RESULTADO FACT");
+  output(fact);
 }
 
-main {
-  int p, q;
-  p = 0;
-  q = 0;
+main{
+  int fact,num;
+  fact = 1;
+ output("Ingresa un numero");
+ input(num);
+ output(fact);
+ factorial(num,fact);
 
-  recursividad(p, q);
 }
-
 end

@@ -1,41 +1,18 @@
 begin
 
 main {
-  int a, b, c, d;
-  a = 4;
-  b = 5;
-  c = 2;
+  float a, b, c, d;
+  float z;
+  string jo, pi;
+  a = 4.0;
+  b = 5.0;
+  c = 2.0;
   d = 1;
-  loop(a + b * c < 40) {
-    output("Entro el primer loop");
-    if(a + b < c) {
-      output("Entro el primer if");
-      a = b + c;
-      output(a);
-      loop(a > b + c) {
-        output("Entro el segundo loop");
-        a = a - 1;
-        output(a);
-      }
-    }
-    else {
-      output("Entro el primer else");
-      loop(b > c + d) {
-        output("Entro el tercer loop");
-        a = b + c * d;
-        b = a - d;
-        output(a);
-        output(b);
-      }
-    }
-  }
-  a = b * c;
-  c = 0;
-
-  output(a);
-  output(b);
-  output(c);
-  output(d);
+  d = (a + b * (3 / 2) + 9 * 1) / ((c + d) - a * (b * b)) ;
+  z = (9 * 100 + 5 -2 / 1000) - 1 / (1909 + 500 - 12 / 2) ;
+  jo = "Oscar el" ;
+  pi = "seneval Guevara";
+  output(jo + pi);
 
 }
 

@@ -146,6 +146,7 @@ def minus(quadr, i):
 
 def mult(quadr, i):
     res = memo.getValor(quadr.left_operand, None) * memo.getValor(quadr.right_operand, None)
+    # print(memo.getValor(quadr.left_operand, None))
     memo.updateLocalInMemory(res, quadr.result)
     return i + 1
 
@@ -228,7 +229,11 @@ def miInput(quadr, i):
 
 
 def miOutput(quadr, i):
-    print(memo.getValor(quadr.result, None))
+    if str(type(memo.getValor(quadr.result, None))) == "<class 'str'>":
+        valor = memo.getValor(quadr.result, None).replace('"', ' ')
+        print(valor)
+    else:
+        print(memo.getValor(quadr.result, None))
     return i + 1
 
 

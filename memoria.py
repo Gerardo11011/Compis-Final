@@ -52,15 +52,90 @@ tempMainBool = 88000
 memoReturn = 150000
 
 
-def inicInMemory(id, Tipo, id_funcion):
+def getDirecVectorMain(tipo, salto):
+    global memoMainInt
+    global memoMainFloat
+    global memoMainString
+    global memoMainBool
+    if tipo == 'int':
+        temp = memoMainInt
+        memoMainInt += salto
+    elif tipo == 'float':
+        temp = memoMainFloat
+        memoMainFloat += salto
+    elif tipo == 'string':
+        temp = memoMainString
+        memoMainString += salto
+    elif tipo == 'bool':
+        temp = memoMainBool
+        memoMainBool += salto
+    return temp
+
+
+def getDirecVectorFunc(miTipo, salto):
+    global memoFuncInt
+    global memoFuncFloat
+    global memoFuncString
+    global memoFuncBool
+    if miTipo == 'int':
+        temp = memoFuncInt
+        memoFuncInt += salto
+    elif miTipo == 'float':
+        temp = memoFuncFloat
+        memoFuncFloat += salto
+    elif miTipo == 'string':
+        temp = memoFuncString
+        memoFuncString += salto
+    elif miTipo == 'bool':
+        temp = memoFuncBool
+        memoFuncBool += salto
+    return temp
+
+
+def getDirecVecorGlobal(miTipo, salto):
+    global globalINT
+    global globalFLOAT
+    global globalSTRING
+    global globalBOOL
+    if miTipo == 'int':
+        temp = globalINT
+        globalINT += salto
+    elif miTipo == 'float':
+        temp = globalFLOAT
+        globalFLOAT += salto
+    elif miTipo == 'string':
+        temp = globalSTRING
+        globalSTRING += salto
+    elif miTipo == 'bool':
+        temp = globalBOOL
+        globalBOOL += salto
+    return temp
+
+
+def inicInMemory(id, Tipo, id_funcion, direccion=None):
     if Tipo == 'int':
         master.updateIdInFunc(id, id_funcion, 0)
+        memoria_local.integers[direccion] = 0
     elif Tipo == 'float':
         master.updateIdInFunc(id, id_funcion, 0.0)
+        memoria_local.float[direccion] = 0.0
     elif Tipo == 'string':
         master.updateIdInFunc(id, id_funcion, "")
+        memoria_local.string[direccion] = ""
     elif Tipo == 'bool':
         master.updateIdInFunc(id, id_funcion, 'false')
+        memoria_local.booleanos[direccion] = False
+
+
+def inicVectorInMemoryExe(direccion, Tipo):
+    if Tipo == 'int':
+        memoria_local.integers[direccion] = 0
+    elif Tipo == 'float':
+        memoria_local.float[direccion] = 0.0
+    elif Tipo == 'string':
+        memoria_local.string[direccion] = ""
+    elif Tipo == 'bool':
+        memoria_local.booleanos[direccion] = False
 
 
 def getVirtualTemp(tipo):
@@ -134,7 +209,6 @@ def limpiarDireUsadas():
     global memoBoolUsada
     for i in range(len(memoIntUsada)):
         memoria_local.integers.pop(memoIntUsada[i], None)
-        # del memoria_local.integers[memoIntUsada[i]]
     for i in range(len(memoFloatUsada)):
         memoria_local.float.pop(memoFloatUsada[i], None)
     for i in range(len(memoStringUsada)):
@@ -340,7 +414,6 @@ def updateLocalInMemory(valor, direccion, tipo=None):
 
 # Funcion que actualiza el valor con una CTE de una direccion de memoria CTE
 def updateCteInMemory(valor, direccion, tipo):
-    # print("valor:", valor, "direccion:", direccion, "tipo:", tipo)
     if tipo == "int":
         memoria_local.integers[direccion] = valor
     if tipo == "float":
@@ -410,7 +483,6 @@ def getDireCte(cte):
             if cte == value:
                 return key
     return "DIRECCION INVALIDA"
-
 # ###############FUNCIONES ANTIGUAS################
 
 
