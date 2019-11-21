@@ -146,6 +146,7 @@ def minus(quadr, i):
 
 def mult(quadr, i):
     res = memo.getValor(quadr.left_operand, None) * memo.getValor(quadr.right_operand, None)
+    # print(memo.getValor(quadr.left_operand, None))
     memo.updateLocalInMemory(res, quadr.result)
     return i + 1
 
@@ -277,6 +278,6 @@ def switcher(quadr, i):
 def inicio():
     i = 0
     while Quad[i].operator != 'end':
-        # print(Quad[i].num, Quad[i].operator, Quad[i].left_operand, Quad[i].right_operand, Quad[i].result, sep = '\t')
+        print(Quad[i].num, Quad[i].operator, Quad[i].left_operand, Quad[i].right_operand, Quad[i].result, sep = '\t')
         i = switcher(Quad[i], i)
     # memo.show()
