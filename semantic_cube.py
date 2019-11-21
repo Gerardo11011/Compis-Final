@@ -34,7 +34,7 @@ def semantic(left, right, operator):
             else:
                 return 'error'
         elif(right == 'int'):
-            if(operator in operators):
+            if(operator in operators) or operator == "=":
                 return 'float'
             elif(operator in comparators):
                 return 'bool'

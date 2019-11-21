@@ -228,7 +228,11 @@ def miInput(quadr, i):
 
 
 def miOutput(quadr, i):
-    print(memo.getValor(quadr.result, None))
+    if str(type(memo.getValor(quadr.result, None))) == "<class 'str'>":
+        valor = memo.getValor(quadr.result, None).replace('"', ' ')
+        print(valor)
+    else:
+        print(memo.getValor(quadr.result, None))
     return i + 1
 
 

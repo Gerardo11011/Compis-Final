@@ -69,10 +69,14 @@ def itFoundLocal(id, id_funcion):
         sys.exit()
     return aux
 
-
+def volverFloat(dato, id, id_funcion):
+    temp = str(type(dato))
+    if simbolos[id_funcion].value[id].type_data == 'float' and temp == "<class 'int'>":
+        temp = "<class 'float'>"
+    return temp
 # Funcion que valida que el valor ingresado y el tipo de la variable sean iguales
 def validate(dato, id, id_funcion):
-    temp = str(type(dato))
+    temp = volverFloat(dato, id, id_funcion)
     aux = None
     encontroLocal = False
     encontroGlobal = False
@@ -86,6 +90,7 @@ def validate(dato, id, id_funcion):
     if not encontroLocal and not encontroGlobal:
         print('ERROR: ID no declarado:', id)
         sys.exit()
+
     if dato == 'true' or dato == 'false':
         temp = "<class 'bool'>"
     if temp == "<class 'float'>" and aux == 'float':
@@ -115,7 +120,12 @@ def insertIdToFunc(id, type_data, id_funcion, direccion, param=None, dimensionda
 # Funcion que actualiza el valor de una variable
 def updateIdInFunc(id, id_funcion, valor):
     if validate(valor, id, id_funcion):
-        simbolos[id_funcion].value[id].value = valor
+        temp = str(type(valor))
+        if temp == "<class 'str'>":
+            valor = valor.replace('"', '')
+            simbolos[id_funcion].value[id].value = valor
+        else:
+            simbolos[id_funcion].value[id].value = valor
 
 
 # Funcion que actualiza el valor de una variable
