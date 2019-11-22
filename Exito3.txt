@@ -5,7 +5,6 @@ func void prueba(){
   a = 0;
   b = 4;
   b = a + b * b;
-  return b;
 }
 
 main {
@@ -13,6 +12,10 @@ main {
   float pewq, pruakd[10], jdsa, oehuvsd[9];
   string hector, sadenss[6], owsads[5],dasd;
   bool nose[12], esdnf[21];
-  h = 0;
+
+  h = 4 + vecto[2];
+
+  output(h);
+  output(vecto[1]);
   }
 end

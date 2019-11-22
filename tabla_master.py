@@ -122,7 +122,7 @@ def updateIdInFunc(id, id_funcion, valor):
     if validate(valor, id, id_funcion):
         temp = str(type(valor))
         if temp == "<class 'str'>":
-            valor = valor.replace('"', '')
+            # valor = valor.replace('"', '')
             simbolos[id_funcion].value[id].value = valor
         else:
             simbolos[id_funcion].value[id].value = valor

@@ -13,6 +13,9 @@ import quadruples as quad
 import acciones as accion
 
 
+idVector = None
+
+
 # Leer archivo de prueba.
 prueba = open(archivo, "r")
 entrada = prueba.read()
@@ -321,7 +324,7 @@ def p_asignacion(p):
     asignacion : ID push_id EQUAL push_poper logico pop_assign SEMICOLON
                | ID push_id EQUAL push_poper array pop_assign SEMICOLON
                | ID push_id EQUAL push_poper funcion pop_assignFunc
-               | ID push_id LCORCH exp RCORCH EQUAL push_poper expresion pop_assign SEMICOLON
+               | ID push_id LCORCH exp RCORCH EQUAL push_poper logico pop_assign SEMICOLON
     '''
 
 
@@ -468,6 +471,7 @@ def p_var_cte(p):
             | CTE_S push_cte
             | TRUE push_cte
             | FALSE push_cte
+            | array
     '''
     master.returnValor = p[1]
     if len(p) == 2:
@@ -543,15 +547,49 @@ def p_pop_io(p):
 
 def p_array(p):
     '''
-    array : LCORCH array1 RCORCH
+    array : ID LCORCH arrayDos array1 RCORCH arrayCinco
     '''
+
+
+def p_arrayDos(p):
+    "arrayDos :"
+    global idVector
+    if master.esFuncion:
+        quad.arregloDos(master.miIdFunciones, p[-2])
+    elif master.esMain:
+        quad.arregloDos('main', p[-2])
+    else:
+        quad.arregloDos('global', p[-2])
+    idVector = p[-2]
 
 
 def p_array1(p):
     '''
-    array1 : exp
-           | exp COMMA array1
+    array1 : exp arrayTres
+           | exp arrayTres COMMA array1
     '''
+
+
+def p_arrayTres(p):
+    "arrayTres :"
+    global idVector
+    if master.esFuncion:
+        tam = master.simbolos[master.miIdFunciones].value[idVector].dimensionda
+    elif master.esMain:
+        tam = master.simbolos['main'].value[idVector].dimensionda
+    else:
+        tam = master.simbolos['global'].value[idVector].dimensionda
+    quad.arregloTres(tam)
+
+
+def p_arrayCinco(p):
+    "arrayCinco :"
+    if master.esMain:
+        base = master.simbolos['main'].value[p[-5]].direccion
+        quad.arregloCinco(True, base)
+    elif master.esFuncion:
+        base = master.simbolos[master.miIdFunciones].value[p[-5]].direccion
+        quad.arregloCinco(False, base)
 
 
 def p_loop(p):
@@ -676,10 +714,10 @@ parser = yacc.yacc()
 result = parser.parse(entrada)
 # print(result)
 #
-# print("")
-# print("CUADRUPLOS")
-# print("")
-# quad.show()
+print("")
+print("CUADRUPLOS")
+print("")
+quad.show()
 # print("")
 # print("")
 # print("VARS TABLE")
