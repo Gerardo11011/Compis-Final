@@ -1,31 +1,24 @@
 begin
 
-func int factorial(int n, int c, int p) {
-  int a;
-  a = 1;
-  output(c);
-  output(p);
-  if (n <= 1) {
-    output("n es: ");
-    output(n);
-    a = 1;
-    return a * 3;
-  }
-  else {
-   a = factorial(n-1, 5*7, c * p);
-  }
-  return n * a;
+func int facto(int num){
+  int i, fact;
+  fact = 1;
+  i = 1;
+    loop(i < num + 1){
+      fact = fact * i;
+      i = i + 1;
+    }
+     return fact;
 }
 
 main {
-  int n, res;
-  res = 0;
-  n = 0;
+  int n, respu;
+  int res;
   output("Factorial de:");
   input(n);
-  res = factorial(n, 2,7);
+  respu = facto(n);
   output("Resultado:");
-  output(res);
+  output(respu);
 }
 
 end

@@ -170,9 +170,11 @@ def popFact(main):
                         result = left_value / right_value
                     if main:
                         dir = memo.getVirtualMainTemp(result_type)
+                        print("direccion quad", dir)
                         memo.updateMainTempInMemory(result, dir, result_type)
                     else:
                         dir = memo.getVirtualTemp(result_type)
+                        print("direccion quad", dir)
                         memo.updateTempInMemory(result, dir, result_type)
                     quadr = quadruple(len(Quad), operator, left_operand, right_operand, dir)
                     Quad.append(quadr)
@@ -205,6 +207,7 @@ def popRelop(main):
                 if left_value is not None and right_value is not None:
                     if(operator == '>'):
                         result = left_value > right_value
+                        print("el semental guevara", type(result))
                     elif(operator == '>='):
                         result = left_value >= right_value
                     elif(operator == '<'):

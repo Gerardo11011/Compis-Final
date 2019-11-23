@@ -120,12 +120,7 @@ def insertIdToFunc(id, type_data, id_funcion, direccion, param=None, dimensionda
 # Funcion que actualiza el valor de una variable
 def updateIdInFunc(id, id_funcion, valor):
     if validate(valor, id, id_funcion):
-        temp = str(type(valor))
-        if temp == "<class 'str'>":
-            valor = valor.replace('"', '')
-            simbolos[id_funcion].value[id].value = valor
-        else:
-            simbolos[id_funcion].value[id].value = valor
+        simbolos[id_funcion].value[id].value = valor
 
 
 # Funcion que actualiza el valor de una variable
@@ -158,7 +153,7 @@ def show():
         print("ID FUNCION:", keys, " TYPE DATA:", simbolos[keys].type_data)
         for id in simbolos[keys].value:
             print("id:", id)
-            print("valor:", simbolos[keys].value[id].value, " type data:", simbolos[keys].value[id].type_data, " MEMORIA:", simbolos[keys].value[id].direccion, "TAMA VECT", simbolos[keys].value[id].dimensionda)
+            print("valor:", simbolos[keys].value[id].value, " type data:", simbolos[keys].value[id].type_data, " MEMORIA:", simbolos[keys].value[id].direccion, "TAMA VECT", simbolos[keys].value[id].dimensionada)
         print("")
 
 

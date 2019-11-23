@@ -10,6 +10,7 @@ from lex import tokens
 # import vars_table as master
 import tabla_master as master
 import quadruples as quad
+import pprint
 import acciones as accion
 
 
@@ -278,15 +279,11 @@ def p_vars1(p):
         elif master.esMain:
             dir = memo.getDirecVectorMain(master.miTipo, varVector[p[1]])
             master.insertIdToFunc(p[1], master.miTipo, "main", dir, None, varVector[p[1]])
-            for i in range(varVector[p[1]]):
-                memo.insertLocalInMemory(master.miTipo, dir + i)
-                memo.inicVectorInMemoryExe(dir + i, master.miTipo)
+            memo.copyVectorToExe(dir, varVector[p[1]], master.miTipo)
         elif master.esGlobal:
             dir = memo.getDirecVecorGlobal(master.miTipo, varVector[p[1]])
             master.insertIdToFunc(p[1], master.miTipo, "global", dir, None, varVector[p[1]])
-            for i in range(varVector[p[1]]):
-                memo.insertLocalInMemory(master.miTipo, dir + i)
-                memo.inicVectorInMemoryExe(dir + i, master.miTipo)
+            memo.copyVectorToExe(dir, varVector[p[1]], master.miTipo)
         master.esVector = False
         varVector.pop(p[1], None)
 
@@ -297,13 +294,11 @@ def p_tamaVector(p):
     "tamaVector :"
     global varVector
     varVector[master.esVector] = p[-1]
-    master.tamaVec = p[-1]
 
 
 def p_variableDim(p):
     "variableDim :"
     master.esVector = p[-2]
-
 
 
 def p_tipo(p):
@@ -324,8 +319,8 @@ def p_bloque(p):
            | lectura
            | escritura
            | loop
-           | funcion
            | modulo3
+           | funcion
     '''
 
 
@@ -484,6 +479,7 @@ def p_var_cte(p):
             | CTE_S push_cte
             | TRUE push_cte
             | FALSE push_cte
+            | funcion
     '''
     master.returnValor = p[1]
     if len(p) == 2:
@@ -545,7 +541,7 @@ def p_lectura(p):
 
 def p_escritura(p):
     '''
-    escritura : OUTPUT push_poper LPAREN exp RPAREN pop_io SEMICOLON
+    escritura : OUTPUT push_poper LPAREN logico RPAREN pop_io SEMICOLON
     '''
 
 
@@ -563,7 +559,7 @@ def p_pop_io(p):
 
 def p_array(p):
     '''
-    array : LCORCH array1 RCORCH
+    array : ID LCORCH array1 RCORCH
     '''
 
 
@@ -599,8 +595,6 @@ def p_funcion(p):
     '''
     funcion : ID getParamId LPAREN funcionDos funcion1 RPAREN paramFalse funcionSeis SEMICOLON
     '''
-    # Condiciones que verifican si la recursividad cumple con los requisitos y desde donde es lllamada la funcion
-    "funcion : ID getParamId LPAREN funcionDos funcion1 RPAREN paramFalse funcionSeis SEMICOLON"
     # Condiciones que verifican si la recursividad cumple con los requisitos y desde donde es llamada la funcion
     if master.contadorDatosPasados < master.simbolos[p[2]].value["PARAMCANTI"].value and master.esFuncion:
         print("Faltan parametros en la funcion", master.miParamFunc, "En el ", master.miIdFunciones)
@@ -702,15 +696,16 @@ parser = yacc.yacc()
 result = parser.parse(entrada)
 # print(result)
 #
+print("")
+print("CUADRUPLOS")
+print("")
+quad.show()
 # print("")
-# print("CUADRUPLOS")
 # print("")
-# quad.show()
-# print("")
-# print("")
-# print("VARS TABLE")
-# print("")
-# master.show()
+print("VARS TABLE")
+print("")
+master.show()
+
 # print("")
 # print("MEMORIA")
 # print("")

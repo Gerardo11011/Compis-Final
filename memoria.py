@@ -125,15 +125,20 @@ def inicInMemory(id, Tipo, id_funcion, direccion=None):
         memoria_local.booleanos[direccion] = False
 
 
-def inicVectorInMemoryExe(direccion, Tipo):
-    if Tipo == 'int':
-        memoria_local.integers[direccion] = 0
-    elif Tipo == 'float':
-        memoria_local.float[direccion] = 0.0
-    elif Tipo == 'string':
-        memoria_local.string[direccion] = ""
-    elif Tipo == 'bool':
-        memoria_local.booleanos[direccion] = False
+def copyVectorToExe(direccion, dimesion, tipo):
+    print("DIMENSION", dimesion)
+    if tipo == "int":
+        for i in range(dimesion):
+            memoria_local.integers[direccion + i] = 0
+    if tipo == "float":
+        for i in range(dimesion):
+            memoria_local.float[direccion + i] = 0.0
+    if tipo == "string":
+        for i in range(dimesion):
+            memoria_local.string[direccion + i] = ""
+    if tipo == "bool":
+        for i in range(dimesion):
+            memoria_local.booleanos[direccion + i] = False
 
 
 def getVirtualTemp(tipo):

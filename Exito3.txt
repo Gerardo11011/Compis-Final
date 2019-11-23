@@ -2,17 +2,14 @@ begin
 
 func void prueba(){
   int a, b;
+  int h, i,vecto[4], j, simona[2], melapela, semental;
   a = 0;
   b = 4;
   b = a + b * b;
-  return b;
 }
 
 main {
-  int h, i,vecto[4], j, simona[2], melapela, semental;
-  float pewq, pruakd[10], jdsa, oehuvsd[9];
-  string hector, sadenss[6], owsads[5],dasd;
-  bool nose[12], esdnf[21];
-  h = 0;
+  int vecto[4];
+  prueba();
   }
 end

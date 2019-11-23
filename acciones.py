@@ -51,6 +51,7 @@ def era(quadr, i):
         esPrimera = True
     for id in master.simbolos[quadr.result].value:
         if id != "PARAMCANTI" and id != 'Cuadruplos':
+            dimension = master.simbolos[quadr.result].value[id].dimensionada
             tipo = master.simbolos[quadr.result].value[id].type_data
             direccion = master.simbolos[quadr.result].value[id].direccion
             if master.simbolos[quadr.result].value[id].param:
@@ -59,9 +60,13 @@ def era(quadr, i):
             if id == 'return':
                 dirReturn = direccion
             if not master.simbolos[quadr.result].value[id].param:
-                valor = master.simbolos[quadr.result].value[id].value
-                memo.insertLocalInMemory(tipo, direccion)
-                memo.updateLocalInMemory(valor, direccion, tipo)
+                if dimension > 0:
+                    memo.copyVectorToExe(direccion, dimension, tipo)
+                else:
+                    valor = master.simbolos[quadr.result].value[id].value
+                    memo.insertLocalInMemory(tipo, direccion)
+                    memo.updateLocalInMemory(valor, direccion, tipo)
+
     return i + 1
 
 
@@ -114,6 +119,10 @@ def miReturn(quadr, i):
 def endproc(quadr, i):
     global funcNo
     id_funcion = quadr.result
+    print("")
+    print("MEMORIA")
+    print("")
+    memo.show()
     funcNo.remove(id_funcion)
     if funcNo.count(id_funcion) <= 0:
         for id in master.simbolos[id_funcion].value:
