@@ -101,6 +101,7 @@ def miReturn(quadr, i):
     funcNo.remove(miFunc)
     if funcNo.count(miFunc) <= 0:
         for id in master.simbolos[miFunc].value:
+            dimension = master.simbolos[quadr.result].value[id].dimensionada
             if id != "PARAMCANTI" and id != "Cuadruplos":
                 direccion = master.simbolos[miFunc].value[id].direccion
                 tipo = memo.getTipoViaDireccion(direccion)
@@ -119,24 +120,24 @@ def miReturn(quadr, i):
 def endproc(quadr, i):
     global funcNo
     id_funcion = quadr.result
-    print("")
-    print("MEMORIA")
-    print("")
-    memo.show()
     funcNo.remove(id_funcion)
     if funcNo.count(id_funcion) <= 0:
         for id in master.simbolos[id_funcion].value:
             if id != "PARAMCANTI" and id != "Cuadruplos":
+                dimension = master.simbolos[quadr.result].value[id].dimensionada
                 direccion = master.simbolos[id_funcion].value[id].direccion
                 tipo = memo.getTipoViaDireccion(direccion)
-                if tipo == "int":
-                    memo.memoria_local.integers.pop(direccion)
-                if tipo == "float":
-                    memo.memoria_local.float.pop(direccion)
-                if tipo == "string":
-                    memo.memoria_local.string.pop(direccion)
-                if tipo == "bool":
-                    memo.memoria_local.booleanos.pop(direccion)
+                if dimension > 0:
+                    memo.deleteVectoInExe(direccion, dimension, tipo)
+                else:
+                    if tipo == "int":
+                        memo.memoria_local.integers.pop(direccion)
+                    if tipo == "float":
+                        memo.memoria_local.float.pop(direccion)
+                    if tipo == "string":
+                        memo.memoria_local.string.pop(direccion)
+                    if tipo == "bool":
+                        memo.memoria_local.booleanos.pop(direccion)
         return primerQuadNo + 1
     return quadNo + 1
 

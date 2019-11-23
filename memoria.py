@@ -539,3 +539,18 @@ def insertReturn(valor):
 def getReturn():
     global memoReturn
     memoria_local.booleanos[memoReturn]
+
+
+def deleteVectoInExe(direccion, salto, tipo):
+    if tipo == "int":
+        for i in range(salto):
+            memoria_local.integers.pop(direccion + i)
+    if tipo == "float":
+        for i in range(salto):
+            memoria_local.float.pop(direccion + i)
+    if tipo == "string":
+        for i in range(salto):
+            memoria_local.string.pop(direccion + i)
+    if tipo == "bool":
+        for i in range(salto):
+            memoria_local.booleanos.pop(direccion + i)
