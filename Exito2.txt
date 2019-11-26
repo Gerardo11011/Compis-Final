@@ -17,10 +17,10 @@ func void factorial (int num, int fact){
 main{
   int fact,num;
   fact = 1;
- output("Ingresa un numero");
- input(num);
- output(fact);
- factorial(num,fact);
+  output("Ingresa un numero");
+  input(num);
+  output(fact);
+  factorial(num,fact);
 
 }
 end

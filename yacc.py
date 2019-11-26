@@ -14,6 +14,9 @@ import pprint
 import acciones as accion
 
 
+idVector = None
+
+
 # Leer archivo de prueba.
 prueba = open(archivo, "r")
 entrada = prueba.read()
@@ -89,12 +92,6 @@ def p_modulo(p):
            | FUNC VOID tipoVoid ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY varsFunc insertarParam bloqFunc RKEY endproc
     '''
     master.contadorParam = 0
-    # memo.reiniciarDireccionesFunc()
-    # memo.limpiarDireUsadas()
-    # print(memo.memoIntUsada, memo.getValor(memo.memoIntUsada))
-    # print(memo.memoFloatUsada, memo.getValor(memo.memoFloatUsada))
-    # print(memo.memoStringUsada, memo.getValor(memo.memoStringUsada))
-    # print(memo.memoBoolUsada), memo.getValor(memo.memoBoolUsada)
 
 
 def p_tipoVoid(p):
@@ -170,7 +167,6 @@ def p_modulo1Aux(p):
                | STRING ID modulo1Repe
                | BOOL ID modulo1Repe
     '''
-    # memo.memory_dir = memo.insertLocal(p[1])
     temp = memo.getVirtualDicLocal(p[1])
     master.insertIdToFunc(p[2], p[1], master.miIdFunciones, temp, True)
     if p[1] == 'int':
@@ -254,7 +250,6 @@ def p_vars1(p):
           | ID LCORCH variableDim CTE_I tamaVector RCORCH COMMA vars1
     '''
     global varVector
-    i = 0
     if p[1] not in varVector.keys():
         if master.esFuncion:
             # memo.memory_dir = memo.insertLocal(master.miTipo)
@@ -286,8 +281,6 @@ def p_vars1(p):
             memo.copyVectorToExe(dir, varVector[p[1]], master.miTipo)
         master.esVector = False
         varVector.pop(p[1], None)
-
-
 
 
 def p_tamaVector(p):
@@ -329,29 +322,43 @@ def p_asignacion(p):
     asignacion : ID push_id EQUAL push_poper logico pop_assign SEMICOLON
                | ID push_id EQUAL push_poper array pop_assign SEMICOLON
                | ID push_id EQUAL push_poper funcion pop_assignFunc
-               | ID push_id LCORCH exp RCORCH EQUAL push_poper expresion pop_assign SEMICOLON
+               | array EQUAL push_poper logico pop_assign SEMICOLON
+               | array EQUAL push_poper array pop_assign SEMICOLON
+               | array EQUAL push_poper funcion pop_assignFunc
     '''
 
 
 def p_pop_assign(p):
     "pop_assign :"
     master.miValor = quad.popAssign()
-    # print(master.miValor)
-    if master.isVarGlobal(p[-5]):
-        master.updateIdInFunc(p[-5], "global", master.miValor)
-        dir = master.getDireccion(p[-5], "global")
-        type = master.getType(p[-5], "global")
-        memo.updateLocalInMemory(master.miValor, dir, type)
-    elif master.esFuncion:
-        master.updateIdInFunc(p[-5], master.miIdFunciones, master.miValor)
-        # dir = master.getDireccion(p[-5], master.miIdFunciones)
-        type = master.getType(p[-5], master.miIdFunciones)
-        # memo.updateLocal(master.miValor, dir, type)
-    elif master.esMain:
-        master.updateIdInFunc(p[-5], "main", master.miValor)
-        dir = master.getDireccion(p[-5], "main")
-        type = master.getType(p[-5], "main")
-        memo.updateLocalInMemory(master.miValor, dir, type)
+    if p[-4] is None:
+        if master.isVarGlobal(p[-5]):
+            master.updateIdInFunc(p[-5], "global", master.miValor)
+            dir = master.getDireccion(p[-5], "global")
+            type = master.getType(p[-5], "global")
+            #memo.updateLocalInMemory(master.miValor, dir, type)
+        elif master.esFuncion:
+            master.updateIdInFunc(p[-5], master.miIdFunciones, master.miValor)
+            type = master.getType(p[-5], master.miIdFunciones)
+        elif master.esMain:
+            master.updateIdInFunc(p[-5], "main", master.miValor)
+            dir = master.getDireccion(p[-5], "main")
+            type = master.getType(p[-5], "main")
+            #memo.updateLocalInMemory(master.miValor, dir, type)
+    else:
+        if master.isVarGlobal(p[-4]):
+            master.updateIdInFunc(p[-4], "global", master.miValor)
+            dir = master.getDireccion(p[-4], "global")
+            type = master.getType(p[-4], "global")
+            #memo.updateLocalInMemory(master.miValor, dir, type)
+        elif master.esFuncion:
+            master.updateIdInFunc(p[-4], master.miIdFunciones, master.miValor)
+            type = master.getType(p[-4], master.miIdFunciones)
+        elif master.esMain:
+            master.updateIdInFunc(p[-4], "main", master.miValor)
+            dir = master.getDireccion(p[-4], "main")
+            type = master.getType(p[-4], "main")
+            #memo.updateLocalInMemory(master.miValor, dir, type)
 
 
 def p_pop_assignFunc(p):
@@ -465,8 +472,6 @@ def p_pop_poper(p):
 def p_factor(p):
     '''
     factor : LPAREN push_poper logico RPAREN pop_poper
-           | PLUS var_cte
-           | MINUS var_cte
            | var_cte
     '''
 
@@ -479,7 +484,7 @@ def p_var_cte(p):
             | CTE_S push_cte
             | TRUE push_cte
             | FALSE push_cte
-            | funcion
+            | array
     '''
     master.returnValor = p[1]
     if len(p) == 2:
@@ -503,12 +508,9 @@ def p_push_cte(p):
     if not memo.verificarValorCte(p[-1]):
         dir = memo.getVirtualCte(tipo)
         memo.updateCteInMemory(p[-1], dir, tipo)
-        # memo.guardarDireUsada(p[-1], dir)
-    # memo.memory_dir = memo.insertLocalTemp(temp)
-    # memo.updateLoc1al(p[-1], memo.memory_dir, temp)
     direccion = memo.getDireCte(p[-1])
+    print(direccion)
     quad.pushCte(p[-1], direccion, tipo)
-    # quad.pushCte(temp)
 
 
 def p_condicion(p):
@@ -559,15 +561,50 @@ def p_pop_io(p):
 
 def p_array(p):
     '''
-    array : ID LCORCH array1 RCORCH
+    array : ID LCORCH arrayDos array1 RCORCH arrayCinco
     '''
+    p[0] = p[1]
+
+
+def p_arrayDos(p):
+    "arrayDos :"
+    global idVector
+    if master.esFuncion:
+        quad.arregloDos(master.miIdFunciones, p[-2])
+    elif master.esMain:
+        quad.arregloDos('main', p[-2])
+    else:
+        quad.arregloDos('global', p[-2])
+    idVector = p[-2]
 
 
 def p_array1(p):
     '''
-    array1 : exp
-           | exp COMMA array1
+    array1 : exp arrayTres
+           | exp arrayTres COMMA array1
     '''
+
+
+def p_arrayTres(p):
+    "arrayTres :"
+    global idVector
+    if master.esFuncion:
+        tam = master.simbolos[master.miIdFunciones].value[idVector].dimensionda
+    elif master.esMain:
+        tam = master.simbolos['main'].value[idVector].dimensionda
+    else:
+        tam = master.simbolos['global'].value[idVector].dimensionda
+    quad.arregloTres(tam)
+
+
+def p_arrayCinco(p):
+    "arrayCinco :"
+    if master.esMain:
+        base = master.simbolos['main'].value[p[-5]].direccion
+        quad.arregloCinco(True, base)
+    elif master.esFuncion:
+        base = master.simbolos[master.miIdFunciones].value[p[-5]].direccion
+        quad.arregloCinco(False, base)
 
 
 def p_loop(p):
@@ -602,7 +639,6 @@ def p_funcion(p):
     if master.contadorDatosPasados < master.simbolos[p[2]].value["PARAMCANTI"].value and master.esMain:
         print("Faltan parametros en la funcion", master.miParamFunc, "en el MAIN")
         sys.exit()
-    # memo.insertarFuncInMemoryExe(p[1])
     master.contadorDatosPasados = 0
     p[0] = p[1]
 
@@ -616,7 +652,6 @@ def p_getParamId(p):
     if master.miParamFunc in master.simbolos.keys():
         master.esParam = True
         master.arrParam = master.getidParam(p[-1])
-        # print(len(master.arrParam))
     else:
         print("ERROR: Función no declarada.")
         sys.exit()
@@ -644,7 +679,6 @@ def p_funcionTres(p):
         # IF para checar si la llamada a funcion es dentro del main o de una funcion
         if master.esMain:
             master.contadorDatosPasados += 1
-            # print("ENTRA", len(master.arrParam), p[1])
             if master.contadorDatosPasados > master.simbolos[master.miParamFunc].value["PARAMCANTI"].value:
                 print("Sobran parametros en la funcion", master.miParamFunc, ".")
                 sys.exit()
@@ -657,7 +691,6 @@ def p_funcionTres(p):
                 sys.exit()
             master.updateIdInFunc(master.arrParam[-1], master.miIdFunciones, valor)
             del(master.arrParam[-1])
-
 
 
 def p_funcionCuatro(p):
@@ -703,9 +736,8 @@ quad.show()
 # print("")
 # print("")
 print("VARS TABLE")
-print("")
+# print("")
 master.show()
-
 # print("")
 # print("MEMORIA")
 # print("")

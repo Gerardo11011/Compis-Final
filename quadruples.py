@@ -143,7 +143,7 @@ def popTerm(main):
                     AVAIL.append(result)
                     PTypes.append(result_type)
                 else:
-                    print("ERROR: Variable sin valor asignado.")
+                    print("ERROR: Variable sin valor asignado")
                     sys.exit()
             else:
                 print("ERROR: Type mismatch.")
@@ -399,6 +399,43 @@ def assignFunc(id):
             else:
                 print('ERROR: Type mismatch.')
                 sys.exit()
+
+
+def pushFunc(funcion):
+    PilaO.append(150000)
+    PTypes.append(simbolos[funcion].type_data)
+    AVAIL.append(0)
+
+
+# Funciones para producir representación intermedia para Arreglos
+def arregloDos(funcion, id):
+    if simbolos[funcion].value[id].dimensionda > 0:
+        pushPoper('[')
+
+
+def arregloTres(tam):
+    quadr = quadruple(len(Quad), 'ver', PilaO[-1], 0, tam-1)
+    Quad.append(quadr)
+
+
+def arregloCinco(main, base):
+    aux1 = PilaO.pop()
+    if main:
+        t = memo.getVirtualMainTemp('int')
+    else:
+        t = memo.getVirtualTemp('int')
+    quadr = quadruple(len(Quad), '+', aux1, 0, t)
+    Quad.append(quadr)
+    if main:
+        dir = memo.getVirtualMainTemp('int')
+        memo.updateMainTempInMemory(aux1, dir, 'int')
+    else:
+        dir = memo.getVirtualTemp('int')
+        memo.updateTempInMemory(aux1, dir, 'int')
+    quadr = quadruple(len(Quad), '+', t, base, dir)
+    Quad.append(quadr)
+    PilaO.append('('+str(dir)+')')
+    POper.pop()
 
 
 def show():

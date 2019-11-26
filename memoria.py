@@ -1,3 +1,6 @@
+# Oscar Guevara     A01825177
+# Gerardo Ponce     A00818934
+
 import tabla_master as master
 import estructuras
 from pprint import pprint
@@ -51,6 +54,7 @@ tempMainBool = 88000
 # Direccion del return
 memoReturn = 150000
 
+
 def getDirecVectorMain(tipo, salto):
     global memoMainInt
     global memoMainFloat
@@ -69,6 +73,7 @@ def getDirecVectorMain(tipo, salto):
         temp = memoMainBool
         memoMainBool += salto
     return temp
+
 
 def getDirecVectorFunc(miTipo, salto):
     global memoFuncInt
@@ -212,7 +217,6 @@ def limpiarDireUsadas():
     global memoBoolUsada
     for i in range(len(memoIntUsada)):
         memoria_local.integers.pop(memoIntUsada[i], None)
-        # del memoria_local.integers[memoIntUsada[i]]
     for i in range(len(memoFloatUsada)):
         memoria_local.float.pop(memoFloatUsada[i], None)
     for i in range(len(memoStringUsada)):
@@ -418,7 +422,6 @@ def updateLocalInMemory(valor, direccion, tipo=None):
 
 # Funcion que actualiza el valor con una CTE de una direccion de memoria CTE
 def updateCteInMemory(valor, direccion, tipo):
-    # print("valor:", valor, "direccion:", direccion, "tipo:", tipo)
     if tipo == "int":
         memoria_local.integers[direccion] = valor
     if tipo == "float":
@@ -444,13 +447,6 @@ def guardarDireUsada(cte, direccion):
         memoStringUsada.append(direccion)
     if tipo == "bool":
         memoBoolUsada.append(direccion)
-
-
-
-'''memoCteInt = 20000
-memoCteFloat = 21000
-memoCteString = 22000
-memoCteBool = 23000'''
 
 
 # Funcion que verifica si el CTE ya se encuentra en la memoria
@@ -541,6 +537,7 @@ def getReturn():
     memoria_local.booleanos[memoReturn]
 
 
+# Funcion que elimina todas las direcciones de un vector en memoria de ejecucion
 def deleteVectoInExe(direccion, salto, tipo):
     if tipo == "int":
         for i in range(salto):
