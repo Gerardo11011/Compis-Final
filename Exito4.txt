@@ -8,21 +8,41 @@ func void simona(){
 }
 
 main {
-  float a, b, c, d;
+  int a, b, c, d;
   int hola[6];
   float z;
   string jo, pi;
-  a = 4.0;
-  b = 5.0;
-  c = 2.0;
-  d = 1;
-  d = (a + b * (3 / 2) + 9 * 1) / ((c + d) - a * (b * b)) ;
-  z = (9 * 100 + 5 - 2 / 1000) - 1 / (1909 + 500 - 12 / 2) ;
-  jo = "Oscar el" ;
-  pi = "seneval Guevara";
-  output(jo + pi);
+  a = 0;
+  hola[0] = 0;
+  hola[1] = 10;
+  hola[2] = 20;
+  hola[3] = 30;
+  hola[4] = 40;
+  hola[5] = 50;
 
-  output(-1 - (-1) * (+1));
+  loop (a < 10){
+  if (a == hola[1]){
+    output(a);
+    output("ntro");
+  }
+    if (a == hola[0]){
+      output(a);
+    }
+
+    if (a == hola[2]){
+      output(a);
+    }
+    if (a == hola[3]){
+      output(a);
+    }
+    if (a == hola[4]){
+      output(a);
+    }
+    if (a == hola[5]){
+      output(a);
+    }
+    a = a + 1;
+  }
 }
 
 end

@@ -131,7 +131,6 @@ def inicInMemory(id, Tipo, id_funcion, direccion=None):
 
 
 def copyVectorToExe(direccion, dimesion, tipo):
-    print("DIMENSION", dimesion)
     if tipo == "int":
         for i in range(dimesion):
             memoria_local.integers[direccion + i] = 0
