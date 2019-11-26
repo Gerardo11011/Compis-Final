@@ -1,7 +1,15 @@
 begin
 
+func void simona(){
+  int prueba[10];
+  float jsdj[29];
+  int hsa;
+  hsa = 763;
+}
+
 main {
   float a, b, c, d;
+  int hola[6];
   float z;
   string jo, pi;
   a = 4.0;
@@ -9,11 +17,12 @@ main {
   c = 2.0;
   d = 1;
   d = (a + b * (3 / 2) + 9 * 1) / ((c + d) - a * (b * b)) ;
-  z = (9 * 100 + 5 -2 / 1000) - 1 / (1909 + 500 - 12 / 2) ;
+  z = (9 * 100 + 5 - 2 / 1000) - 1 / (1909 + 500 - 12 / 2) ;
   jo = "Oscar el" ;
   pi = "seneval Guevara";
   output(jo + pi);
 
+  output(-1 - (-1) * (+1));
 }
 
 end

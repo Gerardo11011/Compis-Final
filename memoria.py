@@ -1,3 +1,6 @@
+# Oscar Guevara     A01825177
+# Gerardo Ponce     A00818934
+
 import tabla_master as master
 import estructuras
 from pprint import pprint
@@ -127,15 +130,20 @@ def inicInMemory(id, Tipo, id_funcion, direccion=None):
         memoria_local.booleanos[direccion] = False
 
 
-def inicVectorInMemoryExe(direccion, Tipo):
-    if Tipo == 'int':
-        memoria_local.integers[direccion] = 0
-    elif Tipo == 'float':
-        memoria_local.float[direccion] = 0.0
-    elif Tipo == 'string':
-        memoria_local.string[direccion] = ""
-    elif Tipo == 'bool':
-        memoria_local.booleanos[direccion] = False
+def copyVectorToExe(direccion, dimesion, tipo):
+    print("DIMENSION", dimesion)
+    if tipo == "int":
+        for i in range(dimesion):
+            memoria_local.integers[direccion + i] = 0
+    if tipo == "float":
+        for i in range(dimesion):
+            memoria_local.float[direccion + i] = 0.0
+    if tipo == "string":
+        for i in range(dimesion):
+            memoria_local.string[direccion + i] = ""
+    if tipo == "bool":
+        for i in range(dimesion):
+            memoria_local.booleanos[direccion + i] = False
 
 
 def getVirtualTemp(tipo):
@@ -441,13 +449,6 @@ def guardarDireUsada(cte, direccion):
         memoBoolUsada.append(direccion)
 
 
-
-'''memoCteInt = 20000
-memoCteFloat = 21000
-memoCteString = 22000
-memoCteBool = 23000'''
-
-
 # Funcion que verifica si el CTE ya se encuentra en la memoria
 def verificarValorCte(cte):
     tipo = getTipo(cte)
@@ -483,6 +484,7 @@ def getDireCte(cte):
             if cte == value:
                 return key
     return "DIRECCION INVALIDA"
+
 # ###############FUNCIONES ANTIGUAS################
 
 
@@ -533,3 +535,19 @@ def insertReturn(valor):
 def getReturn():
     global memoReturn
     memoria_local.booleanos[memoReturn]
+
+
+# Funcion que elimina todas las direcciones de un vector en memoria de ejecucion
+def deleteVectoInExe(direccion, salto, tipo):
+    if tipo == "int":
+        for i in range(salto):
+            memoria_local.integers.pop(direccion + i)
+    if tipo == "float":
+        for i in range(salto):
+            memoria_local.float.pop(direccion + i)
+    if tipo == "string":
+        for i in range(salto):
+            memoria_local.string.pop(direccion + i)
+    if tipo == "bool":
+        for i in range(salto):
+            memoria_local.booleanos.pop(direccion + i)

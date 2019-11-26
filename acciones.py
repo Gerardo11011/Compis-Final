@@ -5,6 +5,7 @@ from quadruples import Quad
 from ast import literal_eval
 import memoria as memo
 import tabla_master as master
+import sys
 
 dir_param = []
 tipo_param = []
@@ -14,6 +15,8 @@ funcNo = []
 esPrimera = False
 primerQuadNo = None
 miFunc = None
+esArreglo = False
+contVer = 0
 
 
 # Función para obtener el tipo de un valor ingresado por el usuario.
@@ -25,13 +28,26 @@ def get_type(input_data):
         return str
 
 
+# Función para saber si un operando guarda una dirección.
+def tieneDireccion(operand):
+    operand = str(operand)
+    if operand[0] == '(':
+        newOp = operand[1:len(operand)-1]
+        newOp = int(newOp)
+        dir = memo.getValor(newOp, None)
+        return dir
+    else:
+        return int(operand)
+
+
 # Funciones de ejecución.
 def goto(quadr, i):
     return quadr.result
 
 
 def gotof(quadr, i):
-    value = memo.getValor(quadr.left_operand, None)
+    left_op = tieneDireccion(quadr.left_operand)
+    value = memo.getValor(left_op, None)
     if value == 'false' or value is False:
         return quadr.result
     else:
@@ -51,6 +67,7 @@ def era(quadr, i):
         esPrimera = True
     for id in master.simbolos[quadr.result].value:
         if id != "PARAMCANTI" and id != 'Cuadruplos':
+            dimension = master.simbolos[quadr.result].value[id].dimensionada
             tipo = master.simbolos[quadr.result].value[id].type_data
             direccion = master.simbolos[quadr.result].value[id].direccion
             if master.simbolos[quadr.result].value[id].param:
@@ -59,9 +76,13 @@ def era(quadr, i):
             if id == 'return':
                 dirReturn = direccion
             if not master.simbolos[quadr.result].value[id].param:
-                valor = master.simbolos[quadr.result].value[id].value
-                memo.insertLocalInMemory(tipo, direccion)
-                memo.updateLocalInMemory(valor, direccion, tipo)
+                if dimension > 0:
+                    memo.copyVectorToExe(direccion, dimension, tipo)
+                else:
+                    valor = master.simbolos[quadr.result].value[id].value
+                    memo.insertLocalInMemory(tipo, direccion)
+                    memo.updateLocalInMemory(valor, direccion, tipo)
+
     return i + 1
 
 
@@ -91,7 +112,8 @@ def gosub(quadr, i):
 def miReturn(quadr, i):
     global funcNo
     global miFunc
-    valor = memo.getValor(quadr.result, None)
+    regresa = tieneDireccion(quadr.left_operand)
+    valor = memo.getValor(regresa, None)
     memo.insertReturn(valor)
     funcNo.remove(miFunc)
     if funcNo.count(miFunc) <= 0:
@@ -113,128 +135,182 @@ def miReturn(quadr, i):
 
 def endproc(quadr, i):
     global funcNo
+    memo.show()
     id_funcion = quadr.result
     funcNo.remove(id_funcion)
     if funcNo.count(id_funcion) <= 0:
         for id in master.simbolos[id_funcion].value:
             if id != "PARAMCANTI" and id != "Cuadruplos":
+                dimension = master.simbolos[quadr.result].value[id].dimensionada
                 direccion = master.simbolos[id_funcion].value[id].direccion
                 tipo = memo.getTipoViaDireccion(direccion)
-                if tipo == "int":
-                    memo.memoria_local.integers.pop(direccion)
-                if tipo == "float":
-                    memo.memoria_local.float.pop(direccion)
-                if tipo == "string":
-                    memo.memoria_local.string.pop(direccion)
-                if tipo == "bool":
-                    memo.memoria_local.booleanos.pop(direccion)
+                if dimension > 0:
+                    memo.deleteVectoInExe(direccion, dimension, tipo)
+                else:
+                    if tipo == "int":
+                        memo.memoria_local.integers.pop(direccion)
+                    if tipo == "float":
+                        memo.memoria_local.float.pop(direccion)
+                    if tipo == "string":
+                        memo.memoria_local.string.pop(direccion)
+                    if tipo == "bool":
+                        memo.memoria_local.booleanos.pop(direccion)
         return primerQuadNo + 1
     return quadNo + 1
 
 
 def plus(quadr, i):
-    res = memo.getValor(quadr.left_operand, None) + memo.getValor(quadr.right_operand, None)
+    global esArreglo
+    global contVer
+    left_op = tieneDireccion(quadr.left_operand)
+    right_op = tieneDireccion(quadr.right_operand)
+    if esArreglo:
+        contVer += 1
+        res = memo.getValor(quadr.left_operand, None) + quadr.right_operand
+    else:
+        res = memo.getValor(left_op, None) + memo.getValor(right_op, None)
     memo.updateLocalInMemory(res, quadr.result)
+    if contVer >= 2:
+        esArreglo = False
     return i + 1
 
 
 def minus(quadr, i):
-    res = memo.getValor(quadr.left_operand, None) - memo.getValor(quadr.right_operand, None)
+    left_op = tieneDireccion(quadr.left_operand)
+    right_op = tieneDireccion(quadr.right_operand)
+    res = memo.getValor(left_op, None) - memo.getValor(right_op, None)
     memo.updateLocalInMemory(res, quadr.result)
     return i + 1
 
 
 def mult(quadr, i):
-    res = memo.getValor(quadr.left_operand, None) * memo.getValor(quadr.right_operand, None)
-    # print(memo.getValor(quadr.left_operand, None))
+    left_op = tieneDireccion(quadr.left_operand)
+    right_op = tieneDireccion(quadr.right_operand)
+    res = memo.getValor(left_op, None) * memo.getValor(right_op, None)
     memo.updateLocalInMemory(res, quadr.result)
     return i + 1
 
 
 def div(quadr, i):
-    res = memo.getValor(quadr.left_operand, None) / memo.getValor(quadr.right_operand, None)
+    left_op = tieneDireccion(quadr.left_operand)
+    right_op = tieneDireccion(quadr.right_operand)
+    res = memo.getValor(left_op, None) / memo.getValor(right_op, None)
     memo.updateLocalInMemory(res, quadr.result)
     return i + 1
 
 
 def assign(quadr, i):
-    res = memo.getValor(quadr.left_operand, None)
-    memo.updateLocalInMemory(res, quadr.result)
+    left_op = tieneDireccion(quadr.left_operand)
+    resDir = tieneDireccion(quadr.result)
+    res = memo.getValor(left_op, None)
+    memo.updateLocalInMemory(res, resDir)
     return i + 1
 
 
 def gt(quadr, i):
-    res = memo.getValor(quadr.left_operand, None) > memo.getValor(quadr.right_operand, None)
+    left_op = tieneDireccion(quadr.left_operand)
+    right_op = tieneDireccion(quadr.right_operand)
+    res = memo.getValor(left_op, None) > memo.getValor(right_op, None)
     memo.updateLocalInMemory(res, quadr.result)
     return i + 1
 
 
 def gte(quadr, i):
-    res = memo.getValor(quadr.left_operand, None) >= memo.getValor(quadr.right_operand, None)
+    left_op = tieneDireccion(quadr.left_operand)
+    right_op = tieneDireccion(quadr.right_operand)
+    res = memo.getValor(left_op, None) >= memo.getValor(right_op, None)
     memo.updateLocalInMemory(res, quadr.result)
     return i + 1
 
 
 def lt(quadr, i):
-    res = memo.getValor(quadr.left_operand, None) < memo.getValor(quadr.right_operand, None)
+    left_op = tieneDireccion(quadr.left_operand)
+    right_op = tieneDireccion(quadr.right_operand)
+    res = memo.getValor(left_op, None) < memo.getValor(right_op, None)
     memo.updateLocalInMemory(res, quadr.result)
     return i + 1
 
 
 def lte(quadr, i):
-    res = memo.getValor(quadr.left_operand, None) <= memo.getValor(quadr.right_operand, None)
+    left_op = tieneDireccion(quadr.left_operand)
+    right_op = tieneDireccion(quadr.right_operand)
+    res = memo.getValor(left_op, None) <= memo.getValor(right_op, None)
     memo.updateLocalInMemory(res, quadr.result)
     return i + 1
 
 
 def equals(quadr, i):
-    res = memo.getValor(quadr.left_operand, None) == memo.getValor(quadr.right_operand, None)
+    left_op = tieneDireccion(quadr.left_operand)
+    right_op = tieneDireccion(quadr.right_operand)
+    res = memo.getValor(left_op, None) == memo.getValor(right_op, None)
     memo.updateLocalInMemory(res, quadr.result)
     return i + 1
 
 
 def ne(quadr, i):
-    res = memo.getValor(quadr.left_operand, None) != memo.getValor(quadr.right_operand, None)
+    left_op = tieneDireccion(quadr.left_operand)
+    right_op = tieneDireccion(quadr.right_operand)
+    res = memo.getValor(left_op, None) != memo.getValor(right_op, None)
     memo.updateLocalInMemory(res, quadr.result)
     return i + 1
 
 
 def andOp(quadr, i):
-    res = memo.getValor(quadr.left_operand, None) and memo.getValor(quadr.right_operand, None)
+    left_op = tieneDireccion(quadr.left_operand)
+    right_op = tieneDireccion(quadr.right_operand)
+    res = memo.getValor(left_op, None) and memo.getValor(right_op, None)
     memo.updateLocalInMemory(res, quadr.result)
     return i + 1
 
 
 def orOp(quadr, i):
-    res = memo.getValor(quadr.left_operand, None) or memo.getValor(quadr.right_operand, None)
+    left_op = tieneDireccion(quadr.left_operand)
+    right_op = tieneDireccion(quadr.right_operand)
+    res = memo.getValor(left_op, None) or memo.getValor(right_op, None)
     memo.updateLocalInMemory(res, quadr.result)
     return i + 1
 
 
 def miInput(quadr, i):
+    resDir = tieneDireccion(quadr.result)
     valor = input()
     tipo = str(get_type(valor))
     if tipo == "<class 'int'>":
         valor = int(valor)
-        memo.updateLocalInMemory(valor, quadr.result)
+        memo.updateLocalInMemory(valor, resDir)
     elif tipo == "<class 'float'>":
         valor = float(valor)
-        memo.updateLocalInMemory(valor, quadr.result)
+        memo.updateLocalInMemory(valor, resDir)
     elif tipo == "<class 'str'>":
         valor = str(valor)
-        memo.updateLocalInMemory(valor, quadr.result)
+        memo.updateLocalInMemory(valor, resDir)
     elif valor == 'true' or valor == 'false':
-        memo.updateLocalInMemory(valor, quadr.result, 'bool')
+        memo.updateLocalInMemory(valor, resDir, 'bool')
     return i + 1
 
 
 def miOutput(quadr, i):
-    if str(type(memo.getValor(quadr.result, None))) == "<class 'str'>":
-        valor = memo.getValor(quadr.result, None).replace('"', ' ')
+    resDir = tieneDireccion(quadr.result)
+    if str(type(memo.getValor(resDir, None))) == "<class 'str'>":
+        valor = memo.getValor(resDir, None).replace('"', ' ')
         print(valor)
     else:
-        print(memo.getValor(quadr.result, None))
+        print(memo.getValor(resDir, None))
     return i + 1
+
+
+def ver(quadr, i):
+    global esArreglo
+    global contVer
+    left_op = tieneDireccion(quadr.left_operand)
+    verifica = memo.getValor(left_op, None)
+    if verifica >= 0 and verifica <= quadr.result:
+        esArreglo = True
+        contVer = 0
+        return i + 1
+    else:
+        print("ERROR: Índice fuera de rango.")
+        sys.exit()
 
 
 # Switch para ejecutar una función dependiendo del operador del cuádruplo.
@@ -266,7 +342,9 @@ def switcher(quadr, i):
         'or': orOp,
 
         'input': miInput,
-        'output': miOutput
+        'output': miOutput,
+
+        'ver': ver
     }
     func = switch.get(quadr.operator, 'nel')
     if func != 'nel':
