@@ -1,0 +1,36 @@
+begin
+
+func void simona(){
+  int prueba[10];
+  float jsdj[29];
+
+  int hsa;
+  hsa = 763;
+}
+
+main {
+  int a, b, c, d;
+  int hola[6];
+  float z;
+  string jo, pi;
+  a = 0;
+  hola[0] = 0;
+  hola[1] = 10;
+  hola[2] = 20;
+  hola[3] = 30;
+  hola[4] = 40;
+  hola[5] = 50;
+
+  jo = "Ponce esta bien wey";
+
+  if(jo == "Ponce esta bien wey"){
+    output("Eso perro.");
+  }
+
+  loop (a < 6){
+    output(hola[a]);
+    a = a + 1;
+  }
+}
+
+end

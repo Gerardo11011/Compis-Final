@@ -293,7 +293,7 @@ def miInput(quadr, i):
 def miOutput(quadr, i):
     resDir = tieneDireccion(quadr.result)
     if str(type(memo.getValor(resDir, None))) == "<class 'str'>":
-        valor = memo.getValor(resDir, None).replace('"', ' ')
+        valor = memo.getValor(resDir, None).replace('"', '')
         print(valor)
     else:
         print(memo.getValor(resDir, None))
