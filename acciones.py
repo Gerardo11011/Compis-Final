@@ -30,7 +30,6 @@ def get_type(input_data):
 
 # Función para saber si un operando guarda una dirección.
 def tieneDireccion(operand):
-    # print(operand)
     operand = str(operand)
     if operand[0] == '(':
         newOp = operand[1:len(operand)-1]
@@ -136,7 +135,6 @@ def miReturn(quadr, i):
 
 def endproc(quadr, i):
     global funcNo
-    memo.show()
     id_funcion = quadr.result
     funcNo.remove(id_funcion)
     if funcNo.count(id_funcion) <= 0:

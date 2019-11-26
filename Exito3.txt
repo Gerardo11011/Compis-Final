@@ -26,7 +26,7 @@ main {
   h = 5;
   h = h * vecto[0];
 
-  simona[0] = 2;
+  pruakd[0] = 2.0;
 
   output(simona[0]);
   output(h);

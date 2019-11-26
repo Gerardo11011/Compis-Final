@@ -415,7 +415,7 @@ def arregloTres(tam):
     Quad.append(quadr)
 
 
-def arregloCinco(main, base):
+def arregloCinco(main, base, tipo):
     aux1 = PilaO.pop()
     if main:
         t = memo.getVirtualMainTemp('int')
@@ -432,6 +432,7 @@ def arregloCinco(main, base):
     quadr = quadruple(len(Quad), '+', t, base, dir)
     Quad.append(quadr)
     PilaO.append('('+str(dir)+')')
+    PTypes.append(tipo)
     POper.pop()
 
 

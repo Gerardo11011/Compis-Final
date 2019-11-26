@@ -504,12 +504,10 @@ def p_push_id(p):
 
 def p_push_cte(p):
     "push_cte :"
-    print(p[-1])
     tipo = memo.getTipo(p[-1])
     if not memo.verificarValorCte(p[-1]):
         dir = memo.getVirtualCte(tipo)
         memo.updateCteInMemory(p[-1], dir, tipo)
-        print(dir)
     direccion = memo.getDireCte(p[-1])
     quad.pushCte(p[-1], direccion, tipo)
 
@@ -602,10 +600,12 @@ def p_arrayCinco(p):
     "arrayCinco :"
     if master.esMain:
         base = master.simbolos['main'].value[p[-5]].direccion
-        quad.arregloCinco(True, base)
+        tipo = master.simbolos['main'].value[p[-5]].type_data
+        quad.arregloCinco(True, base, tipo)
     elif master.esFuncion:
         base = master.simbolos[master.miIdFunciones].value[p[-5]].direccion
-        quad.arregloCinco(False, base)
+        tipo = master.simbolos[master.miIdFunciones].value[p[-5]].type_data
+        quad.arregloCinco(False, base, tipo)
 
 
 def p_loop(p):
