@@ -409,7 +409,7 @@ def pushFunc(funcion):
 
 # Funciones para producir representación intermedia para Arreglos
 def arregloDos(funcion, id):
-    if simbolos[funcion].value[id].dimensionda > 0:
+    if simbolos[funcion].value[id].dimensionada > 0:
         pushPoper('[')
 
 

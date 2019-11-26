@@ -21,8 +21,8 @@ main {
   loop ( a >= 0 ){
     vecto[i] = a ;
     output(vecto[i]);
-    a = a - 1 ;
-    i = i +1;
+    a = a - 1;
+    i = i + 1;
   }
   simona[0] = vecto[1];
   h = 5;
