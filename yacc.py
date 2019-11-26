@@ -10,7 +10,6 @@ from lex import tokens
 # import vars_table as master
 import tabla_master as master
 import quadruples as quad
-import pprint
 import acciones as accion
 
 
@@ -88,8 +87,8 @@ def p_funcfalse(p):
 
 def p_modulo(p):
     '''
-    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY varsFunc insertarParam programa3 RKEY endproc
-           | FUNC VOID tipoVoid ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY varsFunc insertarParam programa3 RKEY endproc
+    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY varsFunc insertarParam bloqFunc RKEY endproc
+           | FUNC VOID tipoVoid ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY varsFunc insertarParam bloqFunc RKEY endproc
     '''
     master.contadorParam = 0
 
@@ -109,6 +108,13 @@ def p_endproc(p):
 def p_varsFunc(p):
     '''
     varsFunc : vars
+             | empty
+    '''
+
+
+def p_bloqFunc(p):
+    '''
+    bloqFunc : programa3
              | empty
     '''
 
@@ -155,11 +161,11 @@ def p_modulo1(p):
 # Modulo que declara los parametros de la funcion
 def p_modulo1Aux(p):
     '''
-    modulo1Aux : tipo ID modulo1Repe
+    modulo1Aux : INT ID modulo1Repe
+               | FLOAT ID modulo1Repe
+               | STRING ID modulo1Repe
+               | BOOL ID modulo1Repe
     '''
-    # | FLOAT ID modulo1Repe
-    # | STRING ID modulo1Repe
-    # | BOOL ID modulo1Repe
     temp = memo.getVirtualDicLocal(p[1])
     master.insertIdToFunc(p[2], p[1], master.miIdFunciones, temp, True)
     if p[1] == 'int':
@@ -280,6 +286,7 @@ def p_tamaVector(p):
     "tamaVector :"
     global varVector
     varVector[master.esVector] = p[-1]
+    master.tamaVec = p[-1]
 
 
 def p_variableDim(p):
@@ -305,8 +312,8 @@ def p_bloque(p):
            | lectura
            | escritura
            | loop
-           | modulo3
            | funcion
+           | modulo3
     '''
 
 
@@ -478,7 +485,6 @@ def p_var_cte(p):
             | TRUE push_cte
             | FALSE push_cte
             | array
-            | funcion
     '''
     master.returnValor = p[1]
     if len(p) == 2:
@@ -503,6 +509,7 @@ def p_push_cte(p):
         dir = memo.getVirtualCte(tipo)
         memo.updateCteInMemory(p[-1], dir, tipo)
     direccion = memo.getDireCte(p[-1])
+    print(direccion)
     quad.pushCte(p[-1], direccion, tipo)
 
 
@@ -536,7 +543,14 @@ def p_lectura(p):
 
 def p_escritura(p):
     '''
-    escritura : OUTPUT push_poper LPAREN logico RPAREN pop_io SEMICOLON
+    escritura : OUTPUT push_poper LPAREN exp RPAREN pop_io SEMICOLON
+    '''
+
+
+def p_expPrint(p):
+    '''
+    expPrint : exp
+             | exp COMMA expPrint
     '''
 
 
@@ -715,15 +729,15 @@ parser = yacc.yacc()
 result = parser.parse(entrada)
 # print(result)
 #
+print("")
+print("CUADRUPLOS")
+print("")
+quad.show()
 # print("")
-# print("CUADRUPLOS")
 # print("")
-# quad.show()
+print("VARS TABLE")
 # print("")
-# # print("")
-# print("VARS TABLE")
-# # print("")
-# master.show()
+master.show()
 # print("")
 # print("MEMORIA")
 # print("")

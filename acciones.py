@@ -119,7 +119,6 @@ def miReturn(quadr, i):
     funcNo.remove(miFunc)
     if funcNo.count(miFunc) <= 0:
         for id in master.simbolos[miFunc].value:
-            dimension = master.simbolos[quadr.result].value[id].dimensionada
             if id != "PARAMCANTI" and id != "Cuadruplos":
                 direccion = master.simbolos[miFunc].value[id].direccion
                 tipo = memo.getTipoViaDireccion(direccion)

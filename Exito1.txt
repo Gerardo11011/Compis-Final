@@ -103,7 +103,6 @@ main {
   h = SIMONA(a, h);
   output("ESTO ES H");
   output(h * 2);
-  output(ada == 5);
   pedro = StriPrue(hector);
   output(pedro);
   a = 1 * -1;
