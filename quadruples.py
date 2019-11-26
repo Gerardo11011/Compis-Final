@@ -143,7 +143,7 @@ def popTerm(main):
                     AVAIL.append(result)
                     PTypes.append(result_type)
                 else:
-                    print("ERROR: Variable sin valor asignado.")
+                    print("ERROR: Variable sin valor asignado")
                     sys.exit()
             else:
                 print("ERROR: Type mismatch.")

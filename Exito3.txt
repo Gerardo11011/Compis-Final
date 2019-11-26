@@ -8,14 +8,31 @@ func void prueba(){
 }
 
 main {
-  int h, i,vecto[4], j, simona[2], melapela, semental;
+  int a,h, i,vecto[4], j, simona[2], melapela, semental;
   float pewq, pruakd[10], jdsa, oehuvsd[9];
   string hector, sadenss[6], owsads[5],dasd;
   bool nose[12], esdnf[21];
 
-  h = 4 + vecto[2];
+  vecto[0] = 3;
+  a = 3;
+  i = 0;
 
+  loop ( a >= 0 ){
+    vecto[i] = a ;
+    output(vecto[i]);
+    a = a - 1 ;
+    i = i +1;
+  }
+  simona[0] = vecto[1];
+  h = 5;
+  h = h * vecto[0];
+
+  pruakd[9] = 2;
+
+  output(simona[0]);
   output(h);
-  output(vecto[1]);
+  output(vecto[0]);
+  output(pruakd[0]);
+  output(pruakd[9]);
   }
 end

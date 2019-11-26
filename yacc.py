@@ -249,17 +249,19 @@ def p_vars1(p):
           | ID LCORCH variableDim CTE_I tamaVector RCORCH COMMA vars1
     '''
     global varVector
-    i = 0
     if p[1] not in varVector.keys():
         if master.esFuncion:
+            # memo.memory_dir = memo.insertLocal(master.miTipo)
             temp = memo.getVirtualDicLocal(master.miTipo)
             master.insertIdToFunc(p[1], master.miTipo, master.miIdFunciones, temp)
         elif master.esMain:
+            # memo.memory_dir = memo.insertLocal(master.miTipo)
             dir = memo.getVirtualDicMain(master.miTipo)
             master.insertIdToFunc(p[1], master.miTipo, "main", dir)
             memo.insertLocalInMemory(master.miTipo, dir)
             memo.inicInMemory(p[1], master.miTipo, "main", dir)
         elif master.esGlobal:
+            # memo.memory_dir = memo.insertGlobal(master.miTipo)
             dir = memo.getVirtualDicGlobal(master.miTipo)
             master.insertIdToFunc(p[1], master.miTipo, "global", dir)
             memo.insertLocalInMemory(master.miTipo, dir)
@@ -271,15 +273,11 @@ def p_vars1(p):
         elif master.esMain:
             dir = memo.getDirecVectorMain(master.miTipo, varVector[p[1]])
             master.insertIdToFunc(p[1], master.miTipo, "main", dir, None, varVector[p[1]])
-            for i in range(varVector[p[1]]):
-                memo.insertLocalInMemory(master.miTipo, dir + i)
-                memo.inicVectorInMemoryExe(dir + i, master.miTipo)
+            memo.copyVectorToExe(dir, varVector[p[1]], master.miTipo)
         elif master.esGlobal:
             dir = memo.getDirecVecorGlobal(master.miTipo, varVector[p[1]])
             master.insertIdToFunc(p[1], master.miTipo, "global", dir, None, varVector[p[1]])
-            for i in range(varVector[p[1]]):
-                memo.insertLocalInMemory(master.miTipo, dir + i)
-                memo.inicVectorInMemoryExe(dir + i, master.miTipo)
+            memo.copyVectorToExe(dir, varVector[p[1]], master.miTipo)
         master.esVector = False
         varVector.pop(p[1], None)
 
@@ -324,26 +322,43 @@ def p_asignacion(p):
     asignacion : ID push_id EQUAL push_poper logico pop_assign SEMICOLON
                | ID push_id EQUAL push_poper array pop_assign SEMICOLON
                | ID push_id EQUAL push_poper funcion pop_assignFunc
-               | ID push_id LCORCH exp RCORCH EQUAL push_poper logico pop_assign SEMICOLON
+               | array EQUAL push_poper logico pop_assign SEMICOLON
+               | array EQUAL push_poper array pop_assign SEMICOLON
+               | array EQUAL push_poper funcion pop_assignFunc
     '''
 
 
 def p_pop_assign(p):
     "pop_assign :"
     master.miValor = quad.popAssign()
-    if master.isVarGlobal(p[-5]):
-        master.updateIdInFunc(p[-5], "global", master.miValor)
-        dir = master.getDireccion(p[-5], "global")
-        type = master.getType(p[-5], "global")
-        memo.updateLocalInMemory(master.miValor, dir, type)
-    elif master.esFuncion:
-        master.updateIdInFunc(p[-5], master.miIdFunciones, master.miValor)
-        type = master.getType(p[-5], master.miIdFunciones)
-    elif master.esMain:
-        master.updateIdInFunc(p[-5], "main", master.miValor)
-        dir = master.getDireccion(p[-5], "main")
-        type = master.getType(p[-5], "main")
-        memo.updateLocalInMemory(master.miValor, dir, type)
+    if p[-4] is None:
+        if master.isVarGlobal(p[-5]):
+            master.updateIdInFunc(p[-5], "global", master.miValor)
+            dir = master.getDireccion(p[-5], "global")
+            type = master.getType(p[-5], "global")
+            #memo.updateLocalInMemory(master.miValor, dir, type)
+        elif master.esFuncion:
+            master.updateIdInFunc(p[-5], master.miIdFunciones, master.miValor)
+            type = master.getType(p[-5], master.miIdFunciones)
+        elif master.esMain:
+            master.updateIdInFunc(p[-5], "main", master.miValor)
+            dir = master.getDireccion(p[-5], "main")
+            type = master.getType(p[-5], "main")
+            #memo.updateLocalInMemory(master.miValor, dir, type)
+    else:
+        if master.isVarGlobal(p[-4]):
+            master.updateIdInFunc(p[-4], "global", master.miValor)
+            dir = master.getDireccion(p[-4], "global")
+            type = master.getType(p[-4], "global")
+            #memo.updateLocalInMemory(master.miValor, dir, type)
+        elif master.esFuncion:
+            master.updateIdInFunc(p[-4], master.miIdFunciones, master.miValor)
+            type = master.getType(p[-4], master.miIdFunciones)
+        elif master.esMain:
+            master.updateIdInFunc(p[-4], "main", master.miValor)
+            dir = master.getDireccion(p[-4], "main")
+            type = master.getType(p[-4], "main")
+            #memo.updateLocalInMemory(master.miValor, dir, type)
 
 
 def p_pop_assignFunc(p):
@@ -457,8 +472,6 @@ def p_pop_poper(p):
 def p_factor(p):
     '''
     factor : LPAREN push_poper logico RPAREN pop_poper
-           | PLUS var_cte
-           | MINUS var_cte
            | var_cte
     '''
 
@@ -496,6 +509,7 @@ def p_push_cte(p):
         dir = memo.getVirtualCte(tipo)
         memo.updateCteInMemory(p[-1], dir, tipo)
     direccion = memo.getDireCte(p[-1])
+    print(direccion)
     quad.pushCte(p[-1], direccion, tipo)
 
 
@@ -549,6 +563,7 @@ def p_array(p):
     '''
     array : ID LCORCH arrayDos array1 RCORCH arrayCinco
     '''
+    p[0] = p[1]
 
 
 def p_arrayDos(p):
@@ -720,9 +735,9 @@ print("")
 quad.show()
 # print("")
 # print("")
-# print("VARS TABLE")
+print("VARS TABLE")
 # print("")
-# master.show()
+master.show()
 # print("")
 # print("MEMORIA")
 # print("")

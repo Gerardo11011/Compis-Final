@@ -5,6 +5,7 @@ from quadruples import Quad
 from ast import literal_eval
 import memoria as memo
 import tabla_master as master
+import sys
 
 dir_param = []
 tipo_param = []
@@ -66,6 +67,7 @@ def era(quadr, i):
         esPrimera = True
     for id in master.simbolos[quadr.result].value:
         if id != "PARAMCANTI" and id != 'Cuadruplos':
+            dimension = master.simbolos[quadr.result].value[id].dimensionada
             tipo = master.simbolos[quadr.result].value[id].type_data
             direccion = master.simbolos[quadr.result].value[id].direccion
             if master.simbolos[quadr.result].value[id].param:
@@ -74,17 +76,20 @@ def era(quadr, i):
             if id == 'return':
                 dirReturn = direccion
             if not master.simbolos[quadr.result].value[id].param:
-                valor = master.simbolos[quadr.result].value[id].value
-                memo.insertLocalInMemory(tipo, direccion)
-                memo.updateLocalInMemory(valor, direccion, tipo)
+                if dimension > 0:
+                    memo.copyVectorToExe(direccion, dimension, tipo)
+                else:
+                    valor = master.simbolos[quadr.result].value[id].value
+                    memo.insertLocalInMemory(tipo, direccion)
+                    memo.updateLocalInMemory(valor, direccion, tipo)
+
     return i + 1
 
 
 def param(quadr, i):
     global dir_param
     global tipo_param
-    left_op = tieneDireccion(quadr.left_operand)
-    valor = memo.getValor(left_op, None)
+    valor = memo.getValor(quadr.left_operand, None)
     memo.insertLocalInMemory(tipo_param[-1], dir_param[-1])
     memo.updateLocalInMemory(valor, dir_param[-1])
     dir_param.pop()
@@ -130,21 +135,26 @@ def miReturn(quadr, i):
 
 def endproc(quadr, i):
     global funcNo
+    memo.show()
     id_funcion = quadr.result
     funcNo.remove(id_funcion)
     if funcNo.count(id_funcion) <= 0:
         for id in master.simbolos[id_funcion].value:
             if id != "PARAMCANTI" and id != "Cuadruplos":
+                dimension = master.simbolos[quadr.result].value[id].dimensionada
                 direccion = master.simbolos[id_funcion].value[id].direccion
                 tipo = memo.getTipoViaDireccion(direccion)
-                if tipo == "int":
-                    memo.memoria_local.integers.pop(direccion)
-                if tipo == "float":
-                    memo.memoria_local.float.pop(direccion)
-                if tipo == "string":
-                    memo.memoria_local.string.pop(direccion)
-                if tipo == "bool":
-                    memo.memoria_local.booleanos.pop(direccion)
+                if dimension > 0:
+                    memo.deleteVectoInExe(direccion, dimension, tipo)
+                else:
+                    if tipo == "int":
+                        memo.memoria_local.integers.pop(direccion)
+                    if tipo == "float":
+                        memo.memoria_local.float.pop(direccion)
+                    if tipo == "string":
+                        memo.memoria_local.string.pop(direccion)
+                    if tipo == "bool":
+                        memo.memoria_local.booleanos.pop(direccion)
         return primerQuadNo + 1
     return quadNo + 1
 
@@ -292,9 +302,15 @@ def miOutput(quadr, i):
 def ver(quadr, i):
     global esArreglo
     global contVer
-    esArreglo = True
-    contVer = 0
-    return i + 1
+    left_op = tieneDireccion(quadr.left_operand)
+    verifica = memo.getValor(left_op, None)
+    if verifica >= 0 and verifica <= quadr.result:
+        esArreglo = True
+        contVer = 0
+        return i + 1
+    else:
+        print("ERROR: Índice fuera de rango.")
+        sys.exit()
 
 
 # Switch para ejecutar una función dependiendo del operador del cuádruplo.
