@@ -31,6 +31,10 @@ main {
     output(hola[a]);
     a = a + 1;
   }
+
+  hola[0] = hola[1] * hola[3];
+
+  output(hola[0]);
 }
 
 end

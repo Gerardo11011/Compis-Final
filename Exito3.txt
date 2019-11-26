@@ -23,11 +23,10 @@ main {
     a = a - 1;
     i = i + 1;
   }
-  simona[0] = vecto[1];
   h = 5;
   h = h * vecto[0];
 
-  pruakd[9] = 2;
+  simona[0] = 2;
 
   output(simona[0]);
   output(h);

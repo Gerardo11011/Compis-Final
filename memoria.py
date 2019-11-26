@@ -452,14 +452,51 @@ def guardarDireUsada(cte, direccion):
 # Funcion que verifica si el CTE ya se encuentra en la memoria
 def verificarValorCte(cte):
     tipo = getTipo(cte)
-    if tipo == "int" and cte in memoria_local.integers.values():
-        return True
-    elif tipo == "float" and cte in memoria_local.float.values():
-        return True
-    elif tipo == "string" and cte in memoria_local.string.values():
-        return True
-    elif tipo == "bool" and cte in memoria_local.booleanos.values():
-        return True
+    global memoCteInt
+    global memoCteFloat
+    global memoCteString
+    global memoCteBool
+    cteInt = 20000
+    cteFloat = 21000
+    cteString = 22000
+    cteBool = 23000
+    if tipo == 'int':
+        if memoria_local.integers:
+            i = cteInt
+            while (i < memoCteInt):
+                if cte == memoria_local.integers[i]:
+                    return True
+                i += 1
+            return False
+        else:
+            return False
+    elif tipo == 'float':
+        if memoria_local.float:
+            i = cteFloat
+            while (i < memoCteFloat):
+                if cte == memoria_local.float[i]:
+                    return True
+                i += 1
+            return False
+        else:
+            return False
+    elif tipo == 'string':
+        if memoria_local.string:
+            i = cteString
+            while (i < memoCteString):
+                if cte == memoria_local.string[i]:
+                    return True
+                i += 1
+            return False
+        return False
+    elif tipo == 'bool':
+        if memoria_local.booleanos:
+            i = cteBool
+            while (i < memoCteBool):
+                if cte == memoria_local.booleanos[i]:
+                    return True
+                i += 1
+            return False
     else:
         return False
 
@@ -467,23 +504,60 @@ def verificarValorCte(cte):
 # Funcion que obtiene la direccion de un CTE dado
 def getDireCte(cte):
     tipo = getTipo(cte)
+    global memoCteInt
+    global memoCteFloat
+    global memoCteString
+    global memoCteBool
+    cteInt = 20000
+    cteFloat = 21000
+    cteString = 22000
+    cteBool = 23000
     if tipo == 'int':
-        for key, value in memoria_local.integers.items():
-            if cte == value:
-                return key
+        i = cteInt
+        while (i < memoCteInt):
+            if cte == memoria_local.integers[i]:
+                return i
+            i += 1
     elif tipo == 'float':
-        for key, value in memoria_local.float.items():
-            if cte == value:
-                return key
+        i = cteFloat
+        while (i < memoCteFloat):
+            if cte == memoria_local.float[i]:
+                return i
+            i += 1
     elif tipo == 'string':
-        for key, value in memoria_local.string.items():
-            if cte == value:
-                return key
+        i = cteString
+        while (i < memoCteString):
+            if cte == memoria_local.string[i]:
+                return i
+            i += 1
     elif tipo == 'bool':
-        for key, value in memoria_local.booleanos.items():
-            if cte == value:
-                return key
+        i = cteBool
+        while (i < memoCteBool):
+            if cte == memoria_local.booleanos[i]:
+                return i
+            i += 1
     return "DIRECCION INVALIDA"
+
+
+
+    # tipo = getTipo(cte)
+    # if tipo == 'int':
+    #     for key, value in memoria_local.integers.items():
+    #         if cte == value:
+    #             return key
+    # elif tipo == 'float':
+    #     for key, value in memoria_local.float.items():
+    #         if cte == value:
+    #             return key
+    # elif tipo == 'string':
+    #     for key, value in memoria_local.string.items():
+    #         if cte == value:
+    #             return key
+    # elif tipo == 'bool':
+    #     for key, value in memoria_local.booleanos.items():
+    #         if cte == value:
+    #             return key
+    # return "DIRECCION INVALIDA"
 
 # ###############FUNCIONES ANTIGUAS################
 

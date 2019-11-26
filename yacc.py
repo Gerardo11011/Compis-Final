@@ -504,12 +504,13 @@ def p_push_id(p):
 
 def p_push_cte(p):
     "push_cte :"
+    print(p[-1])
     tipo = memo.getTipo(p[-1])
     if not memo.verificarValorCte(p[-1]):
         dir = memo.getVirtualCte(tipo)
         memo.updateCteInMemory(p[-1], dir, tipo)
+        print(dir)
     direccion = memo.getDireCte(p[-1])
-    print(direccion)
     quad.pushCte(p[-1], direccion, tipo)
 
 
@@ -735,9 +736,9 @@ print("")
 quad.show()
 # print("")
 # print("")
-print("VARS TABLE")
+# print("VARS TABLE")
 # print("")
-master.show()
+# master.show()
 # print("")
 # print("MEMORIA")
 # print("")
