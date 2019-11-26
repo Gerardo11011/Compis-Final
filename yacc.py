@@ -589,11 +589,11 @@ def p_arrayTres(p):
     "arrayTres :"
     global idVector
     if master.esFuncion:
-        tam = master.simbolos[master.miIdFunciones].value[idVector].dimensionda
+        tam = master.simbolos[master.miIdFunciones].value[idVector].dimensionada
     elif master.esMain:
-        tam = master.simbolos['main'].value[idVector].dimensionda
+        tam = master.simbolos['main'].value[idVector].dimensionada
     else:
-        tam = master.simbolos['global'].value[idVector].dimensionda
+        tam = master.simbolos['global'].value[idVector].dimensionada
     quad.arregloTres(tam)
 
 
