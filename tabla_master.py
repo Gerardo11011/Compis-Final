@@ -138,6 +138,7 @@ def getDireccion(id, id_funcion):
     dir = simbolos[id_funcion].value[id].direccion
     return dir
 
+
 # Función que obtiene el tipo de una variable dentro de una función.
 def getType(id, id_funcion):
     type = simbolos[id_funcion].value[id].type_data
