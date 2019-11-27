@@ -584,25 +584,35 @@ def p_array1(p):
 def p_arrayTres(p):
     "arrayTres :"
     global idVector
-    if master.esFuncion:
-        tam = master.simbolos[master.miIdFunciones].value[idVector].dimensionada
-    elif master.esMain:
-        tam = master.simbolos['main'].value[idVector].dimensionada
-    else:
-        tam = master.simbolos['global'].value[idVector].dimensionada
+    if 'global' in master.simbolos:
+        if idVector in master.simbolos['global'].value:
+            tam = master.simbolos['global'].value[idVector].dimensionada
+    if master.miIdFunciones in master.simbolos:
+        if idVector in master.simbolos[master.miIdFunciones].value:
+            tam = master.simbolos[master.miIdFunciones].value[idVector].dimensionada
+    if 'main' in master.simbolos:
+        if idVector in master.simbolos['main'].value:
+            tam = master.simbolos['main'].value[idVector].dimensionada
     quad.arregloTres(tam)
 
 
 def p_arrayCinco(p):
     "arrayCinco :"
-    if master.esMain:
-        base = master.simbolos['main'].value[p[-5]].direccion
-        tipo = master.simbolos['main'].value[p[-5]].type_data
-        quad.arregloCinco(True, base, tipo)
-    elif master.esFuncion:
-        base = master.simbolos[master.miIdFunciones].value[p[-5]].direccion
-        tipo = master.simbolos[master.miIdFunciones].value[p[-5]].type_data
-        quad.arregloCinco(False, base, tipo)
+    if 'global' in master.simbolos:
+        if idVector in master.simbolos['global'].value:
+            base = master.simbolos['global'].value[p[-5]].direccion
+            tipo = master.simbolos['global'].value[p[-5]].type_data
+            quad.arregloCinco(True, base, tipo)
+    if 'main' in master.simbolos:
+        if idVector in master.simbolos['main'].value:
+            base = master.simbolos['main'].value[p[-5]].direccion
+            tipo = master.simbolos['main'].value[p[-5]].type_data
+            quad.arregloCinco(True, base, tipo)
+    if master.miIdFunciones in master.simbolos:
+        if idVector in master.simbolos[master.miIdFunciones].value:
+            base = master.simbolos[master.miIdFunciones].value[p[-5]].direccion
+            tipo = master.simbolos[master.miIdFunciones].value[p[-5]].type_data
+            quad.arregloCinco(False, base, tipo)
 
 
 def p_loop(p):

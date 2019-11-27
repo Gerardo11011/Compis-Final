@@ -29,18 +29,25 @@ class quadruple(object):
         self.result = result
 
 
-# Funciones para producir representación inetermedia para Main
+# ################ REPRESENTACIÓN INTERMEDIA PARA MAIN ####################
+
+# Función que agrega a la pila de cuádruplo el goto main con el número de
+# cuádruplo correspondiente.
 def gotoMain():
     quadr = quadruple(len(Quad), 'goto', None, None, None)
     Quad.append(quadr)
 
 
+# Función que agrega a la pila de cuádruplos el endprog de la función.
 def endprog():
     quadr = quadruple(len(Quad), 'end', None, None, None)
     Quad.append(quadr)
 
 
-# Funciones para producir representación intermedia para operadores
+# ############## REPRESENTACIÓN INTERMEDIA PARA OPERADORES ##################
+
+# Función que recibe una variable y su función, y agrega su dirección a la
+# pila de operandos, su tipo a la pila de tipos y su valor a la pila AVAIL.
 def pushID(id, funcion):
     encontro = False
     for keys in simbolos:
@@ -63,6 +70,8 @@ def pushID(id, funcion):
         sys.exit()
 
 
+# Función que recibe una constante, su dirección y tipo, y agrega su dirección
+# tipo y valor a sus respectiva pilas.
 def pushCte(cte, dir, tipo):
     PilaO.append(dir)
     tipo = str(type(cte))
@@ -79,14 +88,19 @@ def pushCte(cte, dir, tipo):
     AVAIL.append(cte)
 
 
+# Función que recibe un operador y lo agrega a la pila de operadores.
 def pushPoper(operator):
     POper.append(operator)
 
 
+# Función que saca el último operador de la pila de operadores.
 def popPoper():
     POper.pop()
 
 
+# Función que obtiene los atributos del cuádruplo de asignación, realiza la
+# verificación semántica, genera el cuádruplo de asignación y regresa el valor
+# que se le asignará a la variable.
 def popAssign():
     POperSize = len(POper)
     if POperSize > 0:
@@ -113,6 +127,9 @@ def popAssign():
     return result
 
 
+# Función que recibe main para saber qué direción temporal asignar, obtiene los
+# atributos del cuádruplo de suma o resta, realiza la verificación semántica y
+# genera el cuádruplo de correspondiente.
 def popTerm(main):
     POperSize = len(POper)
     if POperSize > 0:
@@ -150,6 +167,9 @@ def popTerm(main):
                 sys.exit()
 
 
+# Función que recibe main para saber qué direción temporal asignar, obtiene los
+# atributos del cuádruplo de multiplicación o división, realiza la verificación
+# semántica y genera el cuádruplo correspondiente.
 def popFact(main):
     POperSize = len(POper)
     if POperSize > 0:
@@ -187,6 +207,9 @@ def popFact(main):
                 sys.exit()
 
 
+# Función que recibe main para saber qué direción temporal asignar, obtiene los
+# atributos del cuádruplo de operaciones relacionales, realiza la verificación
+# semántica y genera el cuádruplo correspondiente.
 def popRelop(main):
     POperSize = len(POper)
     if POperSize > 0:
@@ -234,6 +257,9 @@ def popRelop(main):
                 sys.exit()
 
 
+# Función que recibe main para saber qué direción temporal asignar, obtiene los
+# atributos del cuádruplo de operaciones lógicas, realiza la verificación
+# semántica y genera el cuádruplo correspondiente.
 def popLog(main):
     POperSize = len(POper)
     if POperSize > 0:
@@ -271,7 +297,10 @@ def popLog(main):
                 sys.exit()
 
 
-# Función para producir representación intermedia para lectura y escritura
+# ######### REPRESENTACIÓN INTERMEDIA PARA LECTURA Y ESCRITURA ###############
+
+# Función que genera los cuádruplos de lectura o escritura dependiendo del
+# operador obtenido de la pila de operadores.
 def popIO():
     POperSize = len(POper)
     if POperSize > 0:
@@ -284,11 +313,16 @@ def popIO():
             Quad.append(quadr)
 
 
-# Funciones para producir representación intermedia para If Else
+# ######### REPRESENTACIÓN INTERMEDIA PARA IF Y IF ELSE ###############
+
+# Función que recibe el número de cuádruplo donde se encuentra el goto y el
+# número de cuádruplos a donde se realizará el salto y actualiza el cuádruplo.
 def fill(cuadruplo, salto):
     Quad[cuadruplo].result = salto
 
 
+# Función que verifica que el último operando en la pila sea booleano y genera
+# el cuádruplo de gotof.
 def ifelseUno():
     exp_type = PTypes.pop()
     if exp_type == "bool":
@@ -301,11 +335,15 @@ def ifelseUno():
         sys.exit()
 
 
+# Función que manda a actualizar el cuádruplo del goto o gotof con el número
+# de cuádruplo donde se realizará el salto.
 def ifelseDos():
     end = PJumps.pop()
     fill(end, len(Quad))
 
 
+# Función que genera el cuádruplo goto y manda llenar el cuádruplo de gotof
+# generado en un if else.
 def ifelseTres():
     quadr = quadruple(len(Quad), "goto", None, None, None)
     Quad.append(quadr)
@@ -314,11 +352,16 @@ def ifelseTres():
     fill(false, len(Quad))
 
 
-# Funciones para producir representación intermedia para Loop
+# ################### REPRESENTACIÓN INTERMEDIA PARA LOOP ###################
+
+# Función que agrega el número de cuádruplo en la pila PJumps donde se hará la
+# evaluación de la expresión del loop.
 def loopUno():
     PJumps.append(len(Quad))
 
 
+# Función que verifica que el último operando en la pila sea booleano y genera
+# el cuádruplo de gotof.
 def loopDos():
     exp_type = PTypes.pop()
     if exp_type == "bool":
@@ -331,6 +374,8 @@ def loopDos():
         sys.exit()
 
 
+# Función que genera el cuádruplo goto y manda llenar el cuádruplo de gotof
+# generado en el loop.
 def loopTres():
     end = PJumps.pop()
     regresa = PJumps.pop()
@@ -339,7 +384,10 @@ def loopTres():
     fill(end, len(Quad))
 
 
-# Funciones para producir representación intermedia para Módulos
+# ################ REPRESENTACIÓN INTERMEDIA PARA MÓDULOS #####################
+
+# Función que recibe el id de la función, genera el cuádruplo era de dicha
+# función e incializa el contador de parámetros en 1.
 def moduloDos(id):
     quadr = quadruple(len(Quad), 'era', None, None, id)
     Quad.append(quadr)
@@ -347,6 +395,8 @@ def moduloDos(id):
     paramCont = 1
 
 
+# Función que genera el cuádruplo param con el parámetro obtenido de la pila
+# de operandos y el número de de parámetros, y regresa el valor para ctualizar.
 def moduloTres():
     argument = PilaO.pop()
     PTypes.pop()
@@ -357,16 +407,21 @@ def moduloTres():
     return valor
 
 
+# Función que actualiza el contador de parámetros.
 def moduloCuatro():
     global paramCont
     paramCont = paramCont + 1
 
 
+# Función que recibe el id de la función y su número de cuádruplo y genera el
+# cuádruplo gosub.
 def moduloSeis(id, addr):
     quadr = quadruple(len(Quad), 'gosub', id, None, addr)
     Quad.append(quadr)
 
 
+# Función que genera el cuádruplo return con el resultado a regresar
+# obtenido de la pila de operandos.
 def miReturn():
     result = PilaO.pop()
     PTypes.pop()
@@ -375,11 +430,15 @@ def miReturn():
     Quad.append(quadr)
 
 
+# Función que recibe el id de la función y genera el cuádruplo endproc de
+# dicha función.
 def endproc(id):
     quadr = quadruple(len(Quad), 'endproc', None, None, id)
     Quad.append(quadr)
 
 
+# Función que recibe el id de una función para obtener su tipo y asigna el
+# valor de su return a la variable obtenida de la pila de operandos.
 def assignFunc(id):
     tipoFunc = simbolos[id].type_data
     POperSize = len(POper)
@@ -398,23 +457,32 @@ def assignFunc(id):
                 sys.exit()
 
 
+# Función que mete el valor regresado de una función a la pila de operandos,
+# así como su tipo, obtenidos de su id que ingresa como parámetro.
 def pushFunc(funcion):
     PilaO.append(150000)
     PTypes.append(simbolos[funcion].type_data)
     AVAIL.append(0)
 
 
-# Funciones para producir representación intermedia para Arreglos
+# ################ REPRESENTACIÓN INTERMEDIA PARA ARREGLOS ###################
+
+# Función que mete a la pila de operadores el corchete izquierdo de un arreglo
+# como un fondo falso.
 def arregloDos(funcion, id):
-    if simbolos[funcion].value[id].dimensionada > 0:
-        pushPoper('[')
+    pushPoper('[')
 
 
+# Función que recibe el tamaño del arreglo y genera el cuádruplo ver con el
+# último valor de la pila de operandos.
 def arregloTres(tam):
     quadr = quadruple(len(Quad), 'ver', PilaO[-1], 0, tam-1)
     Quad.append(quadr)
 
 
+# Función que recibe el main, la base y el tipo del arreglo para generar los
+# cuádruplos de la operación s + k + dirBase, agregando la dirección que tendrá
+# otra dirección almacenada al final del cuádruplo.
 def arregloCinco(main, base, tipo):
     aux1 = PilaO.pop()
     if main:
@@ -436,6 +504,7 @@ def arregloCinco(main, base, tipo):
     POper.pop()
 
 
+# Función que imprime los cuádruplos dentro de la pila de cuádruplos.
 def show():
     for i in range(0, len(Quad)):
         print(Quad[i].num, Quad[i].operator, Quad[i].left_operand, Quad[i].right_operand, Quad[i].result, sep = '\t')

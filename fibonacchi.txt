@@ -6,7 +6,7 @@ func int fib(int num) {
    y = 1;
    z = 0;
    i = 0;
-   loop (i < num) {
+   loop (i <= num) {
       output(x);
       z = x + y;
       x = y;

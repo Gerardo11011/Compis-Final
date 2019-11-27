@@ -1,19 +1,24 @@
 begin
 
-func int factorial(int n, int acum) {
-  output(n);
-  if (n<=1) {
-    return acum;
-  }
-  acum = n * (factorial(n-1, acum););
+func int facto(int num){
+  int i, fact;
+  fact = 1;
+  i = 1;
+    loop(i < num + 1){
+      fact = fact * i;
+      i = i + 1;
+    }
+     return fact;
 }
 
 main {
-  int n, res;
-  output("Factorial:");
+  int n, respu;
+  int res;
+  output("Factorial de:");
   input(n);
-  res = factorial(n, 0);
-  output(res);
+  respu = facto(n);
+  output("Resultado:");
+  output(respu);
 }
 
 end

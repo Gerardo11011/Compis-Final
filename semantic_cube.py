@@ -1,11 +1,11 @@
 # Oscar Guevara     A01825177
 # Gerardo Ponce     A00818934
 
-# Listas de operadores
+# Listas de operadores.
 operators = ['+', '-', '*', '/']
 comparators = ['==', '>', '>=', '<', '<=', '<>']
 
-# Verificar el tipo de resultado de una expresión
+# Verificar el tipo de resultado de una expresión.
 def semantic(left, right, operator):
     if(left == 'int'):
         if(right == 'int'):
