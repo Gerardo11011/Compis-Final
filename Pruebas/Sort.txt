@@ -1,0 +1,94 @@
+begin
+
+float arr[6];
+
+func void merge(float l, float m, float r) {
+    float i, j, k;
+    float nUno;
+    float nDos;
+    float L[nUno], R[nDos];
+
+    i = 0.0;
+    nUno = m - l + 1.0;
+    nDos = r - m;
+
+
+    loop(i < nUno) {
+      L[i] = arr[l + i];
+      i = i + 1.0;
+    }
+
+    loop(j < nDos) {
+      R[j] = arr[m + 1.0 + j];
+      j = j + 1.0;
+    }
+
+    i = 0.0;
+    j = 0.0;
+    k = l;
+    loop(i < nUno && j < nDos) {
+        if (L[i] <= R[j]) {
+            arr[k] = L[i];
+            i = i + 1.0;
+        }
+        else {
+            arr[k] = R[j];
+            j = j + 1.0;
+        }
+        k = k + 1.0;
+    }
+
+    loop(i < nUno) {
+        arr[k] = L[i];
+        i = i + 1.0;
+        k = k + 1.0;
+    }
+
+    loop(j < nDos) {
+        arr[k] = R[j];
+        j = j + 1.0;
+        k = k + 1.0;
+    }
+}
+
+func void mergeSort(float l, float r) {
+  float m;
+  m = 0.0;
+  if (l < r) {
+    m = l + (r - l) / 2.0;
+    mergeSort(l, m);
+    mergeSort(m + 1.0, r);
+    merge(l, m, r);
+  }
+}
+
+func void printArray(int size) {
+    int i;
+    i = 0.0;
+
+    loop(i < size) {
+      output(arr[i]);
+      i = i + 1.0;
+    }
+}
+
+main {
+    int arr_size;
+
+    arr_size = 6.0;
+
+    arr[0] = 12.0;
+    arr[1] = 11.0;
+    arr[2] = 13.0;
+    arr[3] = 6.0;
+    arr[4] = 6.0;
+    arr[5] = 7.0;
+
+    output("Arreglo dado:");
+    printArray(arr_size);
+
+    mergeSort(0.0, arr_size - 1.0);
+
+    output("Arreglo ordenado:");
+    printArray(arr_size);
+}

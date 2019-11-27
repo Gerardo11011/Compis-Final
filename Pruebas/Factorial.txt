@@ -1,7 +1,5 @@
 begin
 
-int globalVar;
-
 func int facto(int num){
   int i, fact;
   fact = 1;
@@ -18,7 +16,6 @@ main {
   int res;
   output("Factorial de:");
   input(n);
-  globalVar = 342;
   respu = facto(n);
   output("Resultado:");
   output(respu);

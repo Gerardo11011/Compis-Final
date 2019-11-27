@@ -154,7 +154,7 @@ def p_modulo1(p):
 # Modulo que declara los parametros de la funcion
 def p_modulo1Aux(p):
     '''
-        modulo1Aux : tipo ID modulo1Repe
+    modulo1Aux : tipo ID modulo1Repe
     '''
     temp = memo.getVirtualDicLocal(p[1])
     master.insertIdToFunc(p[2], p[1], master.miIdFunciones, temp, True)
@@ -191,17 +191,6 @@ def p_modulo3(p):
 
 def p_insertReturn(p):
     "insertReturn :"
-    # if master.returnValor != "false" or master.returnValor != 'true':
-    #     master.returnValor = master.returnValue(master.returnValor, master.miIdFunciones)
-    #     temp = memo.getVirtualDicLocal(master.miFuncType)
-    #     master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, temp)
-    #     master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
-    #     memo.insertReturn(master.returnValor)
-    # else:
-    #     temp = memo.getVirtualDicLocal(master.miFuncType)
-    #     master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, temp)
-    #     master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
-    #     memo.insertReturn(master.returnValor)
     quad.miReturn()
 # ########################### ACABA FUNCIONES  ##############################
 
@@ -231,6 +220,8 @@ def p_vars(p):
     '''
 
 
+# Inserta las variables en su tabla correspondiente con todos sus atributos,
+# incluyendo el de la dimensión si es que son vectores.
 def p_vars1(p):
     '''
     vars1 : ID
@@ -241,17 +232,14 @@ def p_vars1(p):
     global varVector
     if p[1] not in varVector.keys():
         if master.esFuncion:
-            # memo.memory_dir = memo.insertLocal(master.miTipo)
             temp = memo.getVirtualDicLocal(master.miTipo)
             master.insertIdToFunc(p[1], master.miTipo, master.miIdFunciones, temp)
         elif master.esMain:
-            # memo.memory_dir = memo.insertLocal(master.miTipo)
             dir = memo.getVirtualDicMain(master.miTipo)
             master.insertIdToFunc(p[1], master.miTipo, "main", dir)
             memo.insertLocalInMemory(master.miTipo, dir)
             memo.inicInMemory(p[1], master.miTipo, "main", dir)
         elif master.esGlobal:
-            # memo.memory_dir = memo.insertGlobal(master.miTipo)
             dir = memo.getVirtualDicGlobal(master.miTipo)
             master.insertIdToFunc(p[1], master.miTipo, "global", dir)
             memo.insertLocalInMemory(master.miTipo, dir)
@@ -326,7 +314,6 @@ def p_pop_assign(p):
             master.updateIdInFunc(p[-5], "global", master.miValor)
             dir = master.getDireccion(p[-5], "global")
             type = master.getType(p[-5], "global")
-            #memo.updateLocalInMemory(master.miValor, dir, type)
         elif master.esFuncion:
             master.updateIdInFunc(p[-5], master.miIdFunciones, master.miValor)
             type = master.getType(p[-5], master.miIdFunciones)
@@ -334,13 +321,11 @@ def p_pop_assign(p):
             master.updateIdInFunc(p[-5], "main", master.miValor)
             dir = master.getDireccion(p[-5], "main")
             type = master.getType(p[-5], "main")
-            #memo.updateLocalInMemory(master.miValor, dir, type)
     else:
         if master.isVarGlobal(p[-4]):
             master.updateIdInFunc(p[-4], "global", master.miValor)
             dir = master.getDireccion(p[-4], "global")
             type = master.getType(p[-4], "global")
-            #memo.updateLocalInMemory(master.miValor, dir, type)
         elif master.esFuncion:
             master.updateIdInFunc(p[-4], master.miIdFunciones, master.miValor)
             type = master.getType(p[-4], master.miIdFunciones)
@@ -348,7 +333,6 @@ def p_pop_assign(p):
             master.updateIdInFunc(p[-4], "main", master.miValor)
             dir = master.getDireccion(p[-4], "main")
             type = master.getType(p[-4], "main")
-            #memo.updateLocalInMemory(master.miValor, dir, type)
 
 
 def p_pop_assignFunc(p):
@@ -570,23 +554,35 @@ def p_array1(p):
 def p_arrayTres(p):
     "arrayTres :"
     global idVector
-    if master.esFuncion:
-        tam = master.simbolos[master.miIdFunciones].value[idVector].dimensionada
-    elif master.esMain:
-        tam = master.simbolos['main'].value[idVector].dimensionada
-    else:
-        tam = master.simbolos['global'].value[idVector].dimensionada
+    if 'global' in master.simbolos:
+        if idVector in master.simbolos['global'].value:
+            tam = master.simbolos['global'].value[idVector].dimensionada
+    if master.miIdFunciones in master.simbolos:
+        if idVector in master.simbolos[master.miIdFunciones].value:
+            tam = master.simbolos[master.miIdFunciones].value[idVector].dimensionada
+    if 'main' in master.simbolos:
+        if idVector in master.simbolos['main'].value:
+            tam = master.simbolos['main'].value[idVector].dimensionada
     quad.arregloTres(tam)
 
 
 def p_arrayCinco(p):
     "arrayCinco :"
-    if master.esMain:
-        base = master.simbolos['main'].value[p[-5]].direccion
-        quad.arregloCinco(True, base)
-    elif master.esFuncion:
-        base = master.simbolos[master.miIdFunciones].value[p[-5]].direccion
-        quad.arregloCinco(False, base)
+    if 'global' in master.simbolos:
+        if idVector in master.simbolos['global'].value:
+            base = master.simbolos['global'].value[p[-5]].direccion
+            tipo = master.simbolos['global'].value[p[-5]].type_data
+            quad.arregloCinco(True, base, tipo)
+    if 'main' in master.simbolos:
+        if idVector in master.simbolos['main'].value:
+            base = master.simbolos['main'].value[p[-5]].direccion
+            tipo = master.simbolos['main'].value[p[-5]].type_data
+            quad.arregloCinco(True, base, tipo)
+    if master.miIdFunciones in master.simbolos:
+        if idVector in master.simbolos[master.miIdFunciones].value:
+            base = master.simbolos[master.miIdFunciones].value[p[-5]].direccion
+            tipo = master.simbolos[master.miIdFunciones].value[p[-5]].type_data
+            quad.arregloCinco(False, base, tipo)
 
 
 def p_loop(p):
@@ -714,8 +710,9 @@ result = parser.parse(entrada)
 # print("")
 # print("CUADRUPLOS")
 # print("")
-# quad.show()
+# print("VARS TABLE")
 # print("")
+# master.show()
 # print("")
 # print("VARS TABLE")
 # print("")
