@@ -48,7 +48,7 @@ def p_globalfunc(p):
     '''
     globalfunc :
     '''
-    master.insert("global", None)
+    master.insert("global", "void")
     master.funciones.append("global")
     master.esGlobal = True
 
@@ -57,7 +57,7 @@ def p_globalFuncFalse(p):
     '''
     globalFuncFalse :
     '''
-    memo.reiniciarDireccionesFunc()
+    # memo.reiniciarDireccionesFunc()
     master.esGlobal = False
     # memo.reiniciarDireccionesFunc()
     # memo.limpiarDireUsadas()
@@ -87,8 +87,8 @@ def p_funcfalse(p):
 
 def p_modulo(p):
     '''
-    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY varsFunc insertarParam bloqFunc RKEY endproc
-           | FUNC VOID tipoVoid ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY varsFunc insertarParam bloqFunc RKEY endproc
+    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY varsFunc insertarParam programa3 RKEY endproc
+           | FUNC VOID tipoVoid ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY varsFunc insertarParam programa3 RKEY endproc
     '''
     master.contadorParam = 0
 
@@ -108,13 +108,6 @@ def p_endproc(p):
 def p_varsFunc(p):
     '''
     varsFunc : vars
-             | empty
-    '''
-
-
-def p_bloqFunc(p):
-    '''
-    bloqFunc : programa3
              | empty
     '''
 
@@ -161,10 +154,7 @@ def p_modulo1(p):
 # Modulo que declara los parametros de la funcion
 def p_modulo1Aux(p):
     '''
-    modulo1Aux : INT ID modulo1Repe
-               | FLOAT ID modulo1Repe
-               | STRING ID modulo1Repe
-               | BOOL ID modulo1Repe
+        modulo1Aux : tipo ID modulo1Repe
     '''
     temp = memo.getVirtualDicLocal(p[1])
     master.insertIdToFunc(p[2], p[1], master.miIdFunciones, temp, True)
@@ -222,7 +212,7 @@ def p_mainfunc(p):
     mainfunc :
     '''
     master.esMain = True
-    master.insert("main", None)
+    master.insert("main", "void")
     master.funciones.append("main")
 
 
@@ -509,7 +499,6 @@ def p_push_cte(p):
         dir = memo.getVirtualCte(tipo)
         memo.updateCteInMemory(p[-1], dir, tipo)
     direccion = memo.getDireCte(p[-1])
-    print(direccion)
     quad.pushCte(p[-1], direccion, tipo)
 
 
@@ -544,13 +533,6 @@ def p_lectura(p):
 def p_escritura(p):
     '''
     escritura : OUTPUT push_poper LPAREN exp RPAREN pop_io SEMICOLON
-    '''
-
-
-def p_expPrint(p):
-    '''
-    expPrint : exp
-             | exp COMMA expPrint
     '''
 
 
@@ -719,7 +701,7 @@ def p_empty(p):
 # Regla de error para errores de sintaxis.
 def p_error(p):
     print(p)
-    print("Error de sintaxis en linea '%s'" % p.value)
+    print("Error de sintaxis en '%s'" % p.value)
     sys.exit()
 
 
@@ -729,26 +711,26 @@ parser = yacc.yacc()
 result = parser.parse(entrada)
 # print(result)
 #
-print("")
-print("CUADRUPLOS")
-print("")
-quad.show()
+# print("")
+# print("CUADRUPLOS")
+# print("")
+# quad.show()
 # print("")
 # print("")
-print("VARS TABLE")
+# print("VARS TABLE")
 # print("")
-master.show()
-# print("")
+# master.show()
+# # print("")
 # print("MEMORIA")
 # print("")
 # memo.show()
 
-print("\n",)
-print("*************************************")
-print("EJECUCIÓN")
-print("*************************************", "\n")
+# print("\n",)
+# print("*************************************")
+# print("EJECUCIÓN")
+# print("*************************************", "\n")
 accion.inicio()
-# print("")
-# print("MEMORIA")
-# print("")
-# memo.show()
+print("")
+print("MEMORIA DESPUES DE LIMPIAR EN EJECUCION")
+print("")
+memo.show()

@@ -74,6 +74,8 @@ def volverFloat(dato, id, id_funcion):
     if simbolos[id_funcion].value[id].type_data == 'float' and temp == "<class 'int'>":
         temp = "<class 'float'>"
     return temp
+
+
 # Funcion que valida que el valor ingresado y el tipo de la variable sean iguales
 def validate(dato, id, id_funcion):
     temp = volverFloat(dato, id, id_funcion)
@@ -133,17 +135,19 @@ def getDireccion(id, id_funcion):
     dir = simbolos[id_funcion].value[id].direccion
     return dir
 
-
+# Funcion que obtiene el tipo de una variable dentro de una funcion
 def getType(id, id_funcion):
     type = simbolos[id_funcion].value[id].type_data
     return type
 
 
+# Funcion que obtiene el valor de una variable dentro de una funcion
 def getValor(id, id_funcion):
     valor = simbolos[id_funcion].value[id].value
     return valor
 
 
+# Funcion que retorna una lista con las variables que son parametros dentro de la funcion
 def getidParam(id_funcion):
     temp = []
     for id in simbolos[id_funcion].value:
@@ -162,6 +166,7 @@ def show():
         print("")
 
 
+# Funcion que retorna el valor de una variable si esta se encuentra declara, en caso contrario regresa el id
 def returnValue(id, id_funcion):
     if id in simbolos[id_funcion].value.keys():
         temp = simbolos[id_funcion].value[id].value
@@ -170,6 +175,7 @@ def returnValue(id, id_funcion):
         return id
 
 
+# Funcion que verifica si la variable ya ha sido previamente declarada como global
 def isVarGlobal(id):
     if "global" in simbolos:
         if id in simbolos["global"].value:

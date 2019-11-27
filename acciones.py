@@ -113,6 +113,8 @@ def gosub(quadr, i):
 def miReturn(quadr, i):
     global funcNo
     global miFunc
+    print("MEMORIA ANTES DE BORRAR")
+    memo.show()
     regresa = tieneDireccion(quadr.result)
     valor = memo.getValor(regresa, None)
     memo.insertReturn(valor)
@@ -136,7 +138,6 @@ def miReturn(quadr, i):
 
 def endproc(quadr, i):
     global funcNo
-    memo.show()
     id_funcion = quadr.result
     funcNo.remove(id_funcion)
     if funcNo.count(id_funcion) <= 0:

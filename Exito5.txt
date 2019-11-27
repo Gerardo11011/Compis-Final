@@ -1,31 +1,13 @@
 begin
 
 main {
-  int a, b, c, d;
-  a = 4;
-  b = 5;
-  c = 2;
-  d = 1;
-  loop(a + b * c < d) {
-    if(a + b < c) {
-      a = b + c;
-      loop(a > b + c) {
-        a = a - 1;
-      }
-    }
-    else {
-      loop(b > c + d) {
-        a = b + c * d;
-        b = a - d;
-      }
-    }
-  }
-  a = b * c;
-  c = 0;
-  output(a);
-  output(b);
-  output(c);
-  output(d);
+  int a, b, c, h, d;
+  a = 3;
+  b = 8;
+  c = 932;
+  a = h;
+  a = a + (b * (d);
+
 }
 
 end

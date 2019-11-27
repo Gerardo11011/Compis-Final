@@ -1,47 +1,42 @@
 begin
 
-func void simona(){
+func bool simona(){
   int prueba[10];
   float jsdj[29];
-  int hsa;
-  hsa = 763;
+  bool hsa;
+  hsa = true;
+  if ( hsa == true ){
+    return hsa;
+  }
+  else {
+    return false;
+  }
 }
 
 main {
   int a, b, c, d;
   int hola[6];
+  bool sim;
   float z;
   string jo, pi;
   a = 0;
-  hola[0] = 0;
-  hola[1] = 10;
-  hola[2] = 20;
-  hola[3] = 30;
-  hola[4] = 40;
-  hola[5] = 50;
-
-  loop (a < 10){
-  if (a == hola[1]){
-    output(a);
-    output("ntro");
+  loop (a < 6){
+    hola[a] = a * 10;
+    a = a + 1;
   }
-    if (a == hola[0]){
-      output(a);
-    }
-
-    if (a == hola[2]){
-      output(a);
-    }
-    if (a == hola[3]){
-      output(a);
-    }
-    if (a == hola[4]){
-      output(a);
-    }
-    if (a == hola[5]){
-      output(a);
+  a = 0;
+  loop (a < 6){
+    if (hola[a]== 40){
+        output("LO ENCONTRO");
     }
     a = a + 1;
+  }
+  sim = simona();
+  if (sim == true){
+    output("ENTRO A TRUE");
+  }
+  else {
+    output("NO ENTRA A SIMONA");
   }
 }
 

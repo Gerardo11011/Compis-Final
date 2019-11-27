@@ -55,6 +55,7 @@ tempMainBool = 88000
 memoReturn = 150000
 
 
+# Funcion que recibe el tipo del vector con su respectivo salto y genera los espacios de memoria en el main del vector
 def getDirecVectorMain(tipo, salto):
     global memoMainInt
     global memoMainFloat
@@ -75,6 +76,7 @@ def getDirecVectorMain(tipo, salto):
     return temp
 
 
+# Funcion que recibe el tipo del vector con su respectivo salto y genera los espacios de memoria en la funcion del vector
 def getDirecVectorFunc(miTipo, salto):
     global memoFuncInt
     global memoFuncFloat
@@ -95,6 +97,7 @@ def getDirecVectorFunc(miTipo, salto):
     return temp
 
 
+# Funcion que recibe el tipo del vector con su respectivo salto y genera los espacios de memoria en global
 def getDirecVecorGlobal(miTipo, salto):
     global globalINT
     global globalFLOAT
@@ -115,6 +118,7 @@ def getDirecVecorGlobal(miTipo, salto):
     return temp
 
 
+# Funcion incializa el vector en memoria de ejecucion
 def inicInMemory(id, Tipo, id_funcion, direccion=None):
     if Tipo == 'int':
         master.updateIdInFunc(id, id_funcion, 0)
@@ -130,6 +134,7 @@ def inicInMemory(id, Tipo, id_funcion, direccion=None):
         memoria_local.booleanos[direccion] = False
 
 
+# Funcion que copia el vector con sus respectivas direcciones a memoria de ejecucion
 def copyVectorToExe(direccion, dimesion, tipo):
     if tipo == "int":
         for i in range(dimesion):
@@ -145,6 +150,7 @@ def copyVectorToExe(direccion, dimesion, tipo):
             memoria_local.booleanos[direccion + i] = False
 
 
+# funcion que consigue las direcciones temporales de los cuadruplos
 def getVirtualTemp(tipo):
     global memoTempInt
     global memoTempFloat
@@ -165,6 +171,7 @@ def getVirtualTemp(tipo):
     return temp
 
 
+# Funcion que consigue las direcciones temporales de los cuadruplos del main
 def getVirtualMainTemp(tipo):
     global tempMainInt
     global tempMainFloat
@@ -185,6 +192,7 @@ def getVirtualMainTemp(tipo):
     return temp
 
 
+# Funcion que reinicia las direcciones de los temporales cuando acaba una funcion
 def reiniciarTemporales():
     global memoTempInt
     global memoTempFloat
@@ -197,6 +205,7 @@ def reiniciarTemporales():
     memoria_temp.reiniciar()
 
 
+# Funcion que reinicia las direcciones de las funciones despues de que estas se leen
 def reiniciarDireccionesFunc():
     global memoFuncInt
     global memoFuncFloat
@@ -449,39 +458,89 @@ def guardarDireUsada(cte, direccion):
 
 
 # Funcion que verifica si el CTE ya se encuentra en la memoria
+# Funcion que verifica si el CTE ya se encuentra en la memoria
 def verificarValorCte(cte):
     tipo = getTipo(cte)
-    if tipo == "int" and cte in memoria_local.integers.values():
-        return True
-    elif tipo == "float" and cte in memoria_local.float.values():
-        return True
-    elif tipo == "string" and cte in memoria_local.string.values():
-        return True
-    elif tipo == "bool" and cte in memoria_local.booleanos.values():
-        return True
+    global memoCteInt
+    global memoCteFloat
+    global memoCteString
+    global memoCteBool
+    cteInt = 20000
+    cteFloat = 21000
+    cteString = 22000
+    cteBool = 23000
+    if tipo == 'int':
+        if memoria_local.integers:
+            i = cteInt
+            while (i < memoCteInt):
+                if cte == memoria_local.integers[i]:
+                    return True
+                i += 1
+            return False
+        else:
+            return False
+    elif tipo == 'float':
+        if memoria_local.float:
+            i = cteFloat
+            while (i < memoCteFloat):
+                if cte == memoria_local.float[i]:
+                    return True
+                i += 1
+            return False
+        else:
+            return False
+    elif tipo == 'string':
+        if memoria_local.string:
+            i = cteString
+            while (i < memoCteString):
+                if cte == memoria_local.string[i]:
+                    return True
+                i += 1
+            return False
+        return False
+    elif tipo == 'bool':
+        if memoria_local.booleanos:
+            i = cteBool
+            while (i < memoCteBool):
+                if cte == memoria_local.booleanos[i]:
+                    return True
+                i += 1
+            return False
     else:
         return False
 
 
 # Funcion que obtiene la direccion de un CTE dado
 def getDireCte(cte):
+    global memoCteInt
+    global memoCteFloat
+    global memoCteString
+    global memoCteBool
+    cteInt = 20000
+    cteFloat = 21000
+    cteString = 22000
+    cteBool = 23000
     tipo = getTipo(cte)
     if tipo == 'int':
         for key, value in memoria_local.integers.items():
-            if cte == value:
-                return key
+            if (key >= cteInt) and (key < cteFloat):
+                if cte == value:
+                    return key
     elif tipo == 'float':
         for key, value in memoria_local.float.items():
-            if cte == value:
-                return key
+            if (key >= cteFloat) and (key < cteString):
+                if cte == value:
+                    return key
     elif tipo == 'string':
         for key, value in memoria_local.string.items():
-            if cte == value:
-                return key
+            if (key >= cteString) and (key < cteBool):
+                if cte == value:
+                    return key
     elif tipo == 'bool':
         for key, value in memoria_local.booleanos.items():
-            if cte == value:
-                return key
+            if (key >= cteBool) and (key < cteBool + 1000):
+                if cte == value:
+                    return key
     return "DIRECCION INVALIDA"
 
 # ###############FUNCIONES ANTIGUAS################
@@ -499,6 +558,7 @@ def show():
     pprint(memoria_local.booleanos, width=1)
 
 
+# Funcion que imprime los temporales
 def showTemps():
     print("TEMPORALES FUNCIONES")
     print("integers")
@@ -511,6 +571,8 @@ def showTemps():
     pprint(memoria_temp.booleanos)
 
 
+
+# Funcion que consigue el tipo de una direcciones solo dependiendo de esta misma
 def getTipoViaDireccion(direccion):
     if (direccion >= 20000 and direccion < 21000) or (direccion >= 9000 and direccion < 9100) or (direccion >= 20000 and direccion < 21000) or (direccion >= 5000 and direccion < 5100) or (direccion >= 85000 and direccion < 86000) or (direccion >= 43000 and direccion < 43100) or (direccion >= 8000 and direccion < 8100):
         tipo = "int"
@@ -526,11 +588,13 @@ def getTipoViaDireccion(direccion):
         return tipo
 
 
+# Funcion que inserta el return en memoria
 def insertReturn(valor):
     global memoReturn
     memoria_local.booleanos[memoReturn] = valor
 
 
+# Funcion que retorna el valor de return en memoria
 def getReturn():
     global memoReturn
     memoria_local.booleanos[memoReturn]
