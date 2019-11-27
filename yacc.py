@@ -161,10 +161,7 @@ def p_modulo1(p):
 # Modulo que declara los parametros de la funcion
 def p_modulo1Aux(p):
     '''
-    modulo1Aux : INT ID modulo1Repe
-               | FLOAT ID modulo1Repe
-               | STRING ID modulo1Repe
-               | BOOL ID modulo1Repe
+    modulo1Aux : tipo ID modulo1Repe
     '''
     temp = memo.getVirtualDicLocal(p[1])
     master.insertIdToFunc(p[2], p[1], master.miIdFunciones, temp, True)

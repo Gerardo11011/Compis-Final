@@ -537,27 +537,6 @@ def getDireCte(cte):
             i += 1
     return "DIRECCION INVALIDA"
 
-
-
-    # tipo = getTipo(cte)
-    # if tipo == 'int':
-    #     for key, value in memoria_local.integers.items():
-    #         if cte == value:
-    #             return key
-    # elif tipo == 'float':
-    #     for key, value in memoria_local.float.items():
-    #         if cte == value:
-    #             return key
-    # elif tipo == 'string':
-    #     for key, value in memoria_local.string.items():
-    #         if cte == value:
-    #             return key
-    # elif tipo == 'bool':
-    #     for key, value in memoria_local.booleanos.items():
-    #         if cte == value:
-    #             return key
-    # return "DIRECCION INVALIDA"
-
 # ###############FUNCIONES ANTIGUAS################
 
 
