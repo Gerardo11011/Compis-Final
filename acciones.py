@@ -19,7 +19,9 @@ esArreglo = False
 contVer = 0
 
 
-# Función para obtener el tipo de un valor ingresado por el usuario.
+# Función que recibe un valor ingresado por el usuario y
+# regresa el tipo de este.
+# Es utilizado por miInput para realizar asignación de valores de acuerdo a su tipo.
 def get_type(input_data):
     try:
         return type(literal_eval(input_data))
@@ -28,9 +30,11 @@ def get_type(input_data):
         return str
 
 
-# Función para saber si un operando guarda una dirección.
+# Función que recibe un operando y regresa la dirección de que este guarda,
+# si es que guarda una.
+# Es utilizado por todas las funciones de ejecución de memoria en caso de que
+# haya un arreglo dentro de las operaciones
 def tieneDireccion(operand):
-    # print(operand)
     operand = str(operand)
     if operand[0] == '(':
         newOp = operand[1:len(operand)-1]
@@ -41,11 +45,16 @@ def tieneDireccion(operand):
         return int(operand)
 
 
-# Funciones de ejecución.
+# ########################## FUNCIONES DE EJECUCIÓN ##########################
+
+# Función que recibe un cuádruplo y regresa el número de cuádruplo al que
+# deberá saltar.
 def goto(quadr, i):
     return quadr.result
 
 
+# Función que recibe un cuádruplo, actualiza el valor obtenido en la dirección
+# y regresa el número de cuádruplo al que deberá saltar, en caso de hacerlo.
 def gotof(quadr, i):
     left_op = tieneDireccion(quadr.left_operand)
     value = memo.getValor(left_op, None)
@@ -55,6 +64,8 @@ def gotof(quadr, i):
         return i + 1
 
 
+# Función que recibe un cuádruplo, crea la tabla de variables de la función
+# llamada y regresa el siguiente número de cuádruplo.
 def era(quadr, i):
     global dir_param
     global tipo_param
@@ -87,6 +98,8 @@ def era(quadr, i):
     return i + 1
 
 
+# Función que recibe un cuádruplo, actualiza los parámetros de la funcióno
+# llamada y regresa el siguiente número de cuádruplo.
 def param(quadr, i):
     global dir_param
     global tipo_param
@@ -98,6 +111,8 @@ def param(quadr, i):
     return i + 1
 
 
+# Función que recibe un cuádruplo y regresa el número de cuádruplo al que
+# deberá saltar, dependiendo de si es recursiva o no.
 def gosub(quadr, i):
     global quadNo
     global esPrimera
@@ -110,6 +125,8 @@ def gosub(quadr, i):
     return quadr.result
 
 
+# Función que recibe un cuádruplo, actualiza el valor del return, borra
+# el bloque de memoria y regresa el siguiente número de cuádruplo.
 def miReturn(quadr, i):
     global funcNo
     global miFunc
@@ -134,9 +151,10 @@ def miReturn(quadr, i):
     return quadNo + 1
 
 
+# Función que recibe un cuádruplo, elimina el bloque de memoria utilizado
+# por esa función y regresa el siguiente número de cuádruplo.
 def endproc(quadr, i):
     global funcNo
-    memo.show()
     id_funcion = quadr.result
     funcNo.remove(id_funcion)
     if funcNo.count(id_funcion) <= 0:
@@ -160,6 +178,8 @@ def endproc(quadr, i):
     return quadNo + 1
 
 
+# Función que recibe un cuádruplo, realiza la operación de suma entre
+# operandos, actualiza el valor y regresa el siguiente número de cuádruplo.
 def plus(quadr, i):
     global esArreglo
     global contVer
@@ -176,6 +196,8 @@ def plus(quadr, i):
     return i + 1
 
 
+# Función que recibe un cuádruplo, realiza la operación de resta entre
+# operandos, actualiza el valor y regresa el siguiente número de cuádruplo.
 def minus(quadr, i):
     left_op = tieneDireccion(quadr.left_operand)
     right_op = tieneDireccion(quadr.right_operand)
@@ -184,6 +206,8 @@ def minus(quadr, i):
     return i + 1
 
 
+# Función que recibe un cuádruplo, realiza la operación de multiplicación entre
+# operandos, actualiza el valor y regresa el siguiente número de cuádruplo.
 def mult(quadr, i):
     left_op = tieneDireccion(quadr.left_operand)
     right_op = tieneDireccion(quadr.right_operand)
@@ -192,6 +216,8 @@ def mult(quadr, i):
     return i + 1
 
 
+# Función que recibe un cuádruplo, realiza la operación de división entre
+# operandos, actualiza el valor y regresa el siguiente número de cuádruplo.
 def div(quadr, i):
     left_op = tieneDireccion(quadr.left_operand)
     right_op = tieneDireccion(quadr.right_operand)
@@ -200,6 +226,8 @@ def div(quadr, i):
     return i + 1
 
 
+# Función que recibe un cuádruplo, realiza la operación de asignación entre
+# operandos, actualiza el valor y regresa el siguiente número de cuádruplo.
 def assign(quadr, i):
     left_op = tieneDireccion(quadr.left_operand)
     resDir = tieneDireccion(quadr.result)
@@ -208,6 +236,9 @@ def assign(quadr, i):
     return i + 1
 
 
+# Funciones que reciben un cuádruplo, realizan la operación de comparación
+# entre operandos, actualizan el valor y regresan el siguiente número de
+# cuádruplo.
 def gt(quadr, i):
     left_op = tieneDireccion(quadr.left_operand)
     right_op = tieneDireccion(quadr.right_operand)
@@ -256,6 +287,8 @@ def ne(quadr, i):
     return i + 1
 
 
+# Funciones que reciben un cuádruplo, realizan la operación lógica entre
+# operandos, actualizan el valor y regresan el siguiente número de cuádruplo.
 def andOp(quadr, i):
     left_op = tieneDireccion(quadr.left_operand)
     right_op = tieneDireccion(quadr.right_operand)
@@ -272,6 +305,8 @@ def orOp(quadr, i):
     return i + 1
 
 
+# Función que recibe un cuádruplo, pide un valor al usuario, obtiene su tipo,
+# actualiza el valor en memoria y regresa el siguiente número de cuádruplo.
 def miInput(quadr, i):
     resDir = tieneDireccion(quadr.result)
     valor = input()
@@ -290,16 +325,20 @@ def miInput(quadr, i):
     return i + 1
 
 
+# Función que recibe un cuádruplo, muestra el resultado en pantalla y regresa
+# el siguiente número de cuádruplo.
 def miOutput(quadr, i):
     resDir = tieneDireccion(quadr.result)
     if str(type(memo.getValor(resDir, None))) == "<class 'str'>":
-        valor = memo.getValor(resDir, None).replace('"', ' ')
+        valor = memo.getValor(resDir, None).replace('"', '')
         print(valor)
     else:
         print(memo.getValor(resDir, None))
     return i + 1
 
 
+# Función que recibe un cuádruplo, verifica que el operando izquierdo esté
+# dentro de los límites del arreglo y regresa el siguiente número de cuádruplo.
 def ver(quadr, i):
     global esArreglo
     global contVer
@@ -314,7 +353,8 @@ def ver(quadr, i):
         sys.exit()
 
 
-# Switch para ejecutar una función dependiendo del operador del cuádruplo.
+# Función que recibe un cuádruplo, manda ejecutar una función dependiendo del
+# operador y regresa el númro de cuádruplo que recibe de la función.
 def switcher(quadr, i):
     switch = {
         'goto': goto,
@@ -354,6 +394,8 @@ def switcher(quadr, i):
     return i + 1
 
 
+# Función que itera sobre la pila de cuádruplos y manda llamar al switcher para
+# ejecutar la máquina virtual.
 def inicio():
     i = 0
     while Quad[i].operator != 'end':

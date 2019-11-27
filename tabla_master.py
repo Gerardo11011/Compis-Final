@@ -4,12 +4,12 @@ import sys
 import estructuras as tabla
 import memoria as memo
 
-# Tabla de simbolos y arreglo con id de funciones
+# Tabla de símbolos y arreglos con id de funciones.
 simbolos = {}
 funciones = []
 arrParam = []
 
-# Declaración de variables globales
+# Declaración de variables globales.
 miTipo = None
 miTipoAux = None
 miID = None
@@ -30,7 +30,7 @@ tamaVec = 0
 esVoid = False
 
 
-# Funcion que inicializa la tabla con funciones, global, y main
+# Función que inicializa la tabla con funciones, global, y main.
 def insert(id, type_data):
     temp = tabla.tabla_local(type_data, {})
     if len(simbolos) >= 1 and not itFoundIdFunc(id):
@@ -39,7 +39,7 @@ def insert(id, type_data):
         simbolos[id] = temp
 
 
-# Funcion que revisa que no haya dos funciones con el mismo nombre
+# Función que revisa que no haya dos funciones con el mismo nombre.
 def itFoundIdFunc(id):
     for Keys in simbolos:
         if id == Keys:
@@ -49,7 +49,7 @@ def itFoundIdFunc(id):
     return False
 
 
-# Funcion que valida si no hay una variable global con el mismo id ya definido
+# Función que valida si no hay una variable global con el mismo id ya definido.
 def itFoundGlobalVar(id):
     if "global" in simbolos.keys():
         for keys in simbolos["global"].value:
@@ -60,7 +60,8 @@ def itFoundGlobalVar(id):
         return False
 
 
-# Funcion que comprueba que no se puedan volver a declarar dos variables con el mismo ID
+# Función que comprueba que no se puedan volver a declarar dos variables
+# con el mismo ID.
 def itFoundLocal(id, id_funcion):
     aux = False
     if id in simbolos[id_funcion].value:
@@ -69,12 +70,16 @@ def itFoundLocal(id, id_funcion):
         sys.exit()
     return aux
 
+
 def volverFloat(dato, id, id_funcion):
     temp = str(type(dato))
     if simbolos[id_funcion].value[id].type_data == 'float' and temp == "<class 'int'>":
         temp = "<class 'float'>"
     return temp
-# Funcion que valida que el valor ingresado y el tipo de la variable sean iguales
+
+
+# Función que valida que el valor ingresado y el tipo de la variable
+# sean iguales.
 def validate(dato, id, id_funcion):
     temp = volverFloat(dato, id, id_funcion)
     aux = None
@@ -109,7 +114,7 @@ def validate(dato, id, id_funcion):
         sys.exit()
 
 
-# Funcion que inserta las variables en su respectiva tabla local
+# Función que inserta las variables en su respectiva tabla local.
 def insertIdToFunc(id, type_data, id_funcion, direccion, param=None, dimensionada=0):
     if len(simbolos[id_funcion].value) >= 1 and not itFoundGlobalVar(id) and not itFoundLocal(id, id_funcion):
         simbolos[id_funcion].value[id] = tabla.tabla_local(type_data, None, direccion, param, dimensionada)
@@ -117,7 +122,7 @@ def insertIdToFunc(id, type_data, id_funcion, direccion, param=None, dimensionad
         simbolos[id_funcion].value[id] = tabla.tabla_local(type_data, None, direccion, param, dimensionada)
 
 
-# Funcion que actualiza el valor de una variable
+# Función que actualiza el valor de una variable.
 def updateIdInFunc(id, id_funcion, valor):
     if validate(valor, id, id_funcion):
         temp = str(type(valor))
@@ -128,22 +133,25 @@ def updateIdInFunc(id, id_funcion, valor):
             simbolos[id_funcion].value[id].value = valor
 
 
-# Funcion que actualiza el valor de una variable
+# Función que actualiza el valor de una variable.
 def getDireccion(id, id_funcion):
     dir = simbolos[id_funcion].value[id].direccion
     return dir
 
-
+# Función que obtiene el tipo de una variable dentro de una función.
 def getType(id, id_funcion):
     type = simbolos[id_funcion].value[id].type_data
     return type
 
 
+# Función que obtiene el valor de una variable dentro de una función.
 def getValor(id, id_funcion):
     valor = simbolos[id_funcion].value[id].value
     return valor
 
 
+# Función que retorna una lista con las variables que son parámetros
+# dentro de la función.
 def getidParam(id_funcion):
     temp = []
     for id in simbolos[id_funcion].value:
@@ -152,7 +160,7 @@ def getidParam(id_funcion):
     return temp
 
 
-# Funcion que imprime la tabla master
+# Función que imprime la tabla master.
 def show():
     for keys in simbolos:
         print("ID FUNCION:", keys, " TYPE DATA:", simbolos[keys].type_data)
@@ -162,6 +170,8 @@ def show():
         print("")
 
 
+# Función que retorna el valor de una variable si esta se encuentra declara,
+# en caso contrario regresa el id.
 def returnValue(id, id_funcion):
     if id in simbolos[id_funcion].value.keys():
         temp = simbolos[id_funcion].value[id].value
@@ -170,6 +180,8 @@ def returnValue(id, id_funcion):
         return id
 
 
+# Función que verifica si la variable ya ha sido previamente declarada
+# como global.
 def isVarGlobal(id):
     if "global" in simbolos:
         if id in simbolos["global"].value:

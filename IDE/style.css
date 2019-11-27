@@ -1,0 +1,25 @@
+.list-group{
+    height: 550px;
+    margin-bottom: 10px;
+    overflow:scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+body{
+background-color: black;
+overflow: hidden;
+}
+
+img {
+    display: block;
+    max-width: 30px;
+    height: auto;
+}
+
+.large-div {
+    height:500px;
+  }
+
+.short-div1 {
+    height:300px;
+}

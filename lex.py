@@ -130,8 +130,11 @@ x = (input('''¿Qué archivo desea leer?
     3.- Exito3
     4.- Exito4
     5.- Exito5
+    6.- Exito6
     f.- Fibonacci
     fac.- Factorial
+    s.- Sort
+    find.- Find
 '''))
 if x == "1":
     prueba = open('Exito1.txt', "r")
@@ -153,6 +156,10 @@ elif x == "5":
     prueba = open('Exito5.txt', "r")
     archivo = 'Exito5.txt'
     entrada = prueba.read()
+elif x == "6":
+    prueba = open('Exito6.txt', "r")
+    archivo = 'Exito6.txt'
+    entrada = prueba.read()
 elif x == 'f':
     prueba = open('fibonacchi.txt', "r")
     archivo = 'fibonacchi.txt'
@@ -160,6 +167,14 @@ elif x == 'f':
 elif x == 'fac':
     prueba = open('Factorial.txt', "r")
     archivo = 'Factorial.txt'
+    entrada = prueba.read()
+elif x == 's':
+    prueba = open('Sort.txt', "r")
+    archivo = 'Sort.txt'
+    entrada = prueba.read()
+elif x == 'find':
+    prueba = open('Find.txt', "r")
+    archivo = 'Find.txt'
     entrada = prueba.read()
 else:
     print("ERROR")

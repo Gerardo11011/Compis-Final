@@ -161,10 +161,7 @@ def p_modulo1(p):
 # Modulo que declara los parametros de la funcion
 def p_modulo1Aux(p):
     '''
-    modulo1Aux : INT ID modulo1Repe
-               | FLOAT ID modulo1Repe
-               | STRING ID modulo1Repe
-               | BOOL ID modulo1Repe
+    modulo1Aux : tipo ID modulo1Repe
     '''
     temp = memo.getVirtualDicLocal(p[1])
     master.insertIdToFunc(p[2], p[1], master.miIdFunciones, temp, True)
@@ -509,7 +506,6 @@ def p_push_cte(p):
         dir = memo.getVirtualCte(tipo)
         memo.updateCteInMemory(p[-1], dir, tipo)
     direccion = memo.getDireCte(p[-1])
-    print(direccion)
     quad.pushCte(p[-1], direccion, tipo)
 
 
@@ -588,23 +584,35 @@ def p_array1(p):
 def p_arrayTres(p):
     "arrayTres :"
     global idVector
-    if master.esFuncion:
-        tam = master.simbolos[master.miIdFunciones].value[idVector].dimensionada
-    elif master.esMain:
-        tam = master.simbolos['main'].value[idVector].dimensionada
-    else:
-        tam = master.simbolos['global'].value[idVector].dimensionada
+    if 'global' in master.simbolos:
+        if idVector in master.simbolos['global'].value:
+            tam = master.simbolos['global'].value[idVector].dimensionada
+    if master.miIdFunciones in master.simbolos:
+        if idVector in master.simbolos[master.miIdFunciones].value:
+            tam = master.simbolos[master.miIdFunciones].value[idVector].dimensionada
+    if 'main' in master.simbolos:
+        if idVector in master.simbolos['main'].value:
+            tam = master.simbolos['main'].value[idVector].dimensionada
     quad.arregloTres(tam)
 
 
 def p_arrayCinco(p):
     "arrayCinco :"
-    if master.esMain:
-        base = master.simbolos['main'].value[p[-5]].direccion
-        quad.arregloCinco(True, base)
-    elif master.esFuncion:
-        base = master.simbolos[master.miIdFunciones].value[p[-5]].direccion
-        quad.arregloCinco(False, base)
+    if 'global' in master.simbolos:
+        if idVector in master.simbolos['global'].value:
+            base = master.simbolos['global'].value[p[-5]].direccion
+            tipo = master.simbolos['global'].value[p[-5]].type_data
+            quad.arregloCinco(True, base, tipo)
+    if 'main' in master.simbolos:
+        if idVector in master.simbolos['main'].value:
+            base = master.simbolos['main'].value[p[-5]].direccion
+            tipo = master.simbolos['main'].value[p[-5]].type_data
+            quad.arregloCinco(True, base, tipo)
+    if master.miIdFunciones in master.simbolos:
+        if idVector in master.simbolos[master.miIdFunciones].value:
+            base = master.simbolos[master.miIdFunciones].value[p[-5]].direccion
+            tipo = master.simbolos[master.miIdFunciones].value[p[-5]].type_data
+            quad.arregloCinco(False, base, tipo)
 
 
 def p_loop(p):
@@ -735,9 +743,9 @@ print("")
 quad.show()
 # print("")
 # print("")
-print("VARS TABLE")
+# print("VARS TABLE")
 # print("")
-master.show()
+# master.show()
 # print("")
 # print("MEMORIA")
 # print("")

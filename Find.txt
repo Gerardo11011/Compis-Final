@@ -1,0 +1,41 @@
+begin
+
+string arr[5];
+
+func int find(int size) {
+  int i;
+  string encontrar;
+  encontrar = "Nada";
+  i = 0;
+
+  output("Frase a encontrar:");
+  input(encontrar);
+
+  loop(i < size) {
+    if(arr[i] == encontrar) {
+      return i;
+    }
+    i = i + 1;
+  }
+  return 6;
+}
+
+main {
+  int indice;
+
+  arr[0] = "Nel";
+  arr[1] = "Tampoco";
+  arr[2] = "Si jala";
+  arr[3] = "Ya no";
+  arr[4] = "Ya fue :(";
+
+  indice = find(5);
+
+  output(indice);
+
+  if(indice >= 0 and indice < 5) {
+    output(arr[indice]);
+  }
+}
+
+end
