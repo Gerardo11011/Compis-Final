@@ -1,7 +1,10 @@
+// Oscar Guevara  A01281577
+// Gerardo Ponce  A00818934
+
 
 $("#form1").val("begin\n\tmain{\n\t\n\t}\nend");
 $("#run").click(function(){
-    //str que se mandara al compi
+    //String que se mandará al compilador.
     var str = $("#form1").val();
 
     alert("HOLA");
@@ -56,25 +59,25 @@ $("#form1").click( function(){
 });
 
 $("#if").click(function(){
-    //string del primer form
+    //String del form1.
     var str = $("#form1").val();
-    //un substring hasta donde esta el cursor
+    //Substring hasta donde está el cursor.
     var strN = str.substring(0, cursorPosition);
-    //substring desde donde esta el cursor hasta el final
+    //Substring desde donde está el cursor hasta el final.
     var strRest = str.substring(cursorPosition, str.length);
-    //inserta el codigo entre los 2 substrings y los pone en el form
+    //Inserta el código entre los 2 substrings y los pone en el form.
     var strF = strN + "\n\t"+ getIf() + strRest;
     $("#form1").val(strF);
 });
 
 $("#else").click(function(){
-    //string del primer form
+    //String del form1.
     var str = $("#form1").val();
-    //un substring hasta donde esta el cursor
+    //Substring hasta donde está el cursor.
     var strN = str.substring(0, cursorPosition);
-    //substring desde donde esta el cursor hasta el final
+    //Substring desde donde está el cursor hasta el final.
     var strRest = str.substring(cursorPosition, str.length);
-    //inserta el codigo entre los 2 substrings y los pone en el form
+    //Inserta el código entre los 2 substrings y los pone en el form.
     var strF = strN + "\n\t"+ getElse() + strRest;
     $("#form1").val(strF);
 });

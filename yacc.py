@@ -198,17 +198,6 @@ def p_modulo3(p):
 
 def p_insertReturn(p):
     "insertReturn :"
-    # if master.returnValor != "false" or master.returnValor != 'true':
-    #     master.returnValor = master.returnValue(master.returnValor, master.miIdFunciones)
-    #     temp = memo.getVirtualDicLocal(master.miFuncType)
-    #     master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, temp)
-    #     master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
-    #     memo.insertReturn(master.returnValor)
-    # else:
-    #     temp = memo.getVirtualDicLocal(master.miFuncType)
-    #     master.insertIdToFunc("return", master.miFuncType, master.miIdFunciones, temp)
-    #     master.updateIdInFunc("return", master.miIdFunciones, master.returnValor)
-    #     memo.insertReturn(master.returnValor)
     quad.miReturn()
 # ########################### ACABA FUNCIONES  ##############################
 
@@ -238,6 +227,8 @@ def p_vars(p):
     '''
 
 
+# Inserta las variables en su tabla correspondiente con todos sus atributos,
+# incluyendo el de la dimensión si es que son vectores.
 def p_vars1(p):
     '''
     vars1 : ID
@@ -248,17 +239,14 @@ def p_vars1(p):
     global varVector
     if p[1] not in varVector.keys():
         if master.esFuncion:
-            # memo.memory_dir = memo.insertLocal(master.miTipo)
             temp = memo.getVirtualDicLocal(master.miTipo)
             master.insertIdToFunc(p[1], master.miTipo, master.miIdFunciones, temp)
         elif master.esMain:
-            # memo.memory_dir = memo.insertLocal(master.miTipo)
             dir = memo.getVirtualDicMain(master.miTipo)
             master.insertIdToFunc(p[1], master.miTipo, "main", dir)
             memo.insertLocalInMemory(master.miTipo, dir)
             memo.inicInMemory(p[1], master.miTipo, "main", dir)
         elif master.esGlobal:
-            # memo.memory_dir = memo.insertGlobal(master.miTipo)
             dir = memo.getVirtualDicGlobal(master.miTipo)
             master.insertIdToFunc(p[1], master.miTipo, "global", dir)
             memo.insertLocalInMemory(master.miTipo, dir)
@@ -333,7 +321,6 @@ def p_pop_assign(p):
             master.updateIdInFunc(p[-5], "global", master.miValor)
             dir = master.getDireccion(p[-5], "global")
             type = master.getType(p[-5], "global")
-            #memo.updateLocalInMemory(master.miValor, dir, type)
         elif master.esFuncion:
             master.updateIdInFunc(p[-5], master.miIdFunciones, master.miValor)
             type = master.getType(p[-5], master.miIdFunciones)
@@ -341,13 +328,11 @@ def p_pop_assign(p):
             master.updateIdInFunc(p[-5], "main", master.miValor)
             dir = master.getDireccion(p[-5], "main")
             type = master.getType(p[-5], "main")
-            #memo.updateLocalInMemory(master.miValor, dir, type)
     else:
         if master.isVarGlobal(p[-4]):
             master.updateIdInFunc(p[-4], "global", master.miValor)
             dir = master.getDireccion(p[-4], "global")
             type = master.getType(p[-4], "global")
-            #memo.updateLocalInMemory(master.miValor, dir, type)
         elif master.esFuncion:
             master.updateIdInFunc(p[-4], master.miIdFunciones, master.miValor)
             type = master.getType(p[-4], master.miIdFunciones)
@@ -355,7 +340,6 @@ def p_pop_assign(p):
             master.updateIdInFunc(p[-4], "main", master.miValor)
             dir = master.getDireccion(p[-4], "main")
             type = master.getType(p[-4], "main")
-            #memo.updateLocalInMemory(master.miValor, dir, type)
 
 
 def p_pop_assignFunc(p):

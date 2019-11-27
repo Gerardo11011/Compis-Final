@@ -94,7 +94,6 @@ def era(quadr, i):
                     valor = master.simbolos[quadr.result].value[id].value
                     memo.insertLocalInMemory(tipo, direccion)
                     memo.updateLocalInMemory(valor, direccion, tipo)
-
     return i + 1
 
 
