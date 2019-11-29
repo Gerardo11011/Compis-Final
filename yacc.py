@@ -641,25 +641,6 @@ def p_arrayCinco(p):
             quad.arregloCinco(False, base, tipo)
 
 
-# def p_matrizUno(p):
-#     "matrizUno :"
-#     if 'global' in master.simbolos:
-#         if idVector in master.simbolos['global'].value:
-#             tam = master.simbolos['global'].value[idVector].dimensionada
-#             tam2 = master.simbolos['global'].value[idVector].matriz
-#             quad.matrizUno(True, tam, tam2)
-#     if master.miIdFunciones in master.simbolos:
-#         if idVector in master.simbolos[master.miIdFunciones].value:
-#             tam = master.simbolos[master.miIdFunciones].value[idVector].dimensionada
-#             tam2 = master.simbolos['global'].value[idVector].matriz
-#             quad.matrizUno(False, tam, tam2)
-#     if 'main' in master.simbolos:
-#         if idVector in master.simbolos['main'].value:
-#             tam = master.simbolos['main'].value[idVector].dimensionada
-#             tam2 = master.simbolos['global'].value[idVector].matriz
-#             quad.matrizUno(True, tam, tam2)
-
-
 def p_matrizDos(p):
     "matrizDos :"
     if 'global' in master.simbolos:
@@ -808,14 +789,14 @@ print("CUADRUPLOS")
 print("")
 quad.show()
 # print("")
-print("")
-print("VARS TABLE")
-print("")
-master.show()
-print("")
-# print("MEMORIA")
 # print("")
-# memo.show()
+# print("VARS TABLE")
+# print("")
+# master.show()
+# print("")
+# # print("MEMORIA")
+# # print("")
+# # memo.show()
 
 print("\n",)
 print("*************************************")

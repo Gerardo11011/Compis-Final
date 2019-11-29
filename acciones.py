@@ -226,19 +226,10 @@ def minus(quadr, i):
 # Función que recibe un cuádruplo, realiza la operación de multiplicación entre
 # operandos, actualiza el valor y regresa el siguiente número de cuádruplo.
 def mult(quadr, i):
-    global esArreglo
-    #global esMatriz
     left_op = tieneDireccion(quadr.left_operand)
     right_op = tieneDireccion(quadr.right_operand)
-
-    if quadr.right_operand < 5000:
+    if right_op < 5000:
         res = memo.getValor(left_op, None) * right_op
-
-    # if esArreglo:
-    #     res = memo.getValor(quadr.left_operand, None) * quadr.right_operand
-    #     esMatriz = True
-    #     esArreglo = False
-
     else:
         res = memo.getValor(left_op, None) * memo.getValor(right_op, None)
     memo.updateLocalInMemory(res, quadr.result)
