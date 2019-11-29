@@ -1,28 +1,22 @@
 begin
 
-func void simona(){
-  int prueba[10];
-  float jsdj[29];
-  int hsa;
-  hsa = 763;
-}
+int matri[3,3];
 
 main {
-  float a, b, c, d;
-  int hola[6];
-  float z;
-  string jo, pi;
-  a = 4.0;
-  b = 5.0;
-  c = 2.0;
-  d = 1.0;
-  d = (a + b * (3.0 / 2.0) + 9.0 * 1.0) / ((c + d) - a * (b * b)) ;
-  z = (9 * 100 + 5 - 2 / 1000) - 1 / (1909 + 500 - 12 / 2) ;
-  jo = "Oscar el" ;
-  pi = "seneval Guevara";
-  output(jo + pi);
+  int ahsd, myvector[10];
+  ahsd = 7;
 
-  output(-1 - (-1) * (+1));
+  matri[2,2] = 230;
+
+  matri[1,1] = 1;
+
+  myvector[2] = 1;
+
+  matri[1,2] = myvector[2];
+
+  myvector[5] = 1;
+
+  output(matri[matri[1,1] * 2, matri[1,2] + matri[1,1]]);
 }
 
 end

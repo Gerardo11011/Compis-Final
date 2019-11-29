@@ -20,7 +20,9 @@ idVector = None
 prueba = open(archivo, "r")
 entrada = prueba.read()
 idTemporal = None
+
 varVector = {}
+varMatriz = {}
 
 
 # Declaración de funciones.
@@ -168,7 +170,6 @@ def p_modulo1Aux(p):
         master.updateIdInFunc(p[2], master.miIdFunciones, 'false')
 
 
-
 def p_modulo1Repe(p):
     '''
     modulo1Repe : COMMA modulo1Aux
@@ -228,9 +229,12 @@ def p_vars1(p):
           | ID COMMA vars1
           | ID LCORCH variableDim CTE_I tamaVector RCORCH
           | ID LCORCH variableDim CTE_I tamaVector RCORCH COMMA vars1
+          | ID LCORCH variableDim CTE_I COMMA CTE_I tamaMatriz RCORCH
+          | ID LCORCH variableDim CTE_I COMMA CTE_I tamaMatriz RCORCH COMMA vars1
     '''
     global varVector
-    if p[1] not in varVector.keys():
+    global varMatriz
+    if p[1] not in varVector.keys() and p[1] not in varMatriz.keys():
         if master.esFuncion:
             temp = memo.getVirtualDicLocal(master.miTipo)
             master.insertIdToFunc(p[1], master.miTipo, master.miIdFunciones, temp)
@@ -244,7 +248,7 @@ def p_vars1(p):
             master.insertIdToFunc(p[1], master.miTipo, "global", dir)
             memo.insertLocalInMemory(master.miTipo, dir)
             memo.inicInMemory(p[1], master.miTipo, "global", dir)
-    else:
+    elif p[1] in varVector.keys() and p[4] > 0:
         if master.esFuncion:
             dir = memo.getDirecVectorFunc(master.miTipo, varVector[p[1]])
             master.insertIdToFunc(p[1], master.miTipo, master.miIdFunciones, dir, None, varVector[p[1]])
@@ -258,6 +262,23 @@ def p_vars1(p):
             memo.copyVectorToExe(dir, varVector[p[1]], master.miTipo)
         master.esVector = False
         varVector.pop(p[1], None)
+    elif p[1] in varMatriz.keys() and p[4] > 0 and p[6] > 0:
+        tama = varMatriz[p[1]][0] * varMatriz[p[1]][1]
+        if master.esFuncion:
+            dir = memo.getDirecVectorFunc(master.miTipo, tama)
+            master.insertIdToFunc(p[1], master.miTipo, master.miIdFunciones, dir, None, varMatriz[p[1]][0], varMatriz[p[1]][1])
+        elif master.esMain:
+            dir = memo.getDirecVectorMain(master.miTipo, tama)
+            master.insertIdToFunc(p[1], master.miTipo, "main", dir, None, varMatriz[p[1]][1], varMatriz[p[1]][0])
+            memo.copyVectorToExe(dir, tama, master.miTipo)
+        elif master.esGlobal:
+            dir = memo.getDirecVecorGlobal(master.miTipo, tama)
+            master.insertIdToFunc(p[1], master.miTipo, "global", dir, None, varMatriz[p[1]][1], varMatriz[p[1]][0])
+            memo.copyVectorToExe(dir, tama, master.miTipo)
+        varMatriz.pop(p[1], None)
+    else:
+        print("ERROR: No se puede declarar una matriz o vector con tamaño 0.")
+        sys.exit()
 
 
 def p_tamaVector(p):
@@ -265,6 +286,14 @@ def p_tamaVector(p):
     global varVector
     varVector[master.esVector] = p[-1]
     master.tamaVec = p[-1]
+
+
+def p_tamaMatriz(p):
+    "tamaMatriz :"
+    global varMatriz
+    tama = [p[-1], p[-3]]
+    varMatriz[master.esVector] = tama
+    master.tamaVec = p[-1] * p[-3]
 
 
 def p_variableDim(p):
@@ -290,7 +319,7 @@ def p_bloque(p):
            | lectura
            | escritura
            | loop
-           | funcion
+           | funcion SEMICOLON
            | modulo3
     '''
 
@@ -299,10 +328,10 @@ def p_asignacion(p):
     '''
     asignacion : ID push_id EQUAL push_poper logico pop_assign SEMICOLON
                | ID push_id EQUAL push_poper array pop_assign SEMICOLON
-               | ID push_id EQUAL push_poper funcion pop_assignFunc
+               | ID push_id EQUAL push_poper funcion pop_assignFunc SEMICOLON
                | array EQUAL push_poper logico pop_assign SEMICOLON
                | array EQUAL push_poper array pop_assign SEMICOLON
-               | array EQUAL push_poper funcion pop_assignFunc
+               | array EQUAL push_poper funcion pop_assignFunc SEMICOLON
     '''
 
 
@@ -459,6 +488,7 @@ def p_var_cte(p):
             | TRUE push_cte
             | FALSE push_cte
             | array
+            | funcion
     '''
     master.returnValor = p[1]
     if len(p) == 2:
@@ -527,28 +557,23 @@ def p_pop_io(p):
 
 def p_array(p):
     '''
-    array : ID LCORCH arrayDos array1 RCORCH arrayCinco
+    array : ID LCORCH arrayDos exp arrayTres array1
     '''
     p[0] = p[1]
+
+
+def p_array1(p):
+    '''
+    array1 : RCORCH arrayCinco
+           | COMMA exp matrizDos RCORCH arrayCinco
+    '''
 
 
 def p_arrayDos(p):
     "arrayDos :"
     global idVector
-    if master.esFuncion:
-        quad.arregloDos(master.miIdFunciones, p[-2])
-    elif master.esMain:
-        quad.arregloDos('main', p[-2])
-    else:
-        quad.arregloDos('global', p[-2])
+    quad.arregloDos()
     idVector = p[-2]
-
-
-def p_array1(p):
-    '''
-    array1 : exp arrayTres
-           | exp arrayTres COMMA array1
-    '''
 
 
 def p_arrayTres(p):
@@ -556,33 +581,66 @@ def p_arrayTres(p):
     global idVector
     if 'global' in master.simbolos:
         if idVector in master.simbolos['global'].value:
-            tam = master.simbolos['global'].value[idVector].dimensionada
+            if master.simbolos['global'].value[idVector].matriz == 0:
+                tam = master.simbolos['global'].value[idVector].dimensionada
+                quad.arregloTres(tam)
+            else:
+                tam = master.simbolos['global'].value[idVector].dimensionada
+                tam2 = master.simbolos['global'].value[idVector].matriz
+                quad.matrizUno(True, tam, tam2)
     if master.miIdFunciones in master.simbolos:
         if idVector in master.simbolos[master.miIdFunciones].value:
-            tam = master.simbolos[master.miIdFunciones].value[idVector].dimensionada
+            if master.simbolos[master.miIdFunciones].value[idVector].matriz == 0:
+                tam = master.simbolos[master.miIdFunciones].value[idVector].dimensionada
+                quad.arregloTres(tam)
+            else:
+                tam = master.simbolos[master.miIdFunciones].value[idVector].dimensionada
+                tam2 = master.simbolos[master.miIdFunciones].value[idVector].matriz
+                quad.matrizUno(True, tam, tam2)
     if 'main' in master.simbolos:
         if idVector in master.simbolos['main'].value:
-            tam = master.simbolos['main'].value[idVector].dimensionada
-    quad.arregloTres(tam)
+            if master.simbolos['main'].value[idVector].matriz == 0:
+                tam = master.simbolos['main'].value[idVector].dimensionada
+                quad.arregloTres(tam)
+            else:
+                tam = master.simbolos['main'].value[idVector].dimensionada
+                tam2 = master.simbolos['main'].value[idVector].matriz
+                quad.matrizUno(True, tam, tam2)
 
 
 def p_arrayCinco(p):
     "arrayCinco :"
     if 'global' in master.simbolos:
         if idVector in master.simbolos['global'].value:
-            base = master.simbolos['global'].value[p[-5]].direccion
-            tipo = master.simbolos['global'].value[p[-5]].type_data
+            base = master.simbolos['global'].value[idVector].direccion
+            tipo = master.simbolos['global'].value[idVector].type_data
             quad.arregloCinco(True, base, tipo)
     if 'main' in master.simbolos:
         if idVector in master.simbolos['main'].value:
-            base = master.simbolos['main'].value[p[-5]].direccion
-            tipo = master.simbolos['main'].value[p[-5]].type_data
+            base = master.simbolos['main'].value[idVector].direccion
+            tipo = master.simbolos['main'].value[idVector].type_data
             quad.arregloCinco(True, base, tipo)
     if master.miIdFunciones in master.simbolos:
         if idVector in master.simbolos[master.miIdFunciones].value:
-            base = master.simbolos[master.miIdFunciones].value[p[-5]].direccion
-            tipo = master.simbolos[master.miIdFunciones].value[p[-5]].type_data
+            base = master.simbolos[master.miIdFunciones].value[idVector].direccion
+            tipo = master.simbolos[master.miIdFunciones].value[idVector].type_data
             quad.arregloCinco(False, base, tipo)
+
+
+def p_matrizDos(p):
+    "matrizDos :"
+    if 'global' in master.simbolos:
+        if idVector in master.simbolos['global'].value:
+            tam2 = master.simbolos['global'].value[idVector].matriz
+            quad.matrizDos(True, tam2)
+    if master.miIdFunciones in master.simbolos:
+        if idVector in master.simbolos[master.miIdFunciones].value:
+            tam2 = master.simbolos['global'].value[idVector].matriz
+            quad.matrizDos(False, tam2)
+    if 'main' in master.simbolos:
+        if idVector in master.simbolos['main'].value:
+            tam2 = master.simbolos['global'].value[idVector].matriz
+            quad.matrizDos(True, tam2)
 
 
 def p_loop(p):
@@ -608,7 +666,7 @@ def p_loop3(p):
 
 def p_funcion(p):
     '''
-    funcion : ID getParamId LPAREN funcionDos funcion1 RPAREN paramFalse funcionSeis SEMICOLON
+    funcion : ID getParamId LPAREN funcionDos funcion1 RPAREN paramFalse funcionSeis push_funcion
     '''
     # Condiciones que verifican si la recursividad cumple con los requisitos y desde donde es llamada la funcion
     if master.contadorDatosPasados < master.simbolos[p[2]].value["PARAMCANTI"].value and master.esFuncion:
@@ -619,6 +677,11 @@ def p_funcion(p):
         sys.exit()
     master.contadorDatosPasados = 0
     p[0] = p[1]
+
+
+def p_push_funcion(p):
+    "push_funcion :"
+    quad.pushFunc(p[-8])
 
 
 def p_getParamId(p):
@@ -714,13 +777,9 @@ result = parser.parse(entrada)
 # print("")
 # master.show()
 # print("")
-# print("VARS TABLE")
-# print("")
-# master.show()
+# # print("MEMORIA")
 # # print("")
-# print("MEMORIA")
-# print("")
-# memo.show()
+# # memo.show()
 
 # print("\n",)
 # print("*************************************")

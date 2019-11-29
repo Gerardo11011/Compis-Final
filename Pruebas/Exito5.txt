@@ -1,13 +1,19 @@
 begin
 
-main {
-  int a, b, c, h, d;
-  a = 3;
-  b = 8;
-  c = 932;
-  a = h;
-  a = a + (b * (d);
+func int factorial(int n) {
+  if(n <= 1) {
+    return 1;
+  }
+  return n * (factorial(n - 1));
+}
 
+main {
+  int a;
+
+  output("Factorial de:");
+  input(a);
+
+  output(factorial(a));
 }
 
 end

@@ -8,12 +8,13 @@
 class tabla_local(object):
     """docstring for tabla."""
 
-    def __init__(self, type_data, value=None, direccion=None, param=False, dimensionada=0):
+    def __init__(self, type_data, value=None, direccion=None, param=False, dimensionada=0, matriz=0):
         self.type_data = str(type_data)
         self.value = value
         self.direccion = direccion
         self.param = param
         self.dimensionada = dimensionada
+        self.matriz = matriz
 
 
 # Estructura de memoria

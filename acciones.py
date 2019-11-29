@@ -82,14 +82,18 @@ def era(quadr, i):
             dimension = master.simbolos[quadr.result].value[id].dimensionada
             tipo = master.simbolos[quadr.result].value[id].type_data
             direccion = master.simbolos[quadr.result].value[id].direccion
+            matriz = master.simbolos[quadr.result].value[id].matriz
             if master.simbolos[quadr.result].value[id].param:
                 dir_param.append(direccion)
                 tipo_param.append(tipo)
             if id == 'return':
                 dirReturn = direccion
             if not master.simbolos[quadr.result].value[id].param:
-                if dimension > 0:
+                if dimension > 0 and matriz == 0:
                     memo.copyVectorToExe(direccion, dimension, tipo)
+                elif dimension > 0 and matriz > 0:
+                    tam = matriz * dimension
+                    memo.copyVectorToExe(direccion, tam, tipo)
                 else:
                     valor = master.simbolos[quadr.result].value[id].value
                     memo.insertLocalInMemory(tipo, direccion)
@@ -139,15 +143,23 @@ def miReturn(quadr, i):
         for id in master.simbolos[miFunc].value:
             if id != "PARAMCANTI" and id != "Cuadruplos":
                 direccion = master.simbolos[miFunc].value[id].direccion
+                matriz = master.simbolos[miFunc].value[id].matriz
+                dimension = master.simbolos[miFunc].value[id].dimensionada
                 tipo = memo.getTipoViaDireccion(direccion)
-                if tipo == "int":
-                    memo.memoria_local.integers.pop(direccion)
-                if tipo == "float":
-                    memo.memoria_local.float.pop(direccion)
-                if tipo == "string":
-                    memo.memoria_local.string.pop(direccion)
-                if tipo == "bool":
-                    memo.memoria_local.booleanos.pop(direccion)
+                if dimension > 0 and matriz == 0:
+                    memo.deleteVectoInExe(direccion, dimension, tipo)
+                elif dimension > 0 and matriz > 0:
+                    tam = dimension * matriz
+                    memo.deleteVectoInExe(direccion, tam, tipo)
+                else:
+                    if tipo == "int":
+                        memo.memoria_local.integers.pop(direccion)
+                    if tipo == "float":
+                        memo.memoria_local.float.pop(direccion)
+                    if tipo == "string":
+                        memo.memoria_local.string.pop(direccion)
+                    if tipo == "bool":
+                        memo.memoria_local.booleanos.pop(direccion)
         return primerQuadNo + 1
     return quadNo + 1
 
@@ -163,9 +175,13 @@ def endproc(quadr, i):
             if id != "PARAMCANTI" and id != "Cuadruplos":
                 dimension = master.simbolos[quadr.result].value[id].dimensionada
                 direccion = master.simbolos[id_funcion].value[id].direccion
+                matriz = master.simbolos[id_funcion].value[id].matriz
                 tipo = memo.getTipoViaDireccion(direccion)
-                if dimension > 0:
+                if dimension > 0 and matriz == 0:
                     memo.deleteVectoInExe(direccion, dimension, tipo)
+                elif dimension > 0 and matriz > 0:
+                    tam = dimension * matriz
+                    memo.deleteVectoInExe(direccion, tam, tipo)
                 else:
                     if tipo == "int":
                         memo.memoria_local.integers.pop(direccion)
@@ -186,9 +202,11 @@ def plus(quadr, i):
     global contVer
     left_op = tieneDireccion(quadr.left_operand)
     right_op = tieneDireccion(quadr.right_operand)
+    if right_op == 0:
+        esArreglo = True
     if esArreglo:
+        res = memo.getValor(left_op, None) + quadr.right_operand
         contVer += 1
-        res = memo.getValor(quadr.left_operand, None) + quadr.right_operand
     else:
         res = memo.getValor(left_op, None) + memo.getValor(right_op, None)
     memo.updateLocalInMemory(res, quadr.result)
@@ -212,7 +230,10 @@ def minus(quadr, i):
 def mult(quadr, i):
     left_op = tieneDireccion(quadr.left_operand)
     right_op = tieneDireccion(quadr.right_operand)
-    res = memo.getValor(left_op, None) * memo.getValor(right_op, None)
+    if right_op < 5000:
+        res = memo.getValor(left_op, None) * right_op
+    else:
+        res = memo.getValor(left_op, None) * memo.getValor(right_op, None)
     memo.updateLocalInMemory(res, quadr.result)
     return i + 1
 
@@ -346,7 +367,6 @@ def ver(quadr, i):
     left_op = tieneDireccion(quadr.left_operand)
     verifica = memo.getValor(left_op, None)
     if verifica >= 0 and verifica <= quadr.result:
-        esArreglo = True
         contVer = 0
         return i + 1
     else:
