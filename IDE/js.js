@@ -71,61 +71,41 @@ $("#if").click(function(){
 });
 
 $("#else").click(function(){
-    //String del form1.
     var str = $("#form1").val();
-    //Substring hasta donde está el cursor.
     var strN = str.substring(0, cursorPosition);
-    //Substring desde donde está el cursor hasta el final.
     var strRest = str.substring(cursorPosition, str.length);
-    //Inserta el código entre los 2 substrings y los pone en el form.
     var strF = strN + "\n\t"+ getElse() + strRest;
     $("#form1").val(strF);
 });
 
 $("#ifelse").click(function(){
-
     var str = $("#form1").val();
-
     var strN = str.substring(0, cursorPosition);
-
     var strRest = str.substring(cursorPosition, str.length);
-
     var strF = strN + "\n\t"+ getIfElse() + strRest;
     $("#form1").val(strF);
 });
 
 $("#loop").click(function(){
-
     var str = $("#form1").val();
-
     var strN = str.substring(0, cursorPosition);
-
     var strRest = str.substring(cursorPosition, str.length);
-
     var strF = strN + "\n\t"+ getLoop() + strRest;
     $("#form1").val(strF);
 });
 
 $("#declaracion").click(function(){
-
     var str = $("#form1").val();
-
     var strN = str.substring(0, cursorPosition);
-
     var strRest = str.substring(cursorPosition, str.length);
-
     var strF = strN + getDeclaracion() + strRest;
     $("#form1").val(strF);
 });
 
 $("#modulo").click(function(){
-
     var str = $("#form1").val();
-
     var strN = str.substring(0, cursorPosition);
-
     var strRest = str.substring(cursorPosition, str.length);
-
     var strF = strN + "\n"+ getModulo() + strRest;
     $("#form1").val(strF);
 });

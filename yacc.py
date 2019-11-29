@@ -175,7 +175,6 @@ def p_modulo1Aux(p):
         master.updateIdInFunc(p[2], master.miIdFunciones, 'false')
 
 
-
 def p_modulo1Repe(p):
     '''
     modulo1Repe : COMMA modulo1Aux
@@ -297,7 +296,7 @@ def p_bloque(p):
            | lectura
            | escritura
            | loop
-           | funcion
+           | funcion SEMICOLON
            | modulo3
     '''
 
@@ -306,10 +305,10 @@ def p_asignacion(p):
     '''
     asignacion : ID push_id EQUAL push_poper logico pop_assign SEMICOLON
                | ID push_id EQUAL push_poper array pop_assign SEMICOLON
-               | ID push_id EQUAL push_poper funcion pop_assignFunc
+               | ID push_id EQUAL push_poper funcion pop_assignFunc SEMICOLON
                | array EQUAL push_poper logico pop_assign SEMICOLON
                | array EQUAL push_poper array pop_assign SEMICOLON
-               | array EQUAL push_poper funcion pop_assignFunc
+               | array EQUAL push_poper funcion pop_assignFunc SEMICOLON
     '''
 
 
@@ -466,6 +465,7 @@ def p_var_cte(p):
             | TRUE push_cte
             | FALSE push_cte
             | array
+            | funcion
     '''
     master.returnValor = p[1]
     if len(p) == 2:
@@ -549,12 +549,7 @@ def p_array(p):
 def p_arrayDos(p):
     "arrayDos :"
     global idVector
-    if master.esFuncion:
-        quad.arregloDos(master.miIdFunciones, p[-2])
-    elif master.esMain:
-        quad.arregloDos('main', p[-2])
-    else:
-        quad.arregloDos('global', p[-2])
+    quad.arregloDos()
     idVector = p[-2]
 
 
@@ -622,7 +617,7 @@ def p_loop3(p):
 
 def p_funcion(p):
     '''
-    funcion : ID getParamId LPAREN funcionDos funcion1 RPAREN paramFalse funcionSeis SEMICOLON
+    funcion : ID getParamId LPAREN funcionDos funcion1 RPAREN paramFalse funcionSeis push_funcion
     '''
     # Condiciones que verifican si la recursividad cumple con los requisitos y desde donde es llamada la funcion
     if master.contadorDatosPasados < master.simbolos[p[2]].value["PARAMCANTI"].value and master.esFuncion:
@@ -633,6 +628,11 @@ def p_funcion(p):
         sys.exit()
     master.contadorDatosPasados = 0
     p[0] = p[1]
+
+
+def p_push_funcion(p):
+    "push_funcion :"
+    quad.pushFunc(p[-8])
 
 
 def p_getParamId(p):

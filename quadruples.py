@@ -444,6 +444,9 @@ def assignFunc(id):
     POperSize = len(POper)
     if POperSize > 0:
         if POper[POperSize-1] == '=':
+            PilaO.pop()
+            PTypes.pop()
+            AVAIL.pop()
             result = PilaO.pop()
             type = PTypes.pop()
             AVAIL.pop()
@@ -469,7 +472,7 @@ def pushFunc(funcion):
 
 # Función que mete a la pila de operadores el corchete izquierdo de un arreglo
 # como un fondo falso.
-def arregloDos(funcion, id):
+def arregloDos():
     pushPoper('[')
 
 
