@@ -572,7 +572,8 @@ def p_pop_io(p):
 
 def p_array(p):
     '''
-    array : ID LCORCH arrayDos array1 RCORCH arrayCinco
+    array : ID LCORCH arrayDos exp arrayTres RCORCH arrayCinco
+          | ID LCORCH arrayDos exp matrizUno COMMA exp matrizDos RCORCH arrayCinco
     '''
     p[0] = p[1]
 
@@ -610,19 +611,54 @@ def p_arrayCinco(p):
     "arrayCinco :"
     if 'global' in master.simbolos:
         if idVector in master.simbolos['global'].value:
-            base = master.simbolos['global'].value[p[-5]].direccion
-            tipo = master.simbolos['global'].value[p[-5]].type_data
+            base = master.simbolos['global'].value[idVector].direccion
+            tipo = master.simbolos['global'].value[idVector].type_data
             quad.arregloCinco(True, base, tipo)
     if 'main' in master.simbolos:
         if idVector in master.simbolos['main'].value:
-            base = master.simbolos['main'].value[p[-5]].direccion
-            tipo = master.simbolos['main'].value[p[-5]].type_data
+            base = master.simbolos['main'].value[idVector].direccion
+            tipo = master.simbolos['main'].value[idVector].type_data
             quad.arregloCinco(True, base, tipo)
     if master.miIdFunciones in master.simbolos:
         if idVector in master.simbolos[master.miIdFunciones].value:
-            base = master.simbolos[master.miIdFunciones].value[p[-5]].direccion
-            tipo = master.simbolos[master.miIdFunciones].value[p[-5]].type_data
+            base = master.simbolos[master.miIdFunciones].value[idVector].direccion
+            tipo = master.simbolos[master.miIdFunciones].value[idVector].type_data
             quad.arregloCinco(False, base, tipo)
+
+
+def p_matrizUno(p):
+    "matrizUno :"
+    if 'global' in master.simbolos:
+        if idVector in master.simbolos['global'].value:
+            tam = master.simbolos['global'].value[idVector].dimensionada
+            tam2 = master.simbolos['global'].value[idVector].matriz
+            quad.matrizUno(True, tam, tam2)
+    if master.miIdFunciones in master.simbolos:
+        if idVector in master.simbolos[master.miIdFunciones].value:
+            tam = master.simbolos[master.miIdFunciones].value[idVector].dimensionada
+            tam2 = master.simbolos['global'].value[idVector].matriz
+            quad.matrizUno(False, tam, tam2)
+    if 'main' in master.simbolos:
+        if idVector in master.simbolos['main'].value:
+            tam = master.simbolos['main'].value[idVector].dimensionada
+            tam2 = master.simbolos['global'].value[idVector].matriz
+            quad.matrizUno(True, tam, tam2)
+
+
+def p_matrizDos(p):
+    "matrizDos :"
+    if 'global' in master.simbolos:
+        if idVector in master.simbolos['global'].value:
+            tam2 = master.simbolos['global'].value[idVector].matriz
+            quad.matrizDos(True, tam2)
+    if master.miIdFunciones in master.simbolos:
+        if idVector in master.simbolos[master.miIdFunciones].value:
+            tam2 = master.simbolos['global'].value[idVector].matriz
+            quad.matrizDos(False, tam2)
+    if 'main' in master.simbolos:
+        if idVector in master.simbolos['main'].value:
+            tam2 = master.simbolos['global'].value[idVector].matriz
+            quad.matrizDos(True, tam2)
 
 
 def p_loop(p):
@@ -757,11 +793,11 @@ print("CUADRUPLOS")
 print("")
 quad.show()
 # print("")
-# print("")
-# print("VARS TABLE")
-# print("")
-# master.show()
-# print("")
+print("")
+print("VARS TABLE")
+print("")
+master.show()
+print("")
 # print("MEMORIA")
 # print("")
 # memo.show()
@@ -770,8 +806,8 @@ print("\n",)
 print("*************************************")
 print("EJECUCIÓN")
 print("*************************************", "\n")
-accion.inicio()
-print("")
-print("MEMORIA")
-print("")
-memo.show()
+# accion.inicio()
+# print("")
+# print("MEMORIA")
+# print("")
+# memo.show()

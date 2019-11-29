@@ -1,6 +1,6 @@
 begin
 
-int matri[2,4];
+int matri[2,3];
 int hol;
 
 func void simona(){
@@ -14,7 +14,13 @@ main {
   int ahsd, myvector[10];
   float jsdj[8,4];
   float estimado,dsas;
-  ahsd = 0;
+  ahsd = 7;
+
+  output(ahsd);
+
+  ahsd = matri[1,1];
+
+  output(ahsd);
 }
 
 end
