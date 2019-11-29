@@ -142,7 +142,7 @@ def miReturn(quadr, i):
             if id != "PARAMCANTI" and id != "Cuadruplos":
                 direccion = master.simbolos[miFunc].value[id].direccion
                 matriz = master.simbolos[miFunc].value[id].matriz
-                dimension = master.simbolos[miFunc].value[id].dimesion
+                dimension = master.simbolos[miFunc].value[id].dimensionada
                 tipo = memo.getTipoViaDireccion(direccion)
                 if dimension > 0 and matriz == 0:
                     memo.deleteVectoInExe(direccion, dimension, tipo)
