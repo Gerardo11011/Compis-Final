@@ -444,6 +444,9 @@ def assignFunc(id):
     POperSize = len(POper)
     if POperSize > 0:
         if POper[POperSize-1] == '=':
+            PilaO.pop()
+            PTypes.pop()
+            AVAIL.pop()
             result = PilaO.pop()
             type = PTypes.pop()
             AVAIL.pop()
@@ -469,7 +472,7 @@ def pushFunc(funcion):
 
 # Función que mete a la pila de operadores el corchete izquierdo de un arreglo
 # como un fondo falso.
-def arregloDos(funcion, id):
+def arregloDos():
     pushPoper('[')
 
 
@@ -502,6 +505,39 @@ def arregloCinco(main, base, tipo):
     PilaO.append('('+str(dir)+')')
     PTypes.append(tipo)
     POper.pop()
+
+
+# ################ REPRESENTACIÓN INTERMEDIA PARA MATRICES ###################
+
+def matrizUno(main, tam, tam2):
+    quadr = quadruple(len(Quad), 'ver', PilaO[-1], 0, tam-1)
+    Quad.append(quadr)
+    aux = PilaO.pop()
+    if main:
+        t = memo.getVirtualMainTemp('int')
+    else:
+        t = memo.getVirtualTemp('int')
+    quadr = quadruple(len(Quad), '*', aux, tam2, t)
+    Quad.append(quadr)
+    PilaO.append(t)
+    PTypes.append('int')
+    AVAIL.append(0)
+
+
+def matrizDos(main, tam2):
+    quadr = quadruple(len(Quad), 'ver', PilaO[-1], 0, tam2-1)
+    Quad.append(quadr)
+    aux2 = PilaO.pop()
+    aux1 = PilaO.pop()
+    if main:
+        t = memo.getVirtualMainTemp('int')
+    else:
+        t = memo.getVirtualTemp('int')
+    quadr = quadruple(len(Quad), '+', aux1, aux2, t)
+    Quad.append(quadr)
+    PilaO.append(t)
+    PTypes.append('int')
+    AVAIL.append(0)
 
 
 # Función que imprime los cuádruplos dentro de la pila de cuádruplos.
