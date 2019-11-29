@@ -255,8 +255,7 @@ def p_vars1(p):
             master.insertIdToFunc(p[1], master.miTipo, "global", dir)
             memo.insertLocalInMemory(master.miTipo, dir)
             memo.inicInMemory(p[1], master.miTipo, "global", dir)
-    elif p[1] in varVector.keys():
-        print("es vector", p[1])
+    elif p[1] in varVector.keys() and p[4] > 0:
         if master.esFuncion:
             dir = memo.getDirecVectorFunc(master.miTipo, varVector[p[1]])
             master.insertIdToFunc(p[1], master.miTipo, master.miIdFunciones, dir, None, varVector[p[1]])
@@ -270,11 +269,8 @@ def p_vars1(p):
             memo.copyVectorToExe(dir, varVector[p[1]], master.miTipo)
         master.esVector = False
         varVector.pop(p[1], None)
-    elif p[1] in varMatriz.keys():
+    elif p[1] in varMatriz.keys() and p[4] > 0 and p[6] > 0:
         tama = varMatriz[p[1]][0] * varMatriz[p[1]][1]
-        izq = varMatriz[p[1]][0]
-        der = varMatriz[p[1]][1]
-        print("IZQ", izq, "DER", der)
         if master.esFuncion:
             dir = memo.getDirecVectorFunc(master.miTipo, tama)
             master.insertIdToFunc(p[1], master.miTipo, master.miIdFunciones, dir, None, varMatriz[p[1]][0], varMatriz[p[1]][1])
@@ -287,6 +283,9 @@ def p_vars1(p):
             master.insertIdToFunc(p[1], master.miTipo, "global", dir, None, varMatriz[p[1]][1], varMatriz[p[1]][0])
             memo.copyVectorToExe(dir, tama, master.miTipo)
         varMatriz.pop(p[1], None)
+    else:
+        print("ERROR: No se puede declarar una matriz o vector con tamaño 0.")
+        sys.exit()
 
 
 def p_tamaVector(p):
@@ -572,10 +571,16 @@ def p_pop_io(p):
 
 def p_array(p):
     '''
-    array : ID LCORCH arrayDos exp arrayTres RCORCH arrayCinco
-          | ID LCORCH arrayDos exp matrizUno COMMA exp matrizDos RCORCH arrayCinco
+    array : ID LCORCH arrayDos exp arrayTres array1
     '''
     p[0] = p[1]
+
+
+def p_array1(p):
+    '''
+    array1 : RCORCH arrayCinco
+           | COMMA exp matrizDos RCORCH arrayCinco
+    '''
 
 
 def p_arrayDos(p):
@@ -585,26 +590,36 @@ def p_arrayDos(p):
     idVector = p[-2]
 
 
-def p_array1(p):
-    '''
-    array1 : exp arrayTres
-           | exp arrayTres COMMA array1
-    '''
-
-
 def p_arrayTres(p):
     "arrayTres :"
     global idVector
     if 'global' in master.simbolos:
         if idVector in master.simbolos['global'].value:
-            tam = master.simbolos['global'].value[idVector].dimensionada
+            if master.simbolos['global'].value[idVector].matriz == 0:
+                tam = master.simbolos['global'].value[idVector].dimensionada
+                quad.arregloTres(tam)
+            else:
+                tam = master.simbolos['global'].value[idVector].dimensionada
+                tam2 = master.simbolos['global'].value[idVector].matriz
+                quad.matrizUno(True, tam, tam2)
     if master.miIdFunciones in master.simbolos:
         if idVector in master.simbolos[master.miIdFunciones].value:
-            tam = master.simbolos[master.miIdFunciones].value[idVector].dimensionada
+            if master.simbolos[master.miIdFunciones].value[idVector].matriz == 0:
+                tam = master.simbolos[master.miIdFunciones].value[idVector].dimensionada
+                quad.arregloTres(tam)
+            else:
+                tam = master.simbolos[master.miIdFunciones].value[idVector].dimensionada
+                tam2 = master.simbolos[master.miIdFunciones].value[idVector].matriz
+                quad.matrizUno(True, tam, tam2)
     if 'main' in master.simbolos:
         if idVector in master.simbolos['main'].value:
-            tam = master.simbolos['main'].value[idVector].dimensionada
-    quad.arregloTres(tam)
+            if master.simbolos['main'].value[idVector].matriz == 0:
+                tam = master.simbolos['main'].value[idVector].dimensionada
+                quad.arregloTres(tam)
+            else:
+                tam = master.simbolos['main'].value[idVector].dimensionada
+                tam2 = master.simbolos['main'].value[idVector].matriz
+                quad.matrizUno(True, tam, tam2)
 
 
 def p_arrayCinco(p):
@@ -626,23 +641,23 @@ def p_arrayCinco(p):
             quad.arregloCinco(False, base, tipo)
 
 
-def p_matrizUno(p):
-    "matrizUno :"
-    if 'global' in master.simbolos:
-        if idVector in master.simbolos['global'].value:
-            tam = master.simbolos['global'].value[idVector].dimensionada
-            tam2 = master.simbolos['global'].value[idVector].matriz
-            quad.matrizUno(True, tam, tam2)
-    if master.miIdFunciones in master.simbolos:
-        if idVector in master.simbolos[master.miIdFunciones].value:
-            tam = master.simbolos[master.miIdFunciones].value[idVector].dimensionada
-            tam2 = master.simbolos['global'].value[idVector].matriz
-            quad.matrizUno(False, tam, tam2)
-    if 'main' in master.simbolos:
-        if idVector in master.simbolos['main'].value:
-            tam = master.simbolos['main'].value[idVector].dimensionada
-            tam2 = master.simbolos['global'].value[idVector].matriz
-            quad.matrizUno(True, tam, tam2)
+# def p_matrizUno(p):
+#     "matrizUno :"
+#     if 'global' in master.simbolos:
+#         if idVector in master.simbolos['global'].value:
+#             tam = master.simbolos['global'].value[idVector].dimensionada
+#             tam2 = master.simbolos['global'].value[idVector].matriz
+#             quad.matrizUno(True, tam, tam2)
+#     if master.miIdFunciones in master.simbolos:
+#         if idVector in master.simbolos[master.miIdFunciones].value:
+#             tam = master.simbolos[master.miIdFunciones].value[idVector].dimensionada
+#             tam2 = master.simbolos['global'].value[idVector].matriz
+#             quad.matrizUno(False, tam, tam2)
+#     if 'main' in master.simbolos:
+#         if idVector in master.simbolos['main'].value:
+#             tam = master.simbolos['main'].value[idVector].dimensionada
+#             tam2 = master.simbolos['global'].value[idVector].matriz
+#             quad.matrizUno(True, tam, tam2)
 
 
 def p_matrizDos(p):
@@ -806,7 +821,7 @@ print("\n",)
 print("*************************************")
 print("EJECUCIÓN")
 print("*************************************", "\n")
-# accion.inicio()
+accion.inicio()
 # print("")
 # print("MEMORIA")
 # print("")

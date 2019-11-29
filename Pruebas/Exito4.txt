@@ -1,14 +1,6 @@
 begin
 
 int matri[2,3];
-int hol;
-
-func void simona(){
-  int prueba[10];
-  int hsa;
-  int dasds[2,10];
-  hsa = 763;
-}
 
 main {
   int ahsd, myvector[10];
@@ -16,11 +8,21 @@ main {
   float estimado,dsas;
   ahsd = 7;
 
-  output(ahsd);
+  matri[1,2] = 230;
+
+  myvector[2] = 1;
+
+  myvector[5] = 1;
+
+  output(matri[1, 1 + 1]);
+
+  output(myvector[2 * 1]);
+
+  output(6 / 3);
 
   ahsd = matri[1,1];
+  matri [0,2] = 100;
 
-  output(ahsd);
 }
 
 end
