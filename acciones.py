@@ -85,8 +85,6 @@ def era(quadr, i):
             if master.simbolos[quadr.result].value[id].param:
                 dir_param.append(direccion)
                 tipo_param.append(tipo)
-            if id == 'return':
-                dirReturn = direccion
             if not master.simbolos[quadr.result].value[id].param:
                 if dimension > 0:
                     memo.copyVectorToExe(direccion, dimension, tipo)
@@ -398,6 +396,6 @@ def switcher(quadr, i):
 def inicio():
     i = 0
     while Quad[i].operator != 'end':
-        print(Quad[i].num, Quad[i].operator, Quad[i].left_operand, Quad[i].right_operand, Quad[i].result, sep = '\t')
+        # print(Quad[i].num, Quad[i].operator, Quad[i].left_operand, Quad[i].right_operand, Quad[i].result, sep = '\t')
         i = switcher(Quad[i], i)
     # memo.show()

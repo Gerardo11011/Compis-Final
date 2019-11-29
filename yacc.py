@@ -20,7 +20,9 @@ idVector = None
 prueba = open(archivo, "r")
 entrada = prueba.read()
 idTemporal = None
+
 varVector = {}
+varMatriz = {}
 
 
 # Declaración de funciones.
@@ -234,9 +236,12 @@ def p_vars1(p):
           | ID COMMA vars1
           | ID LCORCH variableDim CTE_I tamaVector RCORCH
           | ID LCORCH variableDim CTE_I tamaVector RCORCH COMMA vars1
+          | ID LCORCH variableDim CTE_I COMMA CTE_I tamaMatriz RCORCH
+          | ID LCORCH variableDim CTE_I COMMA CTE_I tamaMatriz RCORCH COMMA vars1
     '''
     global varVector
-    if p[1] not in varVector.keys():
+    global varMatriz
+    if p[1] not in varVector.keys() and p[1] not in varMatriz.keys():
         if master.esFuncion:
             temp = memo.getVirtualDicLocal(master.miTipo)
             master.insertIdToFunc(p[1], master.miTipo, master.miIdFunciones, temp)
@@ -250,7 +255,8 @@ def p_vars1(p):
             master.insertIdToFunc(p[1], master.miTipo, "global", dir)
             memo.insertLocalInMemory(master.miTipo, dir)
             memo.inicInMemory(p[1], master.miTipo, "global", dir)
-    else:
+    elif p[1] in varVector.keys():
+        print("es vector", p[1])
         if master.esFuncion:
             dir = memo.getDirecVectorFunc(master.miTipo, varVector[p[1]])
             master.insertIdToFunc(p[1], master.miTipo, master.miIdFunciones, dir, None, varVector[p[1]])
@@ -264,6 +270,23 @@ def p_vars1(p):
             memo.copyVectorToExe(dir, varVector[p[1]], master.miTipo)
         master.esVector = False
         varVector.pop(p[1], None)
+    elif p[1] in varMatriz.keys():
+        tama = varMatriz[p[1]][0] * varMatriz[p[1]][1]
+        izq = varMatriz[p[1]][0]
+        der = varMatriz[p[1]][1]
+        print("IZQ", izq, "DER", der)
+        if master.esFuncion:
+            dir = memo.getDirecVectorFunc(master.miTipo, tama)
+            master.insertIdToFunc(p[1], master.miTipo, master.miIdFunciones, dir, None, varMatriz[p[1]][0], varMatriz[p[1]][1])
+        elif master.esMain:
+            dir = memo.getDirecVectorMain(master.miTipo, tama)
+            master.insertIdToFunc(p[1], master.miTipo, "main", dir, None, varMatriz[p[1]][1], varMatriz[p[1]][0])
+            memo.copyVectorToExe(dir, tama, master.miTipo)
+        elif master.esGlobal:
+            dir = memo.getDirecVecorGlobal(master.miTipo, tama)
+            master.insertIdToFunc(p[1], master.miTipo, "global", dir, None, varMatriz[p[1]][1], varMatriz[p[1]][0])
+            memo.copyVectorToExe(dir, tama, master.miTipo)
+        varMatriz.pop(p[1], None)
 
 
 def p_tamaVector(p):
@@ -271,6 +294,14 @@ def p_tamaVector(p):
     global varVector
     varVector[master.esVector] = p[-1]
     master.tamaVec = p[-1]
+
+
+def p_tamaMatriz(p):
+    "tamaMatriz :"
+    global varMatriz
+    tama = [p[-1], p[-3]]
+    varMatriz[master.esVector] = tama
+    master.tamaVec = p[-1] * p[-3]
 
 
 def p_variableDim(p):
@@ -740,7 +771,7 @@ print("*************************************")
 print("EJECUCIÓN")
 print("*************************************", "\n")
 accion.inicio()
-# print("")
-# print("MEMORIA")
-# print("")
-# memo.show()
+print("")
+print("MEMORIA")
+print("")
+memo.show()
