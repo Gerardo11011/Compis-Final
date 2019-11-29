@@ -1,28 +1,22 @@
 begin
 
-int matri[2,3];
+int matri[3,3];
 
 main {
   int ahsd, myvector[10];
-  float jsdj[8,4];
-  float estimado,dsas;
   ahsd = 7;
 
-  matri[1,2] = 230;
+  matri[2,2] = 230;
+
+  matri[1,1] = 1;
 
   myvector[2] = 1;
 
+  matri[1,2] = myvector[2];
+
   myvector[5] = 1;
 
-  output(matri[1, 1 + 1]);
-
-  output(myvector[2 * 1]);
-
-  output(6 / 3);
-
-  ahsd = matri[1,1];
-  matri [0,2] = 100;
-
+  output(matri[matri[1,1] * 2, matri[1,2] + matri[1,1]]);
 }
 
 end
