@@ -2,9 +2,55 @@ begin
 
 int matri[3,3];
 
+
 main {
   int ahsd, myvector[10];
+  int i,j, contador;
+  int matriz[5,5];
+
+  i = 0;
+  j = 0;
+  contador = 0;
+
   ahsd = 7;
+  loop(i < 5){
+    loop(j < 5){
+      matriz[i,j] = contador;
+      contador = contador + 1;
+      j = j + 1;
+    }
+    j = 0;
+    i = i + 1;
+  }
+
+
+  i = 0;
+  j = 0;
+  loop(i < 5){
+    loop(j < 5){
+      matriz[j,i] = matriz[j,i] * matriz [i,j];
+      j = j + 1;
+    }
+    j = 0;
+    i = i + 1;
+  }
+
+
+
+  i = 0;
+  j = 0;
+  output("MATRIZ IMPRESA");
+  loop(i < 5){
+    loop(j < 5){
+      output(matriz[i,j]);
+      j = j + 1;
+    }
+    output("ACABA FILA");
+    j = 0;
+    i = i + 1;
+  }
+
+
 
   matri[2,2] = 230;
 
@@ -12,11 +58,14 @@ main {
 
   myvector[2] = 1;
 
-  matri[1,2] = myvector[2];
-
   myvector[5] = 1;
 
-  output(matri[matri[1,1] * 2, matri[1,2] + matri[1,1]]);
+  output(matri[1,1] * 2);
+  output(myvector[2] + myvector[2]);
+  i = matri[1,1] * 2;
+  j = myvector[2] + myvector[2];
+
+  output(matri[i, j]);
 }
 
 end

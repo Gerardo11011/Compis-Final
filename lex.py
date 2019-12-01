@@ -124,61 +124,10 @@ def t_error(t):
 lexer = lex.lex()
 
 # Leer archivo de prueba.
-x = (input('''¿Qué archivo desea leer?
-    1.- Exito1
-    2.- Exito2
-    3.- Exito3
-    4.- Exito4
-    5.- Exito5
-    6.- Exito6
-    f.- Fibonacci
-    fac.- Factorial
-    s.- Sort
-    find.- Find
-'''))
-if x == "1":
-    prueba = open('Pruebas/Exito1.txt', "r")
-    archivo = 'Pruebas/Exito1.txt'
-    entrada = prueba.read()
-elif x == "2":
-    prueba = open('Pruebas/Exito2.txt', "r")
-    archivo = 'Pruebas/Exito2.txt'
-    entrada = prueba.read()
-elif x == "3":
-    prueba = open('Pruebas/Exito3.txt', "r")
-    archivo = 'Pruebas/Exito3.txt'
-    entrada = prueba.read()
-elif x == "4":
-    prueba = open('Pruebas/Exito4.txt', "r")
-    archivo = 'Pruebas/Exito4.txt'
-    entrada = prueba.read()
-elif x == "5":
-    prueba = open('Pruebas/Exito5.txt', "r")
-    archivo = 'Pruebas/Exito5.txt'
-    entrada = prueba.read()
-elif x == "6":
-    prueba = open('Pruebas/Exito6.txt', "r")
-    archivo = 'Pruebas/Exito6.txt'
-    entrada = prueba.read()
-elif x == 'f':
-    prueba = open('Pruebas/fibonacchi.txt', "r")
-    archivo = 'Pruebas/fibonacchi.txt'
-    entrada = prueba.read()
-elif x == 'fac':
-    prueba = open('Pruebas/Factorial.txt', "r")
-    archivo = 'Pruebas/Factorial.txt'
-    entrada = prueba.read()
-elif x == 's':
-    prueba = open('Pruebas/Sort.txt', "r")
-    archivo = 'Pruebas/Sort.txt'
-    entrada = prueba.read()
-elif x == 'find':
-    prueba = open('Pruebas/Find.txt', "r")
-    archivo = 'Pruebas/Find.txt'
-    entrada = prueba.read()
-else:
-    print("ERROR")
-    sys.exit()
+prueba = open('Pruebas/idecode.txt', "r")
+archivo = 'Pruebas/idecode.txt'
+entrada = prueba.read()
+
 
 # Entrada del lexer.
 lexer.input(entrada)

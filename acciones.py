@@ -133,8 +133,6 @@ def gosub(quadr, i):
 def miReturn(quadr, i):
     global funcNo
     global miFunc
-    print("MEMORIA ANTES DE BORRAR")
-    memo.show()
     regresa = tieneDireccion(quadr.result)
     valor = memo.getValor(regresa, None)
     memo.insertReturn(valor)
@@ -206,6 +204,7 @@ def plus(quadr, i):
         esArreglo = True
     if esArreglo:
         res = memo.getValor(left_op, None) + quadr.right_operand
+        print(quadr.left_operand, quadr.right_operand, quadr.result)
         contVer += 1
     else:
         res = memo.getValor(left_op, None) + memo.getValor(right_op, None)

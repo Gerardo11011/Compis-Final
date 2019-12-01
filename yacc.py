@@ -635,11 +635,11 @@ def p_matrizDos(p):
             quad.matrizDos(True, tam2)
     if master.miIdFunciones in master.simbolos:
         if idVector in master.simbolos[master.miIdFunciones].value:
-            tam2 = master.simbolos['global'].value[idVector].matriz
+            tam2 = master.simbolos[master.miIdFunciones].value[idVector].matriz
             quad.matrizDos(False, tam2)
     if 'main' in master.simbolos:
         if idVector in master.simbolos['main'].value:
-            tam2 = master.simbolos['global'].value[idVector].matriz
+            tam2 = master.simbolos['main'].value[idVector].matriz
             quad.matrizDos(True, tam2)
 
 
@@ -765,7 +765,7 @@ def p_error(p):
 
 
 # construir el parser.
-print("Parsing . . . \n")
+# print("Parsing . . . \n")
 parser = yacc.yacc()
 result = parser.parse(entrada)
 # print(result)
@@ -773,6 +773,7 @@ result = parser.parse(entrada)
 # print("")
 # print("CUADRUPLOS")
 # print("")
+# quad.show()
 # print("VARS TABLE")
 # print("")
 # master.show()
@@ -782,11 +783,11 @@ result = parser.parse(entrada)
 # # memo.show()
 
 # print("\n",)
-# print("*************************************")
-# print("EJECUCIÓN")
-# print("*************************************", "\n")
+print("*************************************")
+print("EJECUCION")
+print("*************************************", "\n")
 accion.inicio()
-print("")
-print("MEMORIA DESPUES DE LIMPIAR EN EJECUCION")
-print("")
-memo.show()
+# print("")
+# print("MEMORIA DESPUES DE LIMPIAR EN EJECUCION")
+# print("")
+# memo.show()
