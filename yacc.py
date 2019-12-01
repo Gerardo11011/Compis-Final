@@ -50,7 +50,7 @@ def p_globalfunc(p):
     '''
     globalfunc :
     '''
-    master.insert("global", None)
+    master.insert("global", "void")
     master.funciones.append("global")
     master.esGlobal = True
 
@@ -59,7 +59,7 @@ def p_globalFuncFalse(p):
     '''
     globalFuncFalse :
     '''
-    memo.reiniciarDireccionesFunc()
+    # memo.reiniciarDireccionesFunc()
     master.esGlobal = False
     # memo.reiniciarDireccionesFunc()
     # memo.limpiarDireUsadas()
@@ -89,8 +89,8 @@ def p_funcfalse(p):
 
 def p_modulo(p):
     '''
-    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY varsFunc insertarParam bloqFunc RKEY endproc
-           | FUNC VOID tipoVoid ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY varsFunc insertarParam bloqFunc RKEY endproc
+    modulo : FUNC tipo ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY varsFunc insertarParam programa3 RKEY endproc
+           | FUNC VOID tipoVoid ID seen_ID declararFunc LPAREN modulo1 RPAREN LKEY varsFunc insertarParam programa3 RKEY endproc
     '''
     master.contadorParam = 0
 
@@ -110,13 +110,6 @@ def p_endproc(p):
 def p_varsFunc(p):
     '''
     varsFunc : vars
-             | empty
-    '''
-
-
-def p_bloqFunc(p):
-    '''
-    bloqFunc : programa3
              | empty
     '''
 
@@ -209,7 +202,7 @@ def p_mainfunc(p):
     mainfunc :
     '''
     master.esMain = True
-    master.insert("main", None)
+    master.insert("main", "void")
     master.funciones.append("main")
 
 
@@ -557,13 +550,6 @@ def p_escritura(p):
     '''
 
 
-def p_expPrint(p):
-    '''
-    expPrint : exp
-             | exp COMMA expPrint
-    '''
-
-
 def p_pop_io(p):
     "pop_io :"
     quad.popIO()
@@ -649,11 +635,11 @@ def p_matrizDos(p):
             quad.matrizDos(True, tam2)
     if master.miIdFunciones in master.simbolos:
         if idVector in master.simbolos[master.miIdFunciones].value:
-            tam2 = master.simbolos['global'].value[idVector].matriz
+            tam2 = master.simbolos[master.miIdFunciones].value[idVector].matriz
             quad.matrizDos(False, tam2)
     if 'main' in master.simbolos:
         if idVector in master.simbolos['main'].value:
-            tam2 = master.simbolos['global'].value[idVector].matriz
+            tam2 = master.simbolos['main'].value[idVector].matriz
             quad.matrizDos(True, tam2)
 
 
@@ -774,22 +760,20 @@ def p_empty(p):
 # Regla de error para errores de sintaxis.
 def p_error(p):
     print(p)
-    print("Error de sintaxis en linea '%s'" % p.value)
+    print("Error de sintaxis en '%s'" % p.value)
     sys.exit()
 
 
 # construir el parser.
-print("Parsing . . . \n")
+# print("Parsing . . . \n")
 parser = yacc.yacc()
 result = parser.parse(entrada)
 # print(result)
 #
-print("")
-print("CUADRUPLOS")
-print("")
-quad.show()
 # print("")
+# print("CUADRUPLOS")
 # print("")
+# quad.show()
 # print("VARS TABLE")
 # print("")
 # master.show()
@@ -798,12 +782,12 @@ quad.show()
 # # print("")
 # # memo.show()
 
-print("\n",)
+# print("\n",)
 print("*************************************")
-print("EJECUCIÓN")
+print("EJECUCION")
 print("*************************************", "\n")
 accion.inicio()
 # print("")
-# print("MEMORIA")
+# print("MEMORIA DESPUES DE LIMPIAR EN EJECUCION")
 # print("")
 # memo.show()

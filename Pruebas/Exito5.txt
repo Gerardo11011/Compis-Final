@@ -1,19 +1,22 @@
 begin
 
-func int factorial(int n) {
-  if(n <= 1) {
-    return 1;
+func int factorial(int n, int acum) {
+  if(n >= 1) {
+    acum = acum * n;
+    return (factorial(n - 1,acum));
   }
-  return n * (factorial(n - 1));
+  else {
+    return acum;
+  }
 }
 
 main {
-  int a;
-
+  int a, acum, x;
   output("Factorial de:");
   input(a);
-
-  output(factorial(a));
+  acum = factorial(a,1);
+  x = factorial(4,1) + factorial(5,1);
+  output(x);
 }
 
 end

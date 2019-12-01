@@ -1,37 +1,15 @@
 begin
+int Arr[5];
 
-func void prueba(){
-  int a, b;
-  a = 0;
-  b = 4;
-  b = a + b * b;
-}
 
 main {
-  int a,h, i,vecto[4], j, simona[2], melapela, semental;
-  float pewq, pruakd[10], jdsa, oehuvsd[9];
-  string hector, sadenss[6], owsads[5],dasd;
-  bool nose[12], esdnf[21];
-
-  vecto[0] = 3;
-  a = 3;
-  i = 0;
-
-  loop ( a >= 0 ){
-    vecto[i] = a ;
-    output(vecto[i]);
-    a = a - 1;
-    i = i + 1;
+  int conta;
+  conta = 0;
+  loop(conta < 5){
+    Arr[conta] = conta * 2;
+    output(Arr[conta]);
+    conta = conta + 1;
   }
-  h = 5;
-  h = h * vecto[0];
+}
 
-  pruakd[0] = 2.0;
-
-  output(simona[0]);
-  output(h);
-  output(vecto[0]);
-  output(pruakd[0]);
-  output(pruakd[9]);
-  }
 end

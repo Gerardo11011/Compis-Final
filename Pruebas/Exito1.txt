@@ -18,14 +18,16 @@ func float SIMONA(int r, float p){
   q = 2 + j;
   if (h > 3.0){
     h = 4.0;
+    return h;
   }
   return p;
 }
 
-func void judasOSCAR(float p, int r){
+func void judasOSCAR(){
   int h;
   float l;
   l = 6.21;
+  output("LLAMO A JUDAS OSCAR");
 }
 
 func int oscar(int b){
@@ -70,10 +72,11 @@ func int fib(int num) {
 main {
   bool p;
   int contador;
-  int a, b, c;
+  int a, b, c, ada;
   float h, d;
   string pedro, hector;
   contador = 2;
+  ada = 5;
   c = 2;
   j = 3;
   a = j;
@@ -89,17 +92,20 @@ main {
   hector = hector + pedro;
 
   c = oscar(a);
-
-  if (p == true){
-    judasOSCAR(666.6, 1);
+  output(a);
+  oscar(c);
+  if (3 > 8){
+    judasOSCAR();
   }
   else{
-    judasOSCAR(777.77, 2);
+    output(c);
   }
-
   h = SIMONA(a, h);
-  output(h);
+  output("ESTO ES H");
+  output(h * 2);
   pedro = StriPrue(hector);
   output(pedro);
+  a = 1 * -1;
+  output(a);
 }
 end

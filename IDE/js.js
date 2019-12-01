@@ -3,12 +3,28 @@
 
 
 $("#form1").val("begin\n\tmain{\n\t\n\t}\nend");
+
 $("#run").click(function(){
     //String que se mandará al compilador.
     var str = $("#form1").val();
-
-    alert("HOLA");
-});
+    json_to_send = {data: str}
+      $.ajax({
+        url: "http://localhost:3000/compile",
+        type: "Post",
+        data: JSON.stringify(json_to_send),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        //dataType: "JSON",
+        success: function(data) {
+          // console.log(data.response);
+          $('#form2').val(data.response)
+        },
+        error: function(err) {
+          console.log(err)
+        }
+      })
+  });
 
 $("textarea").keydown(function(e) {
     if(e.keyCode === 9) {
