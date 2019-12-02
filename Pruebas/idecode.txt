@@ -2,7 +2,6 @@ begin
 	main{
 	int i;
 	i = 4;
-	output(i*7);
-	output("ROCIO ESTA HERMOSA");
+	output(i*32);
 	}
 end

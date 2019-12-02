@@ -8,9 +8,10 @@ function execute(command, callback){
     exec(command, function(error, stdout, stderr){ callback(stdout); });
 };
 
+
 var compile = function(req, res){
   fs.writeFile('Pruebas/idecode.txt', req.body.data, function (err) {
-    if (err){res.send("BIG ERROR")};
+    if (err){res.send("ERROR")};
   });
   execute("python yacc.py", function(compilation){
     res.send({"response": compilation})
@@ -20,10 +21,10 @@ var compile = function(req, res){
 
 router.all('*', cors());
 router.post('/compile', compile);
-router.post('/testing', function(req, res){res.send("YEI")})
+router.post('/testing', function(req, res){res.send("YEI, SI JALA")})
 router.get('*', function(req, res) {
   res.send({
-    error: 'This route does not exist... But at least you have internet conecction!'
+    error: 'route does not exist'
   })
 })
 
