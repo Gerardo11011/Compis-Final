@@ -1,50 +1,7 @@
 begin
-
-main{
-	int ahsd, myvector[10];
-  int i,j, contador;
-  int matriz[5,5];
-
-  i = 0;
-  j = 0;
-  contador = 0;
-
-  ahsd = 7;
-  loop(i < 5){
-    loop(j < 5){
-      matriz[i,j] = contador;
-      contador = contador + 1;
-      j = j + 1;
-    }
-    j = 0;
-    i = i + 1;
-  }
-
-
-  i = 0;
-  j = 0;
-  loop(i < 5){
-    loop(j < 5){
-      matriz[j,i] = matriz[j,i] * matriz [i,j];
-      j = j + 1;
-    }
-    j = 0;
-    i = i + 1;
-  }
-
-
-
-  i = 0;
-  j = 0;
-  output("MATRIZ IMPRESA");
-  loop(i < 5){
-    loop(j < 5){
-      output(matriz[i,j]);
-      j = j + 1;
-    }
-    output("ACABA FILA");
-    j = 0;
-    i = i + 1;
-  }
-}
+	main{
+	int i;
+	i = 4;
+	output(i*32);
+	}
 end
