@@ -204,7 +204,6 @@ def plus(quadr, i):
         esArreglo = True
     if esArreglo:
         res = memo.getValor(left_op, None) + quadr.right_operand
-        print(quadr.left_operand, quadr.right_operand, quadr.result)
         contVer += 1
     else:
         res = memo.getValor(left_op, None) + memo.getValor(right_op, None)
