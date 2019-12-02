@@ -8,14 +8,6 @@ function execute(command, callback){
     exec(command, function(error, stdout, stderr){ callback(stdout); });
 };
 
-
-var cmd = function(){
-  execute("python3 lexPar.py", function(compilation){
-    console.log(compilation);
-  });
-};
-
-
 var compile = function(req, res){
   fs.writeFile('Pruebas/idecode.txt', req.body.data, function (err) {
     if (err){res.send("BIG ERROR")};
